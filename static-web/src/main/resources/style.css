@@ -1,0 +1,310 @@
+    .container {
+        display: flex;
+        float: left;
+        justify-content: center;
+        align-items: center;
+        height: 75vh;
+        margin-top: 1%;
+        margin-left: 10%;
+        flex-direction: column;
+    }
+
+    .player-list {
+        display: flex;
+        float: left;
+        margin-top: 1%;
+        margin-right: 5%;
+        margin-left: 3%;
+        width: 20%;
+        height: 75vh;
+        overflow: scroll;
+        flex-direction: column;
+    }
+
+    .player-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 3px;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .list-item {
+        font-size: 20px;
+    }
+
+    .otherPlayer {
+        background-color: white;
+    }
+
+    .selfPlayer {
+        background-color: #1c8def;
+        font-weight: bold;
+    }
+
+    .blank-card-gray {
+        filter: grayscale(100%);
+    }
+
+    .btn-primary {
+        height: 20%;
+        width: 25%;
+    }
+
+    .btn-primary {
+        margin-top: 5%;
+        width: 30%;
+        height: 75px;
+        margin-left: 35%;
+        margin-right: 35%;
+    }
+
+
+    .btnChooseTM-primary {
+        width: 100%;
+        height: 40px;
+        margin-right: 25%;
+    }
+
+    .choosingButton {
+        font-size: 20px;
+    }
+
+    body {
+        padding: 0;
+    }
+
+    h1 {
+        color: white;
+    }
+
+    /* Hier Display auf flex setzen wenn Button Spiel starten gedrückt*/
+    .cardsFrontSide {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20%;
+        width: 103%;
+        height: 60%;
+    }
+
+    /* Die Karten selbst (Karten Vorderseite)*/
+    .cardsFrontSide svg {
+        height: 39%;
+        width: 12%;
+        border-radius: 5px;
+        margin-right: 0.25%;
+        margin-left: 0.25%;
+    }
+
+
+    .cardsFrontSide svg:hover {
+        border: 3px solid lightskyblue;;
+    }
+
+    /* Text in den Karten */
+    .textSvg {
+        color: black;
+        font-size: 50px;
+    }
+
+    /* KartenContainer zwei*/
+    /* Die Karten selbst (Karten Rückseite), Hier Display auf none setzen, wenn Button gedrückt*/
+
+    .cardsBackSide {
+        display: none;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20%;
+        width: 103%;
+        height: 60%;
+        /*
+        background-image: url("https://media.istockphoto.com/photos/green-poker-background-picture-id453187915?k=6&m=453187915&s=170667a&w=0&h=I8mcRCg6EGsHeOUDzgyjAMGIXp3szoXe3SHnizavq1A=");
+        border-radius: 15px;*/
+    }
+
+    .cardsBackSide svg {
+        height: 39%;
+        width: 50%;
+        border-radius: 5px;
+        margin-right: 0.25%;
+        margin-left: 0.25%;
+        display: flex;
+    }
+
+    .spectatorToggle {
+        margin-right: 90%;
+    }
+
+    /* Link Anzeige*/
+    .alert-primary {
+        width: 570px;
+        margin-top: 1%;
+        text-align: center;
+        padding-top: 5%;
+    }
+
+    .link-paragraph {
+        margin-bottom: -6%;
+    }
+
+    #tablename {
+        height: 75px;
+        font-size: 30px;
+        border: 3px solid lightblue;
+        text-align:center;
+        width: 80%;
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+
+    #tableMasterName {
+        height: 75px;
+        font-size: 30px;
+        border: 3px solid lightblue;
+        text-align: center;
+        width: 80%;
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+
+    #username {
+        height: 75px;
+        font-size: 30px;
+        border: 3px solid lightblue;
+        text-align: center;
+        width: 80%;
+        margin-right: 10%;
+        margin-left: 10%;
+        margin-top: 3%;
+    }
+
+    .averageRating {
+        margin-top: 70px;
+        display: none;
+    }
+
+
+    .labelCenter {
+        display: block;
+        margin-top: 5%;
+        font-size: 300%;
+        text-align: center;
+    }
+
+    .formTablemaster {
+        display: flex;
+    }
+
+    .formPlayer {
+        display: block;
+    }
+
+    .tablemasterPlayground {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .playerPlayground {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .selectedcard {
+        margin-bottom: 60px;
+    }
+
+    .spectatorModeIcon {
+        margin-left: 50px;
+    }
+
+    /* Code für Toggle Button */
+    a.up {
+        background: #ccc;
+        cursor: pointer;
+        border-top: solid 2px #eaeaea;
+        border-left: solid 2px #eaeaea;
+        border-bottom: solid 2px #777;
+        border-right: solid 2px #777;
+        padding: 5px 5px;
+        margin-right: 90%;
+    }
+
+    a.down {
+        background: #bbb;
+        border-top: solid 2px #777;
+        border-left: solid 2px #777;
+        border-bottom: solid 2px #eaeaea;
+        border-right: solid 2px #eaeaea;
+        padding: 5px 5px;
+        border: 3px solid blue;
+        margin-right: 90%;
+    }
+
+    #spectatorCheckboxTablemaster, #spectatorCheckboxPlayer {
+        margin-bottom: 40px;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
