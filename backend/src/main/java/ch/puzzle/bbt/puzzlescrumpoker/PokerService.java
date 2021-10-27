@@ -144,13 +144,12 @@ public class PokerService {
     }
 
     public void handleIncomingTextMessage(WebSocketSession session, String message) throws Exception {
-
-        if (message.startsWith("table=")) {
-            String gamekey = message.substring(6);
-            getTableById(gamekey).getWebsocketsession().add(session);
-
+        if (message.startsWith("table=") && message.contains("playerid=")) {
+            String[] messageSplit = message.split(",");
+            Long playerid = Long.parseLong(messageSplit[1].substring(9));
+            String gamekey = messageSplit[0].substring(6);
+            getTableById(gamekey).getWebsocketsession().put(playerid, session);
             LOG.debug("Connection established");
-
         } else {
             LOG.warn("Unknown message: {}", message);
         }
@@ -172,14 +171,12 @@ public class PokerService {
     }
 
     public void sendWebsocketMessage(Table table, String message) {
-        Iterator<WebSocketSession> iterator = table.getWebsocketsession().stream().iterator();
-        while (iterator.hasNext()){
-            WebSocketSession currentWebsocketSession = iterator.next();
+        for (WebSocketSession webSocketSession : table.getWebsocketsession().values()){
             try {
-                currentWebsocketSession.sendMessage(new TextMessage(message));
+                webSocketSession.sendMessage(new TextMessage(message));
             }
             catch (IOException e) {
-                checkWebsocketConnection(table, currentWebsocketSession, e.getMessage());
+                checkWebsocketConnection(table, webSocketSession, e.getMessage());
             }
         }
     }
@@ -196,7 +193,7 @@ public class PokerService {
 
         while (tables.hasNext()) {
             Table table = tables.next();
-            if (table.getWebsocketsession().contains(session)) {
+            if (table.getWebsocketsession().containsValue(session)) {
                 table.getWebsocketsession().remove(session);
                 sendWebsocketMessage(table, "RefreshPlayer");
             }

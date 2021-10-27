@@ -13,7 +13,7 @@ public class Table {
     private boolean gamerunning = false;
     private Tablemaster tablemaster;
     private final Map<Long, Player> playerMap = new HashMap<>();
-    private Set<WebSocketSession> websocketsession = new HashSet<>();
+    private Map<Long, WebSocketSession> websocketsession = new HashMap<>();
 
     public Table(String gamekey, String tablename, Tablemaster tablemaster) {
         this.gamekey = gamekey;
@@ -46,7 +46,7 @@ public class Table {
         this.gamerunning = gamerunning;
     }
 
-    public Set<WebSocketSession> getWebsocketsession() {
+    public Map<Long, WebSocketSession> getWebsocketsession() {
         return websocketsession;
     }
 
