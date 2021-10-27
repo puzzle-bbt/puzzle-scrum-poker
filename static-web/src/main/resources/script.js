@@ -356,9 +356,9 @@ function cardListener(gamekey, playerID) {
         resetCards();
         if (!currentElement.classList.contains("selectedcard")) {
             currentElement.classList.add("selectedcard");
-            currentValue = currentElement.getAttribute("storyPoint");
+            selectedCard = currentElement.getAttribute("storyPoint");
             $.ajax({
-                url: "http://localhost:8080/players/setselectedcard/"+gamekey+"/"+playerID+"/"+ encodeURIComponent(currentValue),
+                url: "http://localhost:8080/players/setselectedcard/"+gamekey+"/"+playerID+"/"+ encodeURIComponent(selectedCard),
                 type: 'GET'
             });
         }
