@@ -13,9 +13,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -352,7 +350,7 @@ class PokerServiceTest {
     @Test
     void sendWebsocketMessageWithNoSessions() throws Exception {
         // given
-        Set<WebSocketSession> webSocketSessions = new HashSet<>();
+        Map<Long, WebSocketSession> webSocketSessions = new HashMap<>();
         Table tableMock = mock(Table.class);
         when(tableMock.getWebsocketsession()).thenReturn(webSocketSessions);
         // when
@@ -365,11 +363,11 @@ class PokerServiceTest {
     @Test
     void sendWebsocketMessageWithTwoSessions() throws Exception {
         // given
-        Set<WebSocketSession> webSocketSessions = new HashSet<>();
+        Map<Long, WebSocketSession> webSocketSessions = new HashMap<>();
         WebSocketSession webSocketSessionMock1 = mock(WebSocketSession.class);
-        webSocketSessions.add(webSocketSessionMock1);
+        webSocketSessions.put(1L, webSocketSessionMock1);
         WebSocketSession webSocketSessionMock2 = mock(WebSocketSession.class);
-        webSocketSessions.add(webSocketSessionMock2);
+        webSocketSessions.put(2L, webSocketSessionMock2);
         Table tableMock = mock(Table.class);
         when(tableMock.getWebsocketsession()).thenReturn(webSocketSessions);
         // when
@@ -405,8 +403,8 @@ class PokerServiceTest {
         pokerService.tableMap.put(GAME_KEY_3, TABLE_WITH_TABLEMASTER_AND_TWO_PLAYERS);
         WebSocketSession webSocketSessionMock1 = mock(WebSocketSession.class);
         WebSocketSession webSocketSessionMock2 = mock(WebSocketSession.class);
-        pokerService.tableMap.get(GAME_KEY_3).getWebsocketsession().add(webSocketSessionMock1);
-        pokerService.tableMap.get(GAME_KEY_3).getWebsocketsession().add(webSocketSessionMock2);
+        pokerService.tableMap.get(GAME_KEY_3).getWebsocketsession().put(3L, webSocketSessionMock1);
+        pokerService.tableMap.get(GAME_KEY_3).getWebsocketsession().put(4L, webSocketSessionMock2);
         doNothing().when(pokerService).sendWebsocketMessage(any(Table.class), anyString());
 
         //when
@@ -435,7 +433,7 @@ class PokerServiceTest {
         //given
         pokerService.tableMap.put(GAME_KEY_3, TABLE_WITH_TABLEMASTER_AND_TWO_PLAYERS);
         WebSocketSession webSocketSessionMock1 = mock(WebSocketSession.class);
-        pokerService.tableMap.get(GAME_KEY_3).getWebsocketsession().add(webSocketSessionMock1);
+        pokerService.tableMap.get(GAME_KEY_3).getWebsocketsession().put(3L, webSocketSessionMock1);
 
         doThrow(IOException.class)
                 .when(pokerService)
