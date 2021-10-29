@@ -1,7 +1,4 @@
-README
-===
-
-# puzzle-scrum-poker
+# Puzzle-scrum-poker
 A Puzzle Scrum Poker online Tool.
 
 ## How to Run Puzzle Scrum Poker from within IntelliJ
