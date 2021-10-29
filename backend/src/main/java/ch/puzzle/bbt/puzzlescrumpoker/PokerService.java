@@ -148,20 +148,57 @@ public class PokerService {
             String[] messageSplit = message.split(",");
             Long playerid = Long.parseLong(messageSplit[1].substring(9));
             String gamekey = messageSplit[0].substring(6);
+
             getTableById(gamekey).getWebsocketsession().put(playerid, session);
             LOG.debug("Connection established");
-        } else {
+        }
+        else if (message.startsWith("Iamtheoneandonlymaster=")) {
+            String[] messageSplit = message.split("=");
+            String gamekey = messageSplit[1];
+            String playerIDString = messageSplit[2];
+            Long playerID = Long.parseLong(playerIDString);
+
+            if (!getTableById(gamekey).isNewTablemasterNeeded()) {
+                sendWebsocketMessageToOnePlayer("CantBeNewTablemaster", playerID, gamekey);
+            }
+            else {
+                setUpNewTablemaster(gamekey, playerID, session);
+            }
+        }
+        else {
             LOG.warn("Unknown message: {}", message);
+        }
+    }
+
+    public void setUpNewTablemaster(String gamekey, Long playerID, WebSocketSession session) throws Exception {
+        if (!getTableById(gamekey).getWebsocketsession().containsValue(session)) {
+            LOG.warn("Player with id: {} and the session: {} is not at the table with gamekey: {}", playerID, session, gamekey);
+        } else if (getTableById(gamekey).getTablemaster().getId() == playerID) {
+            LOG.warn("Player with id: {} is already tablemaster at the table with the gamekey {}", playerID, gamekey);
+        } else {
+            getTableById(gamekey).getPlayerMap().remove(getTableById(gamekey).getTablemaster().getId());
+            getTableById(gamekey).getWebsocketsession().remove(getTableById(gamekey).getTablemaster().getId());
+
+            Tablemaster tablemaster = new Tablemaster(getTableById(gamekey).getPlayerById(playerID).getName(), playerID);
+            getTableById(gamekey).setTablemaster(tablemaster);
+            getTableById(gamekey).getPlayerMap().replace(playerID, tablemaster);
+
+            sendWebsocketMessageToOnePlayer("IAmNowTheOneAndOnlyTablemaster", playerID, gamekey);
+            sendWebsocketMessage(getTableById(gamekey), "NewTablemaster" + "," + getTableById(gamekey).getTablemaster().getName());
+
+            getTableById(gamekey).setNewTablemasterNeeded(false);
         }
     }
 
     public void offboarding(String gamekey, long playerid, boolean isTablemaster) throws Exception {
         try {
-            getTableById(gamekey).getPlayerMap().remove(playerid);
             if (isTablemaster) {
+                getTableById(gamekey).setNewTablemasterNeeded(true);
                 sendWebsocketMessage(getTableById(gamekey), "AskForNewTablemaster");
             }
             else {
+                getTableById(gamekey).getPlayerMap().remove(playerid);
+                getTableById(gamekey).getWebsocketsession().remove(playerid);
                 sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer" + "," + playerid);
             }
         }
@@ -179,6 +216,10 @@ public class PokerService {
                 checkWebsocketConnection(table, webSocketSession, e.getMessage());
             }
         }
+    }
+
+    public void sendWebsocketMessageToOnePlayer(String message, Long playerID, String gamekey) throws Exception {
+        getTableById(gamekey).getWebsocketsession().get(playerID).sendMessage(new TextMessage(message));
     }
 
     public void checkWebsocketConnection(Table table, WebSocketSession webSocketSession, String message) {

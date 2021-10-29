@@ -24,11 +24,11 @@ function checkForTablemaster() {
 function initTablemaster() {
     $(".formPlayer").css({display: "none"});
     $(".formTablemaster").css({display: "block"});
-};
+}
 function initPlayer() {
     $(".formPlayer").css({display: "block"});
     $(".formTablemaster").css({display: "none"});
-};
+}
 function onboardingTablemaster() {
     $('#create').click(function () {
         let tableMasterName = $('#tableMasterName').val();
@@ -55,16 +55,23 @@ function onboardingTablemaster() {
             }
         });
     });
-};
-function onboardingTablemasterFinish(gamekey, playerID) {
+}
+function onboardingTablemasterFinish(gamekey, playerID, isNewTablemaster = false) {
     $(".formTablemaster").css({display: "none"});
     $(".tablemasterPlayground").css({display: "block"});
-    $('#link').html(window.location.href + "?table=" + gamekey);
     connectWebsocket(gamekey, playerID);
     getAllPlayers(gamekey, playerID);
     initGameControl(gamekey, playerID);
     checkForStartSpectatorMode(gamekey, playerID);
-    cardListener(gamekey, playerID);
+
+    if (!isNewTablemaster) {
+        $('#link').html(window.location.href + "?table=" + gamekey);
+        cardListener(gamekey, playerID);
+    } else {
+        $(".playerPlayground").css({display: "none"});
+        $('#link').html(window.location.href);
+    }
+
     $(window).on('beforeunload', function() {
         var confirmWindow = confirm();
         if(confirmWindow){
@@ -75,9 +82,9 @@ function onboardingTablemasterFinish(gamekey, playerID) {
         }
     });
     window.addEventListener('unload', function(event) {
-        callBackendForOffboarding(gamekey, playerID);
+        callBackendForOffboarding(gamekey, playerID, true);
     });
-};
+}
 function onboardingPlayer() {
     $('#confirm').click(function () {
         let username = $('#username').val();
@@ -99,7 +106,7 @@ function onboardingPlayer() {
             }
         });
     });
-};
+}
 function onboardingPlayerFinish(gamekey, playerID) {
     $(".formPlayer").css({display: "none"});
     $(".playerPlayground").css({display: "block"});
@@ -108,26 +115,31 @@ function onboardingPlayerFinish(gamekey, playerID) {
     checkForStartSpectatorMode(gamekey, playerID);
     cardListener(gamekey, playerID);
     $(window).on('beforeunload', function() {
-        callBackendForOffboarding(gamekey, playerID);
+        callBackendForOffboarding(gamekey, playerID, false);
     });
-};
-function callBackendForOffboarding(gamekey, playerID) {
+}
+function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
     $.ajax({
-        url: "http://localhost:8080/tables/offboarding/" + gamekey + "/" + playerID + "/" + checkForTablemaster(),
+        url: "http://localhost:8080/tables/offboarding/" + gamekey + "/" + playerID + "/" + isTablemaster,
         type: 'GET',
         async: false
     });
     disconnect();
+    console.log("Disconnected and offboarding to backend");
 }
-function askForNewTablemaster(gamekeay, playerID) {
-    if (confirm("Tablemaster left the game." + "\n" + "\n" +
-        "Do you want to be new Tablemaster?")) {
+function askForNewTablemaster(gamekey, playerID) {
+    console.log("Ask for new tablemaster window");
+    if (confirm("Tablemaster left the game." + "\n" + "\n" + "Do you want to be new Tablemaster?")) {
         console.log("True");
+        ws.send("Iamtheoneandonlymaster=" + gamekey + "=" + playerID);
     }
     else {
         console.log("False");
     }
 
+}
+function showPlayersNewTablemaster(message) {
+    alert(message);
 }
 function initGameControl(gamekey, playerID) {
     $('.middleButton').click(function () {
@@ -294,14 +306,23 @@ function connectWebsocket(gamekey, playerID) {
     ws.onmessage = function(data){
 
         if (data.data.startsWith("RefreshPlayer")){
-            let newdata = data.data.substring(10)
-            let nameofnewPlayer = newdata.split(",")[0];
-            let idofnewPlayer = newdata.split(",")[1];
             getAllPlayers(gamekey, playerID);
         }
         if (data.data.startsWith("AskForNewTablemaster")) {
             getAllPlayers(gamekey, playerID);
-            //askForNewTablemaster(gamekey, playerID);
+            askForNewTablemaster(gamekey, playerID);
+        }
+        if (data.data.startsWith("NewTablemaster")) {
+            var messageSplit = data.data.split(",")
+            var message = messageSplit[1];
+            showPlayersNewTablemaster(message);
+            getAllPlayers(gamekey, playerID);
+        }
+        if (data.data.startsWith("IAmNowTheOneAndOnlyTablemaster")) {
+            onboardingTablemasterFinish(gamekey, playerID, true);
+        }
+        if (data.data.startsWith("CantBeNewTablemaster")) {
+            alert("You can't be new Tablemaster, because someone else was earlier");
         }
         if (data.data.includes("gameStart")){
             $('.cardsFrontSide').css({display: "flex"});
