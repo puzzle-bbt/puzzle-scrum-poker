@@ -125,16 +125,13 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
         async: false
     });
     disconnect();
-    console.log("Disconnected and offboarding to backend");
 }
 function askForNewTablemaster(gamekey, playerID) {
-    console.log("Ask for new tablemaster window");
     if (confirm("Tablemaster left the game." + "\n" + "\n" + "Do you want to be new Tablemaster?")) {
-        console.log("True");
         ws.send("Iamtheoneandonlymaster=" + gamekey + "=" + playerID);
     }
     else {
-        console.log("False");
+        ws.send("Idontwanttobemaster=" + gamekey + "=" + playerID);
     }
 
 }
@@ -323,6 +320,9 @@ function connectWebsocket(gamekey, playerID) {
         }
         if (data.data.startsWith("CantBeNewTablemaster")) {
             alert("You can't be new Tablemaster, because someone else was earlier");
+        }
+        if (data.data.startsWith("NoNewTablemaster")) {
+            location.href = 'http://localhost:4200/main/resources/';
         }
         if (data.data.includes("gameStart")){
             $('.cardsFrontSide').css({display: "flex"});
