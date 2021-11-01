@@ -1,9 +1,11 @@
-/backend/target/**
-/backend/*.iml
-/static-web/target/**
-/static-web/*.iml
 /*.iml
-/.idea/**
-/.mvn/**
-/static-web/npm-debug.log
+/.idea/
+/.mvn/
 
+/backend/target/
+/backend/*.iml
+
+/static-web/*.iml
+/static-web/target/
+/static-web/npm-debug.log
+/static-web/node_modules/
