@@ -159,7 +159,7 @@ public class PokerService {
             Long playerID = Long.parseLong(playerIDString);
 
             if (!getTableById(gamekey).isNewTablemasterNeeded()) {
-                sendWebsocketMessageToOnePlayer("CantBeNewTablemaster", playerID, gamekey);
+                sendWebsocketMessageSpecial("CantBeNewTablemaster", playerID, gamekey, true);
             }
             else {
                 setUpNewTablemaster(gamekey, playerID, session);
@@ -184,14 +184,15 @@ public class PokerService {
         } else if (getTableById(gamekey).getTablemaster().getId() == playerID) {
             LOG.warn("Player with id: {} is already tablemaster at the table with the gamekey {}", playerID, gamekey);
         } else {
-
+            getTableById(gamekey).getPlayerMap().remove(getTableById(gamekey).getTablemaster().getId());
+            getTableById(gamekey).getWebsocketsession().remove(getTableById(gamekey).getTablemaster().getId());
 
             Tablemaster tablemaster = new Tablemaster(getTableById(gamekey).getPlayerById(playerID).getName(), playerID);
             getTableById(gamekey).setTablemaster(tablemaster);
             getTableById(gamekey).getPlayerMap().replace(playerID, tablemaster);
 
-            sendWebsocketMessageToOnePlayer("IAmNowTheOneAndOnlyTablemaster", playerID, gamekey);
-            sendWebsocketMessage(getTableById(gamekey), "NewTablemaster" + "," + getTableById(gamekey).getTablemaster().getName());
+            sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster", playerID, gamekey, true);
+            sendWebsocketMessageSpecial("NewTablemaster" + "," + getTableById(gamekey).getTablemaster().getName(), playerID, gamekey, false);
 
             getTableById(gamekey).setNewTablemasterNeeded(false);
             getTableById(gamekey).setPlayersTabCancel(0);
@@ -218,9 +219,7 @@ public class PokerService {
         try {
             if (isTablemaster) {
                 getTableById(gamekey).setNewTablemasterNeeded(true);
-                getTableById(gamekey).getPlayerMap().remove(getTableById(gamekey).getTablemaster().getId());
-                getTableById(gamekey).getWebsocketsession().remove(getTableById(gamekey).getTablemaster().getId());
-                sendWebsocketMessage(getTableById(gamekey), "AskForNewTablemaster");
+                sendWebsocketMessageSpecial("AskForNewTablemaster", playerid, gamekey, false);
             }
             else {
                 getTableById(gamekey).getPlayerMap().remove(playerid);
@@ -234,18 +233,31 @@ public class PokerService {
     }
 
     public void sendWebsocketMessage(Table table, String message) {
-        for (WebSocketSession webSocketSession : table.getWebsocketsession().values()){
+
+        for (WebSocketSession webSocketSession : table.getWebsocketsession().values()) {
             try {
                 webSocketSession.sendMessage(new TextMessage(message));
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 checkWebsocketConnection(table, webSocketSession, e.getMessage());
             }
         }
     }
 
-    public void sendWebsocketMessageToOnePlayer(String message, Long playerID, String gamekey) throws Exception {
-        getTableById(gamekey).getWebsocketsession().get(playerID).sendMessage(new TextMessage(message));
+    public void sendWebsocketMessageSpecial(String message, Long playerID, String gamekey, boolean onlyOnePlayer) throws Exception {
+        if (onlyOnePlayer) {
+            getTableById(gamekey).getWebsocketsession().get(playerID).sendMessage(new TextMessage(message));
+        } else {
+            Table table = getTableById(gamekey);
+            for (WebSocketSession webSocketSession : table.getWebsocketsession().values()) {
+                try {
+                    if (webSocketSession != getTableById(gamekey).getWebsocketsession().get(playerID)) {
+                        webSocketSession.sendMessage(new TextMessage(message));
+                    }
+                } catch (IOException e) {
+                    checkWebsocketConnection(table, webSocketSession, e.getMessage());
+                }
+            }
+        }
     }
 
     public void checkWebsocketConnection(Table table, WebSocketSession webSocketSession, String message) {
