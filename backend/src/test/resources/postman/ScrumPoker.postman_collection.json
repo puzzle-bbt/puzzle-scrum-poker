@@ -119,9 +119,10 @@
 							"    ",
 							"pm.test(\"create player\", function () {",
 							"",
-							"    pm.environment.set(\"playerid\", pm.response.text())",
+							"    pm.environment.set(\"playerid\", pm.response.text());",
 							"",
-							"});"
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -131,75 +132,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/createPlayer/Lias/{{gamekey}}",
+					"raw": "{{base_url}}/createPlayer/Kurt/{{gamekey}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"createPlayer",
-						"Lias",
-						"{{gamekey}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getPlayers Copy 2",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"getAllPlayers\", function() {",
-							"    var player1 = pm.response.json()[0];",
-							"    var player2 = pm.response.json()[1];",
-							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
-							"    pm.expect(player1.selectedCard).to.be.null;",
-							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
-							"    pm.expect(player2.selectedCard).to.be.null;",
-							"});",
-							"",
-							"",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "getPlayers",
-						"value": "3loxk3uyJwxxMpOnSKJAMRjX4mKErY",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "[\n    {\n        \"id\": 2,\n        \"name\": \"dsafasdf\",\n        \"currentValue\": null,\n        \"playerMode\": true\n    }\n]"
-				},
-				"url": {
-					"raw": "{{base_url}}/tables/getplayers/{{gamekey}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"tables",
-						"getplayers",
+						"Kurt",
 						"{{gamekey}}"
 					]
 				}
@@ -3081,6 +3020,56 @@
 						"tables",
 						"getplayers",
 						"{{gamekey}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offboarding tablemaster",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.response.to.be.ok;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "getPlayers",
+						"value": "3loxk3uyJwxxMpOnSKJAMRjX4mKErY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 2,\n        \"name\": \"dsafasdf\",\n        \"currentValue\": null,\n        \"playerMode\": true\n    }\n]"
+				},
+				"url": {
+					"raw": "{{base_url}}/tables/offboarding/{{gamekey}}/{{tablemasterid}}/true",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tables",
+						"offboarding",
+						"{{gamekey}}",
+						"{{tablemasterid}}",
+						"true"
 					]
 				}
 			},
