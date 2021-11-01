@@ -31,5 +31,16 @@ Run 'PuzzleScrumPokerApplication'
 
 or by just executing the run configuration.
 
+## Development
 
-## How to Run Puzzle Scrum Poker from the Command Line
+For rapid development the frontend, you can use the live-reload webserver with live reload:
+
+```
+cd static-web
+npm install
+./start-dev.sh
+```
+
+The frontend is started on localhost:4200. The backend should also be executed: Use your new Spring Boot configuration from above.
+
+Certainly - the frontend work also on localhost:8080, but without live reload.
