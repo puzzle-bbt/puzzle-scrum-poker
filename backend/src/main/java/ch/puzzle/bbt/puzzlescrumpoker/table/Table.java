@@ -12,7 +12,7 @@ public class Table {
 
     private boolean gamerunning = false;
     private boolean isNewTablemasterNeeded = false;
-    private int newTablemasterCounter = 0;
+    private int playersTabCancel = 0;
 
     private Tablemaster tablemaster;
     private final Map<Long, Player> playerMap = new HashMap<>();
@@ -33,12 +33,12 @@ public class Table {
         return tablemaster;
     }
 
-    public int getNewTablemasterCounter() {
-        return newTablemasterCounter;
+    public int getPlayersTabCancel() {
+        return playersTabCancel;
     }
 
-    public void setNewTablemasterCounter(int newTablemasterCounter) {
-        this.newTablemasterCounter = newTablemasterCounter;
+    public void setPlayersTabCancel(int playersTabCancel) {
+        this.playersTabCancel = playersTabCancel;
     }
 
     public boolean isNewTablemasterNeeded() {

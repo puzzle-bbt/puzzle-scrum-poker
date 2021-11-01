@@ -322,7 +322,7 @@ function connectWebsocket(gamekey, playerID) {
             alert("You can't be new Tablemaster, because someone else was earlier");
         }
         if (data.data.startsWith("NoNewTablemaster")) {
-            location.href = 'http://localhost:4200/main/resources/';
+            location.href = 'http://localhost:8080/';
         }
         if (data.data.includes("gameStart")){
             $('.cardsFrontSide').css({display: "flex"});

@@ -184,8 +184,7 @@ public class PokerService {
         } else if (getTableById(gamekey).getTablemaster().getId() == playerID) {
             LOG.warn("Player with id: {} is already tablemaster at the table with the gamekey {}", playerID, gamekey);
         } else {
-            getTableById(gamekey).getPlayerMap().remove(getTableById(gamekey).getTablemaster().getId());
-            getTableById(gamekey).getWebsocketsession().remove(getTableById(gamekey).getTablemaster().getId());
+
 
             Tablemaster tablemaster = new Tablemaster(getTableById(gamekey).getPlayerById(playerID).getName(), playerID);
             getTableById(gamekey).setTablemaster(tablemaster);
@@ -195,27 +194,32 @@ public class PokerService {
             sendWebsocketMessage(getTableById(gamekey), "NewTablemaster" + "," + getTableById(gamekey).getTablemaster().getName());
 
             getTableById(gamekey).setNewTablemasterNeeded(false);
+            getTableById(gamekey).setPlayersTabCancel(0);
         }
     }
 
     public void checkForAnyoneTablemaster(long playerID, String gamekey, WebSocketSession session) throws Exception {
         if (!getTableById(gamekey).getWebsocketsession().containsValue(session)) {
             LOG.warn("Player with id: {} and the session: {} is not at the table with gamekey: {}", playerID, session, gamekey);
-        }
-        getTableById(gamekey).setNewTablemasterCounter(getTableById(gamekey).getNewTablemasterCounter() + 1);
+        } else if (!getTableById(gamekey).isNewTablemasterNeeded()) {
+            getTableById(gamekey).setPlayersTabCancel(0);
+        } else {
+            getTableById(gamekey).setPlayersTabCancel(getTableById(gamekey).getPlayersTabCancel() + 1);
 
-        if ((getTableById(gamekey).getPlayerMap().size()) == getTableById(gamekey).getNewTablemasterCounter()) {
-            getTableById(gamekey).getPlayerMap().remove(getTableById(gamekey).getTablemaster().getId());
-            getTableById(gamekey).getWebsocketsession().remove(getTableById(gamekey).getTablemaster().getId());
-            sendWebsocketMessage(getTableById(gamekey), "NoNewTablemaster");
+            if ((getTableById(gamekey).getPlayerMap().size()) == getTableById(gamekey).getPlayersTabCancel()) {
+                getTableById(gamekey).getPlayerMap().remove(getTableById(gamekey).getTablemaster().getId());
+                getTableById(gamekey).getWebsocketsession().remove(getTableById(gamekey).getTablemaster().getId());
+                sendWebsocketMessage(getTableById(gamekey), "NoNewTablemaster");
+            }
         }
-
     }
 
     public void offboarding(String gamekey, long playerid, boolean isTablemaster) throws Exception {
         try {
             if (isTablemaster) {
                 getTableById(gamekey).setNewTablemasterNeeded(true);
+                getTableById(gamekey).getPlayerMap().remove(getTableById(gamekey).getTablemaster().getId());
+                getTableById(gamekey).getWebsocketsession().remove(getTableById(gamekey).getTablemaster().getId());
                 sendWebsocketMessage(getTableById(gamekey), "AskForNewTablemaster");
             }
             else {
