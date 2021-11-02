@@ -462,8 +462,8 @@ class PokerServiceTest {
         assertEquals(Tablemaster.class, pokerService.getTableById(GAME_KEY_1).getPlayerById(3L).getClass());
         assertEquals(2, pokerService.getTableById(GAME_KEY_1).getPlayerMap().size());
 
-        verify(pokerService, times(1)).sendWebsocketMessageToOnePlayer("IAmNowTheOneAndOnlyTablemaster", 3L, GAME_KEY_1);
-        verify(pokerService, times(1)).sendWebsocketMessage(any(Table.class), anyString());
+        verify(pokerService, times(1)).sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster", 3L, GAME_KEY_1, true);
+        verify(pokerService, times(1)).sendWebsocketMessageSpecial("NewTablemaster," + PLAYER_NAME_2, 3L, GAME_KEY_1, false);
 
         assertFalse(pokerService.getTableById(GAME_KEY_1).isNewTablemasterNeeded());
     }
@@ -478,7 +478,7 @@ class PokerServiceTest {
         pokerService.setUpNewTablemaster(GAME_KEY_1, 3L, webSocketSessionMock1);
 
         //then
-        verify(pokerService, times(0)).sendWebsocketMessageToOnePlayer("IAmNowTheOneAndOnlyTablemaster", 3L, GAME_KEY_1);
+        verify(pokerService, times(0)).sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster", 3L, GAME_KEY_1, true);
         verify(pokerService, times(0)).sendWebsocketMessage(any(Table.class), anyString());
     }
 
@@ -493,7 +493,7 @@ class PokerServiceTest {
         pokerService.setUpNewTablemaster(GAME_KEY_1, 1L, webSocketSessionMock1);
 
         //then
-        verify(pokerService, times(0)).sendWebsocketMessageToOnePlayer("IAmNowTheOneAndOnlyTablemaster", 3L, GAME_KEY_1);
+        verify(pokerService, times(0)).sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster", 3L, GAME_KEY_1, true);
         verify(pokerService, times(0)).sendWebsocketMessage(any(Table.class), anyString());
     }
 }
