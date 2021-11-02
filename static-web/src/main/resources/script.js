@@ -114,7 +114,7 @@ function onboardingPlayerFinish(gamekey, playerID) {
     getAllPlayers(gamekey, playerID);
     checkForStartSpectatorMode(gamekey, playerID);
     cardListener(gamekey, playerID);
-    $(window).on('beforeunload', function() {
+    window.addEventListener('unload', function(event) {
         callBackendForOffboarding(gamekey, playerID, false);
     });
 }
@@ -129,9 +129,6 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
 function askForNewTablemaster(gamekey, playerID) {
     if (confirm("Tablemaster left the game." + "\n" + "\n" + "Do you want to be new Tablemaster?")) {
         ws.send("Iamtheoneandonlymaster=" + gamekey + "=" + playerID);
-    }
-    else {
-        ws.send("Idontwanttobemaster=" + gamekey + "=" + playerID);
     }
 
 }
@@ -320,9 +317,6 @@ function connectWebsocket(gamekey, playerID) {
         }
         if (data.data.startsWith("CantBeNewTablemaster")) {
             alert("You can't be new Tablemaster, because someone else was earlier");
-        }
-        if (data.data.startsWith("NoNewTablemaster")) {
-            location.href = 'http://localhost:8080/';
         }
         if (data.data.includes("gameStart")){
             $('.cardsFrontSide').css({display: "flex"});
