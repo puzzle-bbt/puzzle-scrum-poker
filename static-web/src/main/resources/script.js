@@ -4,6 +4,7 @@ $.when( $.ready ).then(function() {
     $('.cardsBackSide').css({display: "flex"});
     $(".tablemasterPlayground").css({display: "none"});
     $(".playerPlayground").css({display: "none"});
+    $(".infowindow").css({display: "none"});
 
     if (checkForTablemaster()) {
         initTablemaster();
@@ -81,7 +82,7 @@ function onboardingTablemasterFinish(gamekey, playerID, isNewTablemaster = false
             return false;
         }
     });
-    window.addEventListener('unload', function(event) {
+    $(window).on('unload', function() {
         callBackendForOffboarding(gamekey, playerID, true);
     });
 }
@@ -114,7 +115,8 @@ function onboardingPlayerFinish(gamekey, playerID) {
     getAllPlayers(gamekey, playerID);
     checkForStartSpectatorMode(gamekey, playerID);
     cardListener(gamekey, playerID);
-    window.addEventListener('unload', function(event) {
+
+    $(window).on("beforeunload", function () {
         callBackendForOffboarding(gamekey, playerID, false);
     });
 }
@@ -127,9 +129,16 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
     disconnect();
 }
 function askForNewTablemaster(gamekey, playerID) {
-    if (confirm("Tablemaster left the game." + "\n" + "\n" + "Do you want to be new Tablemaster?")) {
+    $(".playerPlayground").css({display: "none"});
+    $("body").css({background: "#525050"})
+    $(".infowindow").css({display: "block"});
+
+    $(".confirmButton").click(function () {
         ws.send("Iamtheoneandonlymaster=" + gamekey + "=" + playerID);
-    }
+
+        $("body").css({background: "#ffffff"})
+        $(".infowindow").css({display: "none"});
+    })
 
 }
 function showPlayersNewTablemaster(message) {
@@ -290,6 +299,9 @@ function resetCards() {
 function deletePlayerList() {
     $('.player-list').empty();
 }
+function deregisterWindowEventHandlers() {
+    $(window).off("beforeunload");
+}
 function connectWebsocket(gamekey, playerID) {
 
     ws = new WebSocket('ws://localhost:8080/table');
@@ -309,10 +321,14 @@ function connectWebsocket(gamekey, playerID) {
         if (data.data.startsWith("NewTablemaster")) {
             var messageSplit = data.data.split(",")
             var message = messageSplit[1];
+            $(".playerPlayground").css({display: "block"});
+            $("body").css({background: "#ffffff"})
+            $(".infowindow").css({display: "none"});
             showPlayersNewTablemaster(message);
             getAllPlayers(gamekey, playerID);
         }
         if (data.data.startsWith("IAmNowTheOneAndOnlyTablemaster")) {
+            deregisterWindowEventHandlers();
             onboardingTablemasterFinish(gamekey, playerID, true);
         }
         if (data.data.startsWith("CantBeNewTablemaster")) {
