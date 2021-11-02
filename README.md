@@ -54,3 +54,12 @@ For run the ScrumPoker into a docker environment, the artifact must include all 
 The maven profile `build-for-docker` include all java dependencies and skip also all tests:
 
 `mvn clean package -P build-for-docker`
+
+## How to Run Puzzle Scrum Poker with Docker
+
+To Run Puzzle Scrum Poker in a docker u habe to first build the Docker Image  \
+`docker build -t <docker-image-name> .` \
+After the Docker Image has been built successfully you can run the docker image with \
+`docker run -p 8080:8080 <docker-image-name>` \
+To start the Docker in the docker console \
+`docker run -i <docker-image-name>`
