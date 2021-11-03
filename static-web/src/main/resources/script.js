@@ -242,7 +242,7 @@ function fillPlayerlist(playerID, arrayWithAllPlayers) {
         if (isGameCurrentlyRunning()) {
             selectedCardValue = getCardSymbol(arrayWithAllPlayers[i])
         }
-        if (!isGameCurrentlyRunning() && arrayWithAllPlayers[i].selectedCard == null) {
+        if (!isGameCurrentlyRunning() && (arrayWithAllPlayers[i].selectedCard == null || !arrayWithAllPlayers[i].playerMode)) {
             selectedCardValue = getCardSymbol(arrayWithAllPlayers[i])
         }
         var playerRow = playerListBackground +
