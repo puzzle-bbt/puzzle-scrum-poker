@@ -158,6 +158,7 @@ public class PokerService {
     public void offboarding(String gamekey, long playerid, boolean isTablemaster) throws Exception {
         try {
             getTableById(gamekey).getPlayerMap().remove(playerid);
+            getTableById(gamekey).getWebsocketsession().remove(playerid);
             if (isTablemaster) {
                 sendWebsocketMessage(getTableById(gamekey), "AskForNewTablemaster");
             }
