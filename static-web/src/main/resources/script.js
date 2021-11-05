@@ -4,7 +4,7 @@ $.when( $.ready ).then(function() {
     $('.cardsBackSide').css({display: "flex"});
     $(".tablemasterPlayground").css({display: "none"});
     $(".playerPlayground").css({display: "none"});
-    $(".infowindow").css({display: "none"});
+    $(".infoDialog").css({display: "none"});
 
     if (checkForTablemaster()) {
         initTablemaster();
@@ -131,13 +131,13 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
 function askForNewTablemaster(gamekey, playerID) {
     $(".playerPlayground").css({display: "none"});
     $("body").css({background: "#525050"})
-    $(".infowindow").css({display: "block"});
+    $(".infoDialog").css({display: "block"});
 
-    $(".confirmButton").click(function () {
+    $(".confirmButtonInfoDialog").click(function () {
         ws.send("Iamtheoneandonlymaster=" + gamekey + "=" + playerID);
 
         $("body").css({background: "#ffffff"})
-        $(".infowindow").css({display: "none"});
+        $(".infoDialog").css({display: "none"});
     })
 
 }
@@ -323,7 +323,7 @@ function connectWebsocket(gamekey, playerID) {
             var message = messageSplit[1];
             $(".playerPlayground").css({display: "block"});
             $("body").css({background: "#ffffff"})
-            $(".infowindow").css({display: "none"});
+            $(".infoDialog").css({display: "none"});
             showPlayersNewTablemaster(message);
             getAllPlayers(gamekey, playerID);
         }
