@@ -5,6 +5,7 @@
 
 	<artifactId>puzzle-scrum-poker-backend</artifactId>
 	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>ch.puzzle.bbt</groupId>
@@ -53,6 +54,34 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>ch.puzzle.bbt.puzzlescrumpoker.PuzzleScrumPokerApplication</mainClass>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>build-for-docker</id>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
