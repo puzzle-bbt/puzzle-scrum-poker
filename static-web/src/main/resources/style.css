@@ -308,3 +308,26 @@
         border-radius: 50%;
     }
 
+    .infoDialog {
+        max-width: 500px;
+        margin-right: auto;
+        margin-bottom: auto;
+        margin-left: auto;
+        margin-top: 100px;
+        border: 4px solid #1E5A96 ;
+        text-align: center;
+        background-color: white;
+    }
+
+    .confirmButtonInfoDialog {
+        background-color: #008CBA; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        margin-bottom: 15px;
+    }

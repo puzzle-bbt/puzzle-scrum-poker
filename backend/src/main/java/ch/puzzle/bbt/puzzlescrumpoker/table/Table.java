@@ -11,6 +11,8 @@ public class Table {
     private final String tablename;
 
     private boolean gamerunning = false;
+    private boolean isNewTablemasterNeeded = false;
+
     private Tablemaster tablemaster;
     private final Map<Long, Player> playerMap = new HashMap<>();
     private Map<Long, WebSocketSession> websocketsession = new HashMap<>();
@@ -24,6 +26,22 @@ public class Table {
 
     public Map<Long, Player> getPlayerMap() {
         return playerMap;
+    }
+
+    public Tablemaster getTablemaster() {
+        return tablemaster;
+    }
+
+    public boolean isNewTablemasterNeeded() {
+        return isNewTablemasterNeeded;
+    }
+
+    public void setNewTablemasterNeeded(boolean newTablemasterNeeded) {
+        isNewTablemasterNeeded = newTablemasterNeeded;
+    }
+
+    public void setTablemaster(Tablemaster tablemaster) {
+        this.tablemaster = tablemaster;
     }
 
     public List<Player> getPlayersFromTable(){
