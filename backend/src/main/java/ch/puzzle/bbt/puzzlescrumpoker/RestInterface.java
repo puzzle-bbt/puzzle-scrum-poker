@@ -62,8 +62,7 @@ public class RestInterface {
 
     @GetMapping("/players/setplayermode/{gamekey}/{playerid}/{isPlaying}")
     public void setPlayerMode(@PathVariable(value= "gamekey") String gamekey, @PathVariable(value="playerid") long playerid, @PathVariable(value="isPlaying") boolean playerMode){
-        LOG.info("setPlayerMode is called: /players/setmode/{}/{}/{}", gamekey, playerid, playerMode);
-
+        LOG.info("setPlayerMode is called: /players/setplayermode/{}/{}/{}", gamekey, playerid, playerMode);
         try {
             pokerService.setPlayerMode(gamekey, playerid, playerMode);
 
@@ -75,7 +74,7 @@ public class RestInterface {
 
     @GetMapping("/players/getplayermode/{gamekey}/{playerid}")
     public boolean getPlayerMode(@PathVariable(value= "gamekey") String gamekey, @PathVariable(value="playerid") long playerid){
-        LOG.info("getPlayerMode is called: /players/getmode/{}/{}", gamekey,  playerid);
+        LOG.info("getPlayerMode is called: /players/getplayermode/{}/{}", gamekey,  playerid);
         try {
             return pokerService.getPlayerMode(gamekey, playerid);
         } catch (Exception e) {

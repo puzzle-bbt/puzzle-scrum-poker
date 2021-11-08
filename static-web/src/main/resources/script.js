@@ -253,23 +253,31 @@ function fillPlayerlist(playerID, arrayWithAllPlayers) {
             playerNameAtI = playerNameAtI + " (me)";
             playerListBackground = '<div class="player-row selfPlayer">';
         }
-        var choosenNumberValue = arrayWithAllPlayers[i].selectedCard;
-        if (arrayWithAllPlayers[i].selectedCard == null) {
-            if (arrayWithAllPlayers[i].playerMode) {
-                choosenNumberValue = '<img class="blank-card" src="Cards/Blank-card.svg" width="28" height="45">';
-            }
-            else {
-                choosenNumberValue = '<img class="blank-card-gray" src="Cards/Blank-card.svg" width="28" height="45">';
-            }
+        var playerCard = arrayWithAllPlayers[i].selectedCard;
+        if (isGameCurrentlyRunning()) {
+            playerCard = coveredCard(arrayWithAllPlayers[i])
+        }
+        else if (arrayWithAllPlayers[i].selectedCard == null || !arrayWithAllPlayers[i].playerMode) {
+            playerCard = coveredCard(arrayWithAllPlayers[i])
         }
         var playerRow = playerListBackground +
-            '<div class="list-item">' + choosenNumberValue + '</div>\n' +
+            '<div class="list-item">' + playerCard + '</div>\n' +
             '<div class="list-item">' + playerNameAtI + '</div>\n' +
             '<div class="list-item">' + visibilityIcon + '</div>\n' +
             '</div>';
         playerList.append(playerRow);
     }
 }
+
+function coveredCard(player) {
+    if (player.playerMode) {
+        return '<img class="blank-card" src="Cards/Blank-card.svg" width="28" height="45">';
+    }
+    else {
+        return '<img class="blank-card-gray" src="Cards/Blank-card.svg" width="28" height="45">';
+    }
+}
+
 function getAllPlayers(gamekey, playerID) {
     $.ajax({
         url: "http://localhost:8080/tables/getplayers/" + gamekey,
