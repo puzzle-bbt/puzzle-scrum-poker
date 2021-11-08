@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.socket.TextMessage;
@@ -15,8 +14,6 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -326,7 +323,7 @@ class PokerServiceTest {
     }
 
     @Test
-    void offboarding() throws Exception {
+    void offboardingPlayer() throws Exception {
         pokerService.tableMap.put(GAME_KEY_1, TABLE_WITH_TABLEMASTER_AND_TWO_PLAYERS);
 
         pokerService.offboarding(GAME_KEY_1, 3L, false);
@@ -338,6 +335,17 @@ class PokerServiceTest {
                 pokerService.getTableById(GAME_KEY_1).getPlayerById(3L));
         //when then
         assertEquals("Player id: 3 isn't existing", exception.getMessage());
+    }
+
+    @Test
+    void offboardingTablemaster() throws Exception {
+        pokerService.tableMap.put(GAME_KEY_1, TABLE_WITH_TABLEMASTER_AND_TWO_PLAYERS);
+
+        pokerService.offboarding(GAME_KEY_1, 1L, true);
+
+        assertTrue(pokerService.getTableById(GAME_KEY_1).isNewTablemasterNeeded());
+
+        verify(pokerService, times(1)).sendWebsocketMessageSpecial("AskForNewTablemaster", 1L, GAME_KEY_1, false);
     }
 
     @Test
@@ -382,7 +390,7 @@ class PokerServiceTest {
     }
 
     @Test
-    void sendWebsocketMessageWithException()  {
+    void sendWebsocketMessageWithException() throws Exception {
         WebSocketSession webSocketSessionMock = mock(WebSocketSession.class);
         IOException ioException = mock(IOException.class);
         Set<WebSocketSession> webSocketSessions = new HashSet<>();
@@ -396,6 +404,27 @@ class PokerServiceTest {
         assertEquals("Table Key: " + GAME_KEY_1 + " isn't existing", exception.getMessage());
         //pokerService.tableMap.put(GAME_KEY_1, TABLE_WITH_TABLEMASTER);
         //verify(pokerService, times(1)).checkWebsocketConnection(pokerService.getTableById(GAME_KEY_1), webSocketSessionMock, "for");
+    }
+
+    @Disabled(value = "fix later")
+    @Test
+    void sendWebsocketMessageWithIOException() throws Exception {
+        //given
+        WebSocketSession webSocketSessionMock = mock(WebSocketSession.class);
+        pokerService.tableMap.put(GAME_KEY_1, TABLE_WITH_TABLEMASTER);
+        pokerService.tableMap.get(GAME_KEY_1).getWebsocketsession().put(1L, webSocketSessionMock);
+
+        doThrow(IOException.class)
+                .when(webSocketSessionMock)
+                .sendMessage(new TextMessage(WEBSOCKET_MESSAGE));
+
+        doNothing().when(pokerService).checkWebsocketConnection(pokerService.getTableById(GAME_KEY_1), webSocketSessionMock, WEBSOCKET_MESSAGE);
+
+        //when
+        pokerService.sendWebsocketMessage(pokerService.getTableById(GAME_KEY_1), WEBSOCKET_MESSAGE);
+
+        //then
+        verify(pokerService, times(1)).checkWebsocketConnection(pokerService.getTableById(GAME_KEY_1), webSocketSessionMock, WEBSOCKET_MESSAGE);
     }
 
 
