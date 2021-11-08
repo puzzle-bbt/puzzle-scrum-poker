@@ -238,15 +238,15 @@ function fillPlayerlist(playerID, arrayWithAllPlayers) {
             playerNameAtI = playerNameAtI + " (me)";
             playerListBackground = '<div class="player-row selfPlayer">';
         }
-        var selectedCardValue = arrayWithAllPlayers[i].selectedCard;
+        var playerCard = arrayWithAllPlayers[i].selectedCard;
         if (isGameCurrentlyRunning()) {
-            selectedCardValue = getCardSymbol(arrayWithAllPlayers[i])
+            playerCard = coveredCard(arrayWithAllPlayers[i])
         }
-        if (!isGameCurrentlyRunning() && (arrayWithAllPlayers[i].selectedCard == null || !arrayWithAllPlayers[i].playerMode)) {
-            selectedCardValue = getCardSymbol(arrayWithAllPlayers[i])
+        else if (arrayWithAllPlayers[i].selectedCard == null || !arrayWithAllPlayers[i].playerMode) {
+            playerCard = coveredCard(arrayWithAllPlayers[i])
         }
         var playerRow = playerListBackground +
-            '<div class="list-item">' + selectedCardValue + '</div>\n' +
+            '<div class="list-item">' + playerCard + '</div>\n' +
             '<div class="list-item">' + playerNameAtI + '</div>\n' +
             '<div class="list-item">' + visibilityIcon + '</div>\n' +
             '</div>';
@@ -254,7 +254,7 @@ function fillPlayerlist(playerID, arrayWithAllPlayers) {
     }
 }
 
-function getCardSymbol(player) {
+function coveredCard(player) {
     if (player.playerMode) {
         return '<img class="blank-card" src="Cards/Blank-card.svg" width="28" height="45">';
     }
