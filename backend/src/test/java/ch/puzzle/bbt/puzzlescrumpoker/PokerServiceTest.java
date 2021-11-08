@@ -456,6 +456,7 @@ class PokerServiceTest {
         pokerService.getTableById(GAME_KEY_1).getWebsocketsession().put(3L, webSocketSessionMock1);
 
         //when
+        pokerService.offboarding(GAME_KEY_1, 1L, true);
         pokerService.setUpNewTablemaster(GAME_KEY_1, 3L, webSocketSessionMock1);
 
         //then
