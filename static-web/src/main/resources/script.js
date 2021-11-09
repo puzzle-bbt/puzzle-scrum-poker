@@ -270,11 +270,14 @@ function fillPlayerlist(playerID, arrayWithAllPlayers) {
 }
 
 function coveredCard(player) {
-    if (player.playerMode) {
-        return '<img class="blank-card" src="Cards/Blank-card.svg" width="28" height="45">';
+    if (!player.playerMode) {
+        return '<img class="blank-card-gray" src="Cards/Blank-card.svg" width="28" height="45">';
+    }
+    else if (player.selectedCard != null) {
+        return '<img class="blank-card-green" src="Cards/Blank-card.svg" width="28" height="45">';
     }
     else {
-        return '<img class="blank-card-gray" src="Cards/Blank-card.svg" width="28" height="45">';
+        return '<img class="blank-card" src="Cards/Blank-card.svg" width="28" height="45">';
     }
 }
 
