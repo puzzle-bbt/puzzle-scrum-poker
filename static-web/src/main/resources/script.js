@@ -128,6 +128,14 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
     });
     disconnect();
 }
+function callBackendForKicking(gamekey, playerID, isTablemaster) {
+    $.ajax({
+        url: "http://localhost:8080/tables/offboarding/" + gamekey + "/" + playerID + "/" + isTablemaster,
+        type: 'GET',
+        async: false
+    });
+}
+
 function askForNewTablemaster(gamekey, playerID) {
     $(".playerPlayground").css({display: "none"});
     $("body").css({background: "#525050"})
@@ -246,7 +254,7 @@ function printTextForSpectators(gameModeOfCurrentPlayer) {
         $('.averageRating').css({display: "none"});
     }
 }
-function fillPlayerlist(playerID, arrayWithAllPlayers) {
+function fillPlayerlist(playerID, arrayWithAllPlayers, gamekey) {
     let playerList = $('.player-list');
     for (var i = 0; i < arrayWithAllPlayers.length; i++) {
         var visibilityIcon = '<img src="Cards/visibility_black_48dp.svg" width="32" height="32">';
@@ -271,8 +279,8 @@ function fillPlayerlist(playerID, arrayWithAllPlayers) {
         }
         var playerRow;
 
-        if (isTablemaster()) {
-            let kickBtn = '<button type="submit" className="btn btn-primary" id="create">Kick Player</button>'
+        if (isTablemaster() && arrayWithAllPlayers[i].id != playerID) {
+            let kickBtn = '<button type="button" class="kickBtn" onclick="callBackendForKicking(\'' + gamekey + '\', \'' + arrayWithAllPlayers[i].id + '\', \'' + false + '\')">Kick Player</button>';
             playerRow = playerListBackground +
                 '<div class="list-item">' + playerCard + '</div>\n' +
                 '<div class="list-item">' + playerNameAtI + '</div>\n' +
@@ -306,7 +314,7 @@ function getAllPlayers(gamekey, playerID) {
         type: 'GET',
         success: function(arrayWithAllPlayers) {
             deletePlayerList();
-            fillPlayerlist(playerID, arrayWithAllPlayers);
+            fillPlayerlist(playerID, arrayWithAllPlayers, gamekey);
         }
     });
 }
