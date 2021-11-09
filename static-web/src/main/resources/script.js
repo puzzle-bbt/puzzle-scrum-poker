@@ -5,6 +5,7 @@ $.when( $.ready ).then(function() {
     $(".tablemasterPlayground").css({display: "none"});
     $(".playerPlayground").css({display: "none"});
     $(".infoDialog").css({display: "none"});
+    $(".kickDialog").css({display: "none"});
 
     if (checkForTablemaster()) {
         initTablemaster();
@@ -129,11 +130,14 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
     disconnect();
 }
 function callBackendForKicking(gamekey, playerID, isTablemaster) {
-    $.ajax({
-        url: "http://localhost:8080/tables/offboarding/" + gamekey + "/" + playerID + "/" + isTablemaster,
-        type: 'GET',
-        async: false
-    });
+    var confirmWindow = confirm("Diesen Spieler wirklich kicken");
+    if(confirmWindow){
+        $.ajax({
+            url: "http://localhost:8080/tables/kickplayer/" + gamekey + "/" + playerID,
+            type: 'GET',
+            async: false
+        });
+    }
 }
 
 function askForNewTablemaster(gamekey, playerID) {
@@ -384,6 +388,15 @@ function connectWebsocket(gamekey, playerID) {
             $('.cardsBackSide').css({display: "flex"});
             getAllPlayers(gamekey, playerID);
             showAverage(gamekey);
+        }
+        if (data.data.includes("YouGotKicked")) {
+            $(".playerPlayground").css({display: "none"});
+            $("body").css({background: "#525050"})
+            $(".kickDialog").css({display: "block"});
+
+            $(".confirmButtonKickDialog").click(function () {
+                window.location.href = "http://localhost:4200/"
+            })
         }
     }
 }

@@ -106,6 +106,17 @@ public class RestInterface {
         }
     }
 
+    @GetMapping("/tables/kickplayer/{gamekey}/{playerid}")
+    public void kickPlayer(@PathVariable(value="gamekey") String gamekey, @PathVariable(value="playerid") long playerid){
+        LOG.info("kickPlayer is called: /tables/kickplayer/{}/{}/{}", gamekey, playerid);
+        try {
+            pokerService.kickPlayer(gamekey, playerid);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
     @GetMapping("/tablelist")
     public PokerService showList(){
         LOG.info("showList is called: /tablelist");

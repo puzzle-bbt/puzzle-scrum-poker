@@ -199,7 +199,19 @@ public class PokerService {
             }
         }
         catch (IOException e) {
-            LOG.error("Counld not remove player from table", e);
+            LOG.error("Couldn't not remove player from table", e);
+        }
+    }
+
+    public void kickPlayer(String gamekey, long playerid) throws Exception {
+        try {
+            sendWebsocketMessageSpecial("YouGotKicked", playerid, gamekey, true);
+            getTableById(gamekey).getPlayerMap().remove(playerid);
+            getTableById(gamekey).getWebsocketsession().remove(playerid);
+            sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer" + "," + playerid);
+        }
+        catch (IOException e) {
+            LOG.error("Couldn't not remove player from table", e);
         }
     }
 
