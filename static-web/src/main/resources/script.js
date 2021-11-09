@@ -183,6 +183,15 @@ function isGameCurrentlyRunning() {
         return true;
     }
 }
+
+function isTablemaster() {
+    if ($('.tablemasterPlayground').css('display') == 'block') {
+        return true;
+    } else {
+        return false
+    }
+}
+
 function checkForStartSpectatorMode(gamekey, playerID) {
     var spectatorCheckingTablemaster = document.getElementById('spectatorCheckboxTablemaster');
     var spectatorCheckingplayer = document.getElementById('spectatorCheckboxPlayer');
@@ -260,11 +269,24 @@ function fillPlayerlist(playerID, arrayWithAllPlayers) {
         else if (arrayWithAllPlayers[i].selectedCard == null || !arrayWithAllPlayers[i].playerMode) {
             playerCard = coveredCard(arrayWithAllPlayers[i])
         }
-        var playerRow = playerListBackground +
-            '<div class="list-item">' + playerCard + '</div>\n' +
-            '<div class="list-item">' + playerNameAtI + '</div>\n' +
-            '<div class="list-item">' + visibilityIcon + '</div>\n' +
-            '</div>';
+        var playerRow;
+
+        if (isTablemaster()) {
+            let kickBtn = '<button type="submit" className="btn btn-primary" id="create">Kick Player</button>'
+            playerRow = playerListBackground +
+                '<div class="list-item">' + playerCard + '</div>\n' +
+                '<div class="list-item">' + playerNameAtI + '</div>\n' +
+                '<div class="list-item">' + visibilityIcon + '</div>\n' +
+                '<div class="list-item">' + kickBtn + '</div>\n' +
+                '</div>';
+        }
+        else {
+            playerRow = playerListBackground +
+                '<div class="list-item">' + playerCard + '</div>\n' +
+                '<div class="list-item">' + playerNameAtI + '</div>\n' +
+                '<div class="list-item">' + visibilityIcon + '</div>\n' +
+                '</div>';
+        }
         playerList.append(playerRow);
     }
 }
