@@ -46,6 +46,7 @@ public class PokerService {
 
     public void setSelectedCard(String gamekey, long playerid, String selectedCard) throws Exception {
         getTableById(gamekey).getPlayerById(playerid).setSelectedCard(selectedCard);
+        sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer"+","+playerid);
 
     }
 
