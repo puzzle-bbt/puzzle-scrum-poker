@@ -379,6 +379,20 @@ class PokerServiceTest {
     }
 
     @Test
+    void kickPlayerButPlayerIsTablemaster() throws Exception {
+        //given
+        pokerService.tableMap.put(GAME_KEY_1, TABLE_WITH_TABLEMASTER_AND_TWO_PLAYERS);
+        WebSocketSession webSocketSessionMock = mock(WebSocketSession.class);
+        pokerService.getTableById(GAME_KEY_1).getWebsocketsession().put(3L, webSocketSessionMock);
+
+
+        Exception exception = assertThrows(Exception.class, () ->
+                pokerService.kickPlayer(GAME_KEY_1, 1L));
+
+        assertEquals("Cant kick Tablemaster, Player with Id: 1 is Tablemaster", exception.getMessage());
+    }
+
+    @Test
     void offboardingWithWrongGamekey() throws Exception {
         //given
         Exception exception = assertThrows(Exception.class, () ->

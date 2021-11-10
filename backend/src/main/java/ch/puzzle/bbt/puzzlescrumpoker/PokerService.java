@@ -204,6 +204,9 @@ public class PokerService {
     }
 
     public void kickPlayer(String gamekey, long playerid) throws Exception {
+        if(playerid == getTableById(gamekey).getTablemaster().getId()) {
+            throw new Exception(String.format("Cant kick Tablemaster, Player with Id: %o is Tablemaster", playerid));
+        }
         try {
             sendWebsocketMessageSpecial("YouGotKicked", playerid, gamekey, true);
             getTableById(gamekey).getPlayerMap().remove(playerid);

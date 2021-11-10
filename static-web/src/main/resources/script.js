@@ -129,7 +129,7 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
     });
     disconnect();
 }
-function callBackendForKicking(gamekey, playerID, isTablemaster) {
+function callBackendForKicking(gamekey, playerID) {
     var confirmWindow = confirm("Diesen Spieler wirklich kicken");
     if(confirmWindow){
         $.ajax({
@@ -395,7 +395,7 @@ function connectWebsocket(gamekey, playerID) {
             $(".kickDialog").css({display: "block"});
 
             $(".confirmButtonKickDialog").click(function () {
-                window.location.href = "http://localhost:4200/"
+                window.location.href = "http://localhost:8080/"
             })
         }
     }
