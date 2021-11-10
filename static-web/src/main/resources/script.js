@@ -5,6 +5,7 @@ $.when( $.ready ).then(function() {
     $(".tablemasterPlayground").css({display: "none"});
     $(".playerPlayground").css({display: "none"});
     $(".infoDialog").css({display: "none"});
+    $(".kickDialog").css({display: "none"});
 
     if (checkForTablemaster()) {
         initTablemaster();
@@ -128,6 +129,17 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
     });
     disconnect();
 }
+function callBackendForKicking(gamekey, playerID) {
+    var confirmWindow = confirm("Diesen Spieler wirklich kicken");
+    if(confirmWindow){
+        $.ajax({
+            url: "http://localhost:8080/tables/kickplayer/" + gamekey + "/" + playerID,
+            type: 'GET',
+            async: false
+        });
+    }
+}
+
 function askForNewTablemaster(gamekey, playerID) {
     $(".playerPlayground").css({display: "none"});
     $("body").css({background: "#525050"})
@@ -183,6 +195,15 @@ function isGameCurrentlyRunning() {
         return true;
     }
 }
+
+function isTablemaster() {
+    if ($('.tablemasterPlayground').css('display') == 'block') {
+        return true;
+    } else {
+        return false
+    }
+}
+
 function checkForStartSpectatorMode(gamekey, playerID) {
     var spectatorCheckingTablemaster = document.getElementById('spectatorCheckboxTablemaster');
     var spectatorCheckingplayer = document.getElementById('spectatorCheckboxPlayer');
@@ -237,7 +258,7 @@ function printTextForSpectators(gameModeOfCurrentPlayer) {
         $('.averageRating').css({display: "none"});
     }
 }
-function fillPlayerlist(playerID, arrayWithAllPlayers) {
+function fillPlayerlist(playerID, arrayWithAllPlayers, gamekey) {
     let playerList = $('.player-list');
     for (var i = 0; i < arrayWithAllPlayers.length; i++) {
         var visibilityIcon = '<img src="Cards/visibility_black_48dp.svg" width="32" height="32">';
@@ -260,11 +281,24 @@ function fillPlayerlist(playerID, arrayWithAllPlayers) {
         else if (arrayWithAllPlayers[i].selectedCard == null || !arrayWithAllPlayers[i].playerMode) {
             playerCard = coveredCard(arrayWithAllPlayers[i])
         }
-        var playerRow = playerListBackground +
-            '<div class="list-item">' + playerCard + '</div>\n' +
-            '<div class="list-item">' + playerNameAtI + '</div>\n' +
-            '<div class="list-item">' + visibilityIcon + '</div>\n' +
-            '</div>';
+        var playerRow;
+
+        if (isTablemaster() && arrayWithAllPlayers[i].id != playerID) {
+            let kickBtn = '<button type="button" class="kickBtn" onclick="callBackendForKicking(\'' + gamekey + '\', \'' + arrayWithAllPlayers[i].id + '\', \'' + false + '\')">Kick Player</button>';
+            playerRow = playerListBackground +
+                '<div class="list-item">' + playerCard + '</div>\n' +
+                '<div class="list-item">' + playerNameAtI + '</div>\n' +
+                '<div class="list-item">' + visibilityIcon + '</div>\n' +
+                '<div class="list-item">' + kickBtn + '</div>\n' +
+                '</div>';
+        }
+        else {
+            playerRow = playerListBackground +
+                '<div class="list-item">' + playerCard + '</div>\n' +
+                '<div class="list-item">' + playerNameAtI + '</div>\n' +
+                '<div class="list-item">' + visibilityIcon + '</div>\n' +
+                '</div>';
+        }
         playerList.append(playerRow);
     }
 }
@@ -287,7 +321,7 @@ function getAllPlayers(gamekey, playerID) {
         type: 'GET',
         success: function(arrayWithAllPlayers) {
             deletePlayerList();
-            fillPlayerlist(playerID, arrayWithAllPlayers);
+            fillPlayerlist(playerID, arrayWithAllPlayers, gamekey);
         }
     });
 }
@@ -357,6 +391,15 @@ function connectWebsocket(gamekey, playerID) {
             $('.cardsBackSide').css({display: "flex"});
             getAllPlayers(gamekey, playerID);
             showAverage(gamekey);
+        }
+        if (data.data.includes("YouGotKicked")) {
+            $(".playerPlayground").css({display: "none"});
+            $("body").css({background: "#525050"})
+            $(".kickDialog").css({display: "block"});
+
+            $(".confirmButtonKickDialog").click(function () {
+                window.location.href = "http://localhost:8080/"
+            })
         }
     }
 }

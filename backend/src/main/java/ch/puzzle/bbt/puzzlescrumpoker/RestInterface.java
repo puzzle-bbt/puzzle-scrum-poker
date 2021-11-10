@@ -97,8 +97,20 @@ public class RestInterface {
 
     @GetMapping("/tables/offboarding/{gamekey}/{playerid}/{isTablemaster}")
     public void offboardingPlayer(@PathVariable(value="gamekey") String gamekey, @PathVariable(value="playerid") long playerid, @PathVariable(value="isTablemaster") boolean isTablemaster){
+        LOG.info("offboarding is called: /tables/offboarding/{}/{}/{}", gamekey, playerid, isTablemaster);
         try {
             pokerService.offboarding(gamekey, playerid, isTablemaster);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @GetMapping("/tables/kickplayer/{gamekey}/{playerid}")
+    public void kickPlayer(@PathVariable(value="gamekey") String gamekey, @PathVariable(value="playerid") long playerid){
+        LOG.info("kickPlayer is called: /tables/kickplayer/{}/{}", gamekey, playerid);
+        try {
+            pokerService.kickPlayer(gamekey, playerid);
         } catch (Exception e) {
             LOG.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

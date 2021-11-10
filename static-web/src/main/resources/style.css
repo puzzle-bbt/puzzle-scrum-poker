@@ -312,7 +312,7 @@
         border-radius: 50%;
     }
 
-    .infoDialog {
+    .infoDialog, .kickDialog {
         max-width: 500px;
         margin-right: auto;
         margin-bottom: auto;
@@ -323,7 +323,7 @@
         background-color: white;
     }
 
-    .confirmButtonInfoDialog {
+    .confirmButtonInfoDialog, .confirmButtonKickDialog {
         background-color: #008CBA; /* Green */
         border: none;
         color: white;
