@@ -1,5 +1,6 @@
 var ws;
 $.when( $.ready ).then(function() {
+    console.log("init");
     $('.cardsFrontSide').css({display: "none"});
     $('.cardsBackSide').css({display: "flex"});
     $(".tablemasterPlayground").css({display: "none"});
@@ -59,6 +60,7 @@ function onboardingTablemaster() {
     });
 }
 function onboardingTablemasterFinish(gamekey, playerID, isNewTablemaster = false) {
+    console.log("oboarding finish");
     $(".formTablemaster").css({display: "none"});
     $(".tablemasterPlayground").css({display: "block"});
     connectWebsocket(gamekey, playerID);
@@ -147,7 +149,9 @@ function askForNewTablemaster(gamekey, playerID) {
 
     $(".confirmButtonInfoDialog").off("click");
     $(".confirmButtonInfoDialog").click(function () {
+
         ws.send("Iamtheoneandonlymaster=" + gamekey + "=" + playerID);
+
         $("body").css({background: "#ffffff"});
         $(".infoDialog").css({display: "none"});
     });
@@ -244,7 +248,9 @@ function getSpectatorMode(gamekey, playerID) {
         type: 'GET',
         success: function(res) {
             let gameModeOfCurrentPlayer = res;
+
             printTextForSpectators(gameModeOfCurrentPlayer);
+
         }
     });
 }
@@ -385,6 +391,10 @@ function connectWebsocket(gamekey, playerID) {
                 });
             }
             $(".averageRating").css({display: "none"});
+            $(".cardsBackSide").css('visibility','visible');
+            $(".cardsBackSide").css({display: "flex"});
+            $(".cardsFrontSide").css('visibility','visible');
+            $(".cardsFrontSide").css({display: "none"});
             deregisterWindowEventHandlers();
             onboardingTablemasterFinish(gamekey, playerID, true);
         }
