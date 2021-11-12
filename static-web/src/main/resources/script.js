@@ -154,6 +154,9 @@ function askForNewTablemaster(gamekey, playerID) {
 
         $("body").css({background: "#ffffff"});
         $(".infoDialog").css({display: "none"});
+
+        $("#spectatorCheckboxPlayer").prop('checked', false);
+
     });
 
 }
@@ -391,10 +394,14 @@ function connectWebsocket(gamekey, playerID) {
                 });
             }
             $(".averageRating").css({display: "none"});
+
             $(".cardsBackSide").css('visibility','visible');
             $(".cardsBackSide").css({display: "flex"});
             $(".cardsFrontSide").css('visibility','visible');
             $(".cardsFrontSide").css({display: "none"});
+            $('svg:not(.headerAndFooter)').css({display: "block"});
+            setSpectatorMode(true, gamekey, playerID)
+
             deregisterWindowEventHandlers();
             onboardingTablemasterFinish(gamekey, playerID, true);
         }
