@@ -180,7 +180,7 @@ public class PokerService {
             getTableById(gamekey).setTablemaster(tablemaster);
             getTableById(gamekey).getPlayerMap().replace(playerID, tablemaster);
 
-            sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster", playerID, gamekey, true);
+            sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster" + "," + getTableById(gamekey).isGamerunning(), playerID, gamekey, true);
             sendWebsocketMessageSpecial("NewTablemaster" + "," + getTableById(gamekey).getTablemaster().getName(), playerID, gamekey, false);
 
             getTableById(gamekey).setNewTablemasterNeeded(false);

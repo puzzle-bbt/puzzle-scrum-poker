@@ -369,10 +369,22 @@ function connectWebsocket(gamekey, playerID) {
             $(".playerPlayground").css({display: "block"});
             $("body").css({background: "#ffffff"})
             $(".infoDialog").css({display: "none"});
+            $(".averageRating").css({display: "none"});
+
             showPlayersNewTablemaster(message);
             getAllPlayers(gamekey, playerID);
         }
         if (data.data.startsWith("IAmNowTheOneAndOnlyTablemaster")) {
+            var messageSplit = data.data.split(",")
+            var isGameRunning = messageSplit[1];
+
+            if (isGameRunning === "true") {
+                $.ajax({
+                    url: "http://localhost:8080/tables/gameover/" + gamekey,
+                    type: 'GET'
+                });
+            }
+            $(".averageRating").css({display: "none"});
             deregisterWindowEventHandlers();
             onboardingTablemasterFinish(gamekey, playerID, true);
         }
