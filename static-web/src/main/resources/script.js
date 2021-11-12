@@ -142,15 +142,15 @@ function callBackendForKicking(gamekey, playerID) {
 
 function askForNewTablemaster(gamekey, playerID) {
     $(".playerPlayground").css({display: "none"});
-    $("body").css({background: "#525050"})
+    $("body").css({background: "#525050"});
     $(".infoDialog").css({display: "block"});
 
+    $(".confirmButtonInfoDialog").off("click");
     $(".confirmButtonInfoDialog").click(function () {
         ws.send("Iamtheoneandonlymaster=" + gamekey + "=" + playerID);
-
-        $("body").css({background: "#ffffff"})
+        $("body").css({background: "#ffffff"});
         $(".infoDialog").css({display: "none"});
-    })
+    });
 
 }
 function showPlayersNewTablemaster(message) {
