@@ -1,6 +1,5 @@
 var ws;
 $.when( $.ready ).then(function() {
-    console.log("init");
     $('.cardsFrontSide').css({display: "none"});
     $('.cardsBackSide').css({display: "flex"});
     $(".tablemasterPlayground").css({display: "none"});
@@ -60,7 +59,6 @@ function onboardingTablemaster() {
     });
 }
 function onboardingTablemasterFinish(gamekey, playerID, isNewTablemaster = false) {
-    console.log("oboarding finish");
     $(".formTablemaster").css({display: "none"});
     $(".tablemasterPlayground").css({display: "block"});
     connectWebsocket(gamekey, playerID);
@@ -78,7 +76,7 @@ function onboardingTablemasterFinish(gamekey, playerID, isNewTablemaster = false
 
     $(window).on('beforeunload', function() {
         var confirmWindow = confirm();
-        if(confirmWindow){
+        if(confirmWindow) {
             return true;
         }
         else {
@@ -133,7 +131,7 @@ function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
 }
 function callBackendForKicking(gamekey, playerID) {
     var confirmWindow = confirm("Diesen Spieler wirklich kicken");
-    if(confirmWindow){
+    if(confirmWindow) {
         $.ajax({
             url: "http://localhost:8080/tables/kickplayer/" + gamekey + "/" + playerID,
             type: 'GET',
@@ -148,15 +146,13 @@ function askForNewTablemaster(gamekey, playerID) {
     $(".infoDialog").css({display: "block"});
 
     $(".confirmButtonInfoDialog").off("click");
-    $(".confirmButtonInfoDialog").click(function () {
 
+    $(".confirmButtonInfoDialog").click(function () {
         ws.send("Iamtheoneandonlymaster=" + gamekey + "=" + playerID);
 
         $("body").css({background: "#ffffff"});
         $(".infoDialog").css({display: "none"});
-
         $("#spectatorCheckboxPlayer").prop('checked', false);
-
     });
 
 }
@@ -214,6 +210,7 @@ function isTablemaster() {
 function checkForStartSpectatorMode(gamekey, playerID) {
     var spectatorCheckingTablemaster = document.getElementById('spectatorCheckboxTablemaster');
     var spectatorCheckingplayer = document.getElementById('spectatorCheckboxPlayer');
+
     $('.spectatorToggle').click(function () {
         if (spectatorCheckingTablemaster.checked || spectatorCheckingplayer.checked) {
             $('.cardsFrontSide').css('visibility','hidden');
@@ -275,7 +272,7 @@ function fillPlayerlist(playerID, arrayWithAllPlayers, gamekey) {
         if (arrayWithAllPlayers[i].playerMode) {
             visibilityIcon = '<img src="Cards/visibility_off_black_48dp.svg" width="32" height="32">'
         }
-        
+
         var playerNameAtI = arrayWithAllPlayers[i].name;
 
         var playerListBackground = '<div class="player-row otherPlayer">';
@@ -363,9 +360,9 @@ function connectWebsocket(gamekey, playerID) {
         console.log(event);
         ws.send('table=' + gamekey + ',' + 'playerid=' + playerID);
     }
-    ws.onmessage = function(data){
+    ws.onmessage = function(data) {
 
-        if (data.data.startsWith("RefreshPlayer")){
+        if (data.data.startsWith("RefreshPlayer")) {
             getAllPlayers(gamekey, playerID);
         }
         if (data.data.startsWith("AskForNewTablemaster")) {
@@ -384,17 +381,7 @@ function connectWebsocket(gamekey, playerID) {
             getAllPlayers(gamekey, playerID);
         }
         if (data.data.startsWith("IAmNowTheOneAndOnlyTablemaster")) {
-            var messageSplit = data.data.split(",")
-            var isGameRunning = messageSplit[1];
-
-            if (isGameRunning === "true") {
-                $.ajax({
-                    url: "http://localhost:8080/tables/gameover/" + gamekey,
-                    type: 'GET'
-                });
-            }
             $(".averageRating").css({display: "none"});
-
             $(".cardsBackSide").css('visibility','visible');
             $(".cardsBackSide").css({display: "flex"});
             $(".cardsFrontSide").css('visibility','visible');
@@ -408,7 +395,7 @@ function connectWebsocket(gamekey, playerID) {
         if (data.data.startsWith("CantBeNewTablemaster")) {
             alert("You can't be new Tablemaster, because someone else was earlier");
         }
-        if (data.data.includes("gameStart")){
+        if (data.data.includes("gameStart")) {
             $('.cardsFrontSide').css({display: "flex"});
             $('.cardsBackSide').css({display: "none"});
             $('.averageRating').css({display: "none"});

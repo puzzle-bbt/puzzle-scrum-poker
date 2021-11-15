@@ -184,6 +184,7 @@ public class PokerService {
             sendWebsocketMessageSpecial("NewTablemaster" + "," + getTableById(gamekey).getTablemaster().getName(), playerID, gamekey, false);
 
             getTableById(gamekey).setNewTablemasterNeeded(false);
+            setRunning(gamekey, false);
         }
     }
 
