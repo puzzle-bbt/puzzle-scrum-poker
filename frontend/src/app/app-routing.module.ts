@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { ErrorComponent } from './components/error/error.component';
+import {PlayerListComponent} from "./components/playerlist/playerlist.component";
 
 const routes: Routes = [
     {
@@ -12,6 +13,9 @@ const routes: Routes = [
     {
         path: 'onborarding',
         component: OnboardingComponent
+    },  {
+        path: 'playerlist',
+        component: PlayerListComponent
     },
     {
         path: 'error',

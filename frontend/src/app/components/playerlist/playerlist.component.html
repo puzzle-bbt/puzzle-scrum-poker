@@ -1,0 +1,32 @@
+<button (click)="createTablemaster()">Create tm</button>
+<button (click)="createPlayer()">create player</button>
+<button (click)="setSelectedCard()">set card</button>
+<button (click)="setPlayerMode()">set playermode</button>
+<button (click)="getPlayerMode()">get playermode</button>
+<button (click)="getAvergae()">get average</button>
+<button (click)="getplayerscall()">Get players</button>
+
+<div> {{ gamekey }} </div>
+<div> {{ playerid }} </div>
+<div> {{ playerMode }} </div>
+<div> {{ average }} </div>
+
+<div class="player-list">
+
+    <div *ngFor="let player of players ">
+
+        <div class="player-row selfPlayer">
+            <div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div>
+            <div class="list-item">{{ player.name }}</div>
+            <div *ngIf="player.playerMode; else elseBlock">
+                <div *ngIf="player.selectedCard; else stillChoosing"> {{ player.selectedCard }} </div>
+                <ng-template #stillChoosing>-</ng-template>
+            </div>
+            <ng-template #elseBlock><img src="assets/visibility_black_48dp.svg" width="32" height="32"></ng-template>
+        </div>
+
+    </div>
+</div>
+
+
+
