@@ -4,6 +4,7 @@ import ch.puzzle.bbt.puzzlescrumpoker.gameroles.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -129,6 +130,7 @@ public class RestInterface {
     }
 
     @GetMapping("/tables/getplayers/{gamekey}")
+    @CrossOrigin(origins = "http://localhost:4200")
     public List<Player> getPlayersFromTable(@PathVariable(value= "gamekey") String gamekey){
         LOG.info("getPlayersFromTable is called: /tables/getplayers/{}", gamekey);
         try {
