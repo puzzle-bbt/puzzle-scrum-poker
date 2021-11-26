@@ -37,7 +37,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-static-web</id>
+						<id>copy-angular-frontend</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>copy-resources</goal>
