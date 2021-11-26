@@ -1,0 +1,31 @@
+.list-item {
+    font-size: 20px;
+}
+
+.player-list {
+    display: flex;
+    float: left;
+    margin-top: 1%;
+    margin-right: 5%;
+    margin-left: 3%;
+    width: 20vh;
+    overflow: auto;
+    flex-direction: column;
+}
+
+.player-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.otherPlayer {
+    background-color: white;
+}
+
+.selfPlayer {
+    background-color: #1c8def;
+    font-weight: bold;
+}
