@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {webSocket, WebSocketSubject} from "rxjs/webSocket";
-import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +8,7 @@ export class WebsocketService {
 
     private wsSubject : WebSocketSubject<string>;
 
-    constructor(private httpClient: HttpClient) {
-
+    constructor() {
         this.wsSubject = webSocket({
             url: 'ws://' + window.location.host + '/.table',
             openObserver: {
