@@ -355,7 +355,7 @@ function deregisterWindowEventHandlers() {
 }
 function connectWebsocket(gamekey, playerID) {
 
-    ws = new WebSocket('ws://localhost:8080/table');
+    ws = new WebSocket('ws://localhost:8080/.table');
     ws.onopen = function(event) {
         console.log(event);
         ws.send('table=' + gamekey + ',' + 'playerid=' + playerID);
