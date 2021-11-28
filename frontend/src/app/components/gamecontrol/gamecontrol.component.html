@@ -1,0 +1,59 @@
+<div style="background-color:lightskyblue;padding:20px;">
+    <h3>Game Control</h3>
+    <br />
+    <div>
+        <input #tmn placeholder="tablemasterName" />
+        <input #tn placeholder="tableName" />
+        <button (click)="createTablemaster(tmn.value, tn.value)">Create Tablemaster</button>
+    </div>
+    <div>
+        tableName: {{ tableName }}
+    </div>
+    <div>
+        tablemasterId: {{ tablemasterId }}
+    </div>
+
+    <br />
+
+    <div>
+        <input #pn placeholder="playerName" />
+        <button (click)="createPlayer(pn.value)">Create Player</button>
+    </div>
+    <div>
+        newPlayerId: {{ newPlayerId }}
+    </div>
+    <br />
+    <div>
+        <input #pid1 placeholder="playerId" type="number" />
+        <input #sc placeholder="selectedCard" />
+        <button (click)="setSelectedCard(pid1.value, sc.value)">Set Selected Card</button>
+    </div>
+    <br />
+    <div>
+        <input #pid2 placeholder="playerId" type="number" />
+        <input #pm placeholder="selectedCard" />
+        <button (click)="setPlayerMode(pid2.value, pm.value)">Set Playermode</button>
+    </div>
+    <br />
+    <div>
+        <button (click)="getAverage()">Get Average</button>
+    </div>
+    <div>
+        average: {{ average }}
+    </div>
+    <br />
+    <div>
+        <button (click)="getPlayers()">Get Players</button>
+    </div>
+    <div>
+        id, name, playerMode and selectedCard for all players:
+        <ul>
+            <li *ngFor="let player of players">{{ player.id }} {{ player.name }} {{ player.playerMode }} {{ player.selectedCard }}</li>
+        </ul>
+    </div>
+    <br />
+    <div>
+        <input #msg placeholder="message" />
+        <button (click)="sendWSMessage(msg.value)">Send WS Message</button>
+    </div>
+</div>

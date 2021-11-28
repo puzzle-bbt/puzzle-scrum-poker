@@ -12,7 +12,6 @@ export class HttpService {
         createPlayer: '/createPlayer/',
         setSelectedCard: '/players/setselectedcard/',
         setPlayerMode: '/players/setplayermode/',
-        getPlayerMode: '/players/getplayermode/',
         getAverage: '/average/',
         getPlayers: '/tables/getplayers/'
     }
@@ -29,15 +28,11 @@ export class HttpService {
     }
 
     public setSelectedCard(gamekey: string, playerid: number, selectedCard: string) {
-        return this.httpClient.get(this.paths.setSelectedCard + gamekey + "/" + playerid + "/" + selectedCard);
+        return this.httpClient.get(this.paths.setSelectedCard + gamekey + "/" + playerid + "/" + selectedCard, {responseType: 'text'});
     }
 
     public setPlayerMode(gamekey: string, playerid: number, isPlaying: boolean) {
         return this.httpClient.get(this.paths.setPlayerMode + gamekey + "/" + playerid + "/" + isPlaying);
-    }
-
-    public getPlayerMode(gamekey: string, playerid: number) {
-        return this.httpClient.get(this.paths.getPlayerMode + gamekey + "/" + playerid);
     }
 
     public getAverage(gamekey: string) {

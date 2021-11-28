@@ -4,24 +4,10 @@ import { OnboardingComponent } from './components/onboarding/onboarding.componen
 import { ErrorComponent } from './components/error/error.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'onboarding'
-    },
-    {
-        path: 'onboarding',
-        component: OnboardingComponent
-    },
-    {
-        path: 'error',
-        component: ErrorComponent
-    },
-    {
-        path: '**',
-        redirectTo: 'error'
-    }
-
+    { path: '', pathMatch: 'full', redirectTo: 'onboarding' },
+    { path: 'onboarding', component: OnboardingComponent },
+    { path: 'error', component: ErrorComponent },
+    { path: '**', redirectTo: 'error' }
 ];
 
 @NgModule({
