@@ -18,6 +18,7 @@ export class PlayerListComponent implements OnInit {
     gamekey?: string;
     playerMode?: Object;
     average?: number;
+    isGameRunning?: boolean;
 
 
     constructor(
@@ -40,7 +41,7 @@ export class PlayerListComponent implements OnInit {
             (text) => {
                 let contents = text.split(',');
                 this.gamekey = contents[0];
-                this.tablemasterId = +contents[1];
+                this .tablemasterId = +contents[1];
             });
     }
 
@@ -77,6 +78,30 @@ export class PlayerListComponent implements OnInit {
         this.httpService.getPlayers(this.gamekey!).subscribe(
             (players) => {
                 this.players = players;
+            }
+        );
+    }
+
+    public gameover() {
+        this.httpService.gameover(this.gamekey!).subscribe(
+            () => {
+                this.isGameRunning = false;
+                this.getAverage();
+            }
+        );
+    }
+
+    public gamestart() {
+        this.httpService.gamestart(this.gamekey!).subscribe(
+            () => {
+                this.isGameRunning = true;
+            }
+        );
+    }
+
+    public kickplayer(playerId: number) {
+        this.httpService.kickplayer(this.gamekey!, playerId).subscribe(
+            () => {
             }
         );
     }
