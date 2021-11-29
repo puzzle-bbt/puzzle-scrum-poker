@@ -8,7 +8,6 @@ import java.util.*;
 
 public class Table {
     private final String gamekey;
-    private final String tablename;
 
     private boolean gamerunning = false;
     private boolean isNewTablemasterNeeded = false;
@@ -17,9 +16,8 @@ public class Table {
     private final Map<Long, Player> playerMap = new HashMap<>();
     private Map<Long, WebSocketSession> websocketsession = new HashMap<>();
 
-    public Table(String gamekey, String tablename, Tablemaster tablemaster) {
+    public Table(String gamekey, Tablemaster tablemaster) {
         this.gamekey = gamekey;
-        this.tablename = tablename;
         this.tablemaster = tablemaster;
         playerMap.put(tablemaster.getId(), tablemaster);
     }
@@ -73,7 +71,7 @@ public class Table {
         if (this == o)  return true;
         if (o == null || getClass() != o.getClass()) return false;
         Table table = (Table) o;
-        return gamerunning == table.gamerunning && gamekey.equals(table.gamekey) && tablename.equals(table.tablename) && tablemaster.equals(table.tablemaster);
+        return gamerunning == table.gamerunning && gamekey.equals(table.gamekey) && tablemaster.equals(table.tablemaster);
     }
 
     @Override
@@ -85,7 +83,6 @@ public class Table {
     public String toString() {
         return "Table{" +
                 "gamekey='" + gamekey + '\'' +
-                ", tablename='" + tablename + '\'' +
                 ", gamerunning=" + gamerunning +
                 ", tablemaster=" + tablemaster +
                 ", playerMap=" + playerMap +

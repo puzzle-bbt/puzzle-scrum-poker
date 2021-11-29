@@ -27,7 +27,6 @@
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
-                                <argument>run</argument>
                                 <argument>build</argument>
                             </arguments>
                         </configuration>

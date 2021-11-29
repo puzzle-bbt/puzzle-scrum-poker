@@ -10,7 +10,7 @@ import {Player} from "../../player";
 })
 export class GamecontrolComponent implements OnInit, OnDestroy {
 
-    tableName?: string;
+    gamekey?: string;
     tablemasterId?: string;
     newPlayerId?: number;
     players?: Player[];
@@ -30,17 +30,17 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
         this.websocketService.closeWSConnection();
     }
 
-    public createTablemaster(tablemasterName: string, tableName: string) {
-        this.httpService.createTablemaster(tablemasterName, tableName).subscribe(
+    public createTablemaster(tablemasterName: string) {
+        this.httpService.createTablemaster(tablemasterName).subscribe(
             (text) => {
                 let contents = text.split(',');
-                this.tableName = contents[0];
+                this.gamekey = contents[0];
                 this.tablemasterId = contents[1];
             });
     }
 
     public createPlayer(playerName: string) {
-        this.httpService.createPlayer(this.tableName!, playerName).subscribe(
+        this.httpService.createPlayer(this.gamekey!, playerName).subscribe(
             (playerId) => {
                 this.newPlayerId = playerId;
             }
@@ -48,19 +48,19 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public setSelectedCard(playerId: string, selectedCard: string) {
-        this.httpService.setSelectedCard(this.tableName!, +playerId, selectedCard).subscribe(
+        this.httpService.setSelectedCard(this.gamekey!, +playerId, selectedCard).subscribe(
             (selectedCard) => {}
         );
     }
 
     public setPlayerMode(playerId: string, playerMode: string) {
-        this.httpService.setPlayerMode(this.tableName!, +playerId, playerMode=="true").subscribe(
+        this.httpService.setPlayerMode(this.gamekey!, +playerId, playerMode=="true").subscribe(
             () => {}
         );
     }
 
     public getAverage() {
-        this.httpService.getAverage(this.tableName!).subscribe(
+        this.httpService.getAverage(this.gamekey!).subscribe(
             (average) => {
                 this.average = average;
             }
@@ -68,7 +68,7 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public getPlayers() {
-        this.httpService.getPlayers(this.tableName!).subscribe(
+        this.httpService.getPlayers(this.gamekey!).subscribe(
             (players) => {
                 this.players = players;
             }

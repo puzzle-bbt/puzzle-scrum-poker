@@ -21,7 +21,7 @@ class TableTest {
     public static final Player PLAYER = new Player(PLAYER_NAME, 2);
 
     @InjectMocks
-    Table table = new Table(GAMEKEY, TABLE_NAME, TABLEMASTER);
+    Table table = new Table(GAMEKEY, TABLEMASTER);
 
 
 
