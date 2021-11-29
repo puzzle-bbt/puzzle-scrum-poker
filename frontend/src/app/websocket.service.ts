@@ -10,7 +10,7 @@ export class WebsocketService {
 
     constructor() {
         this.wsSubject = webSocket({
-            url: 'ws://' + window.location.host + '/.table',
+            url: 'ws://' + window.location.host + '/api/ws',
             openObserver: {
                 next: (event) => {
                     console.log(event);

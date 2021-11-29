@@ -8,12 +8,12 @@ import {Player} from "./player";
 export class HttpService {
 
     private readonly paths = {
-        createTablemaster: '/createTablemaster/',
-        createPlayer: '/createPlayer/',
-        setSelectedCard: '/players/setselectedcard/',
-        setPlayerMode: '/players/setplayermode/',
-        getAverage: '/average/',
-        getPlayers: '/tables/getplayers/'
+        createTablemaster: '/api/createTablemaster/',
+        createPlayer: '/api/createPlayer/',
+        setSelectedCard: '/api/players/setselectedcard/',
+        setPlayerMode: '/api/players/setplayermode/',
+        getAverage: '/api/average/',
+        getPlayers: '/api/tables/getplayers/'
     }
 
     constructor(private httpClient: HttpClient) {

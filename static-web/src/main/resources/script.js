@@ -47,7 +47,7 @@ function onboardingTablemaster() {
             return;
         }
         $.ajax({
-            url: "http://localhost:8080/createTablemaster/" + tableMasterName + "/" + tablename,
+            url: "http://localhost:8080/api/createTablemaster/" + tableMasterName + "/" + tablename,
             type: 'GET',
             success: function(res) {
                 let gamekeyplayerID = res.split(",");
@@ -100,7 +100,7 @@ function onboardingPlayer() {
         var currentUrl = window.location.href;
         let gamekey = currentUrl.split('table=').pop();
         $.ajax({
-            url: "http://localhost:8080/createPlayer/" + username + "/" + gamekey,
+            url: "http://localhost:8080/api/createPlayer/" + username + "/" + gamekey,
             type: 'GET',
             success: function(res) {
                 let playerID = res;
@@ -123,7 +123,7 @@ function onboardingPlayerFinish(gamekey, playerID) {
 }
 function callBackendForOffboarding(gamekey, playerID, isTablemaster) {
     $.ajax({
-        url: "http://localhost:8080/tables/offboarding/" + gamekey + "/" + playerID + "/" + isTablemaster,
+        url: "http://localhost:8080/api/tables/offboarding/" + gamekey + "/" + playerID + "/" + isTablemaster,
         type: 'GET',
         async: false
     });
@@ -133,7 +133,7 @@ function callBackendForKicking(gamekey, playerID) {
     var confirmWindow = confirm("Diesen Spieler wirklich kicken");
     if(confirmWindow) {
         $.ajax({
-            url: "http://localhost:8080/tables/kickplayer/" + gamekey + "/" + playerID,
+            url: "http://localhost:8080/api/tables/kickplayer/" + gamekey + "/" + playerID,
             type: 'GET',
             async: false
         });
@@ -163,7 +163,7 @@ function initGameControl(gamekey, playerID) {
     $('.middleButton').click(function () {
         if (isGameCurrentlyRunning()) {
             $.ajax({
-                url: "http://localhost:8080/tables/gameover/" + gamekey,
+                url: "http://localhost:8080/api/tables/gameover/" + gamekey,
                 type: 'GET'
             });
             $('.averageRating').css({display: "flex"});
@@ -173,7 +173,7 @@ function initGameControl(gamekey, playerID) {
         }
         else {
             $.ajax({
-                url: "http://localhost:8080/tables/gameStart/" + gamekey,
+                url: "http://localhost:8080/api/tables/gameStart/" + gamekey,
                 type: 'GET'
             });
             $('.middleButton').html("Karten anzeigen");
@@ -238,13 +238,13 @@ function checkForStartSpectatorMode(gamekey, playerID) {
 }
 function setSpectatorMode(isSpectator, gamekey, playerID) {
     $.ajax({
-        url: "http://localhost:8080/players/setplayermode/" + gamekey + "/" + playerID + "/" + isSpectator,
+        url: "http://localhost:8080/api/players/setplayermode/" + gamekey + "/" + playerID + "/" + isSpectator,
         type: 'GET'
     });
 }
 function getSpectatorMode(gamekey, playerID) {
     $.ajax({
-        url: "http://localhost:8080/players/getplayermode/"+ gamekey +"/" +playerID,
+        url: "http://localhost:8080/api/players/getplayermode/"+ gamekey +"/" +playerID,
         type: 'GET',
         success: function(res) {
             let gameModeOfCurrentPlayer = res;
@@ -323,7 +323,7 @@ function coveredCard(player) {
 
 function getAllPlayers(gamekey, playerID) {
     $.ajax({
-        url: "http://localhost:8080/tables/getplayers/" + gamekey,
+        url: "http://localhost:8080/api/tables/getplayers/" + gamekey,
         type: 'GET',
         success: function(arrayWithAllPlayers) {
             deletePlayerList();
@@ -333,7 +333,7 @@ function getAllPlayers(gamekey, playerID) {
 }
 function showAverage(gamekey) {
     $.ajax({
-        url: "http://localhost:8080/average/" + gamekey,
+        url: "http://localhost:8080/api/average/" + gamekey,
         type: 'GET',
         success: function(res) {
             $('.averageRating').html("Durchschnitt: " + res);
@@ -355,7 +355,7 @@ function deregisterWindowEventHandlers() {
 }
 function connectWebsocket(gamekey, playerID) {
 
-    ws = new WebSocket('ws://localhost:8080/.table');
+    ws = new WebSocket('ws://localhost:8080/api/ws');
     ws.onopen = function(event) {
         console.log(event);
         ws.send('table=' + gamekey + ',' + 'playerid=' + playerID);
@@ -459,7 +459,7 @@ function cardListener(gamekey, playerID) {
             currentElement.classList.add("selectedcard");
             selectedCard = currentElement.getAttribute("storyPoint");
             $.ajax({
-                url: "http://localhost:8080/players/setselectedcard/"+gamekey+"/"+playerID+"/"+ encodeURIComponent(selectedCard),
+                url: "http://localhost:8080/api/players/setselectedcard/"+gamekey+"/"+playerID+"/"+ encodeURIComponent(selectedCard),
                 type: 'GET'
             });
         }

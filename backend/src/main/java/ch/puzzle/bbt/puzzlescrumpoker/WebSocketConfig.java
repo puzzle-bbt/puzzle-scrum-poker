@@ -14,6 +14,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
 
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new SocketHandler(pokerService), "/.table").setAllowedOrigins("*");
+        registry.addHandler(new SocketHandler(pokerService), "/api/ws").setAllowedOrigins("*");
     }
 }
