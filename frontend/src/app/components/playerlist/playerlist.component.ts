@@ -51,7 +51,16 @@ export class PlayerListComponent implements OnInit {
 
         this.pokerservice.getAverage(this.splitarray[0]).subscribe((text) => {this.average = text});
     }
+    offboarding() {
+        this.splitarray = this.gamekey!.split(",");
 
+        this.pokerservice.offboarding(this.splitarray[0], this.playerid!, this.playerMode!);
+    }
+    kickplayer() {
+        this.splitarray = this.gamekey!.split(",");
+
+        this.pokerservice.kickplayer(this.splitarray[0], this.playerid!);
+    }
 
     getplayerscall() {
         this.splitarray = this.gamekey!.split(",");
