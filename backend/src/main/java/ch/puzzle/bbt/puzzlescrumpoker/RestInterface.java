@@ -26,11 +26,11 @@ public class RestInterface {
         this.pokerService = pokerService;
     }
 
-    @GetMapping("/createTablemaster/{name}/{tablename}")
-    public String createTablemaster(@PathVariable(value="name") String name, @PathVariable(value="tablename") String tablename){
-        LOG.info("createTablemaster is called: /tablemaster/{}/{}", name, tablename);
+    @GetMapping("/createTablemaster/{name}")
+    public String createTablemaster(@PathVariable(value="name") String name) {
+        LOG.info("createTablemaster is called: /tablemaster/{}", name);
         try {
-            List<Object> ids = pokerService.addNewTable(name, tablename);
+            List<Object> ids = pokerService.addNewTable(name);
             return ids.get(0) + "," + ids.get(1);
         } catch (Exception e) {
             LOG.error("createTablemaster has failed: ", e);

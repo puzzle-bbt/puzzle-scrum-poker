@@ -48,9 +48,9 @@ class PokerServiceTest {
         TABLEMASTER = new Tablemaster(TABLEMASTER_NAME, 1L);
         PLAYER_1 = new Player(PLAYER_NAME_1, 2L);
         PLAYER_2 = new Player(PLAYER_NAME_2, 3L);
-        TABLE_WITH_TABLEMASTER = new Table(GAME_KEY_1, TABLE_NAME_1, TABLEMASTER);
-        TABLE_WITH_TABLEMASTER_AND_ONE_PLAYER = new Table(GAME_KEY_2, TABLE_NAME_2, TABLEMASTER);
-        TABLE_WITH_TABLEMASTER_AND_TWO_PLAYERS = new Table(GAME_KEY_3, TABLE_NAME_3, TABLEMASTER);
+        TABLE_WITH_TABLEMASTER = new Table(GAME_KEY_1, TABLEMASTER);
+        TABLE_WITH_TABLEMASTER_AND_ONE_PLAYER = new Table(GAME_KEY_2, TABLEMASTER);
+        TABLE_WITH_TABLEMASTER_AND_TWO_PLAYERS = new Table(GAME_KEY_3, TABLEMASTER);
 
         TABLE_WITH_TABLEMASTER_AND_ONE_PLAYER.getPlayerMap().put(2L, PLAYER_1);
 
@@ -63,7 +63,7 @@ class PokerServiceTest {
         //given
         when(pokerService.generateGameKey()).thenReturn(GAME_KEY_1);
         //when
-        List<Object> ids = pokerService.addNewTable(TABLEMASTER_NAME, TABLE_NAME_1);
+        List<Object> ids = pokerService.addNewTable(TABLEMASTER_NAME);
         //then
         // test return values
         assertEquals(2, ids.size());

@@ -13,7 +13,10 @@ export class HttpService {
         createPlayer: '/api/createPlayer/',
         setSelectedCard: '/api/players/setselectedcard/',
         setPlayerMode: '/api/players/setplayermode/',
+        getPlayerMode: '/api/players/getplayermode/',
         getAverage: '/api/average/',
+        offboading: '/api/tables/offboarding/',
+        kickPlayer: '/api/tables/kickplayer/',
         getPlayers: '/api/tables/getplayers/'
     }
 
@@ -39,6 +42,16 @@ export class HttpService {
     public getAverage(gamekey: string) {
         return this.httpClient.get<number>(this.paths.getAverage + gamekey, {responseType: 'json'});
     }
+
+    offboarding(gamekey: string, playerid: number, isTablemaster: object) {
+        return this.httpClient.get(this.paths.offboading + gamekey + "/" + playerid + "/" + isTablemaster);
+    }
+
+    /*
+    kickplayer(gamekey: string, playerid: number) {
+        return this.httpClient.get(this.kickPlayerURL + gamekey + "/" + playerid);
+    }
+    */
 
     public getPlayers(gamekey: string) {
         return this.httpClient.get<Player[]>(this.paths.getPlayers + gamekey, {responseType: 'json'});

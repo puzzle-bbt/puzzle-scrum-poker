@@ -1,12 +1,7 @@
-<button (click)="createTablemaster()">Create tm</button>
-<button (click)="createPlayer()">create player</button>
-<button (click)="setSelectedCard()">set card</button>
-<button (click)="setPlayerMode()">set playermode</button>
-<button (click)="getPlayerMode()">get playermode</button>
-<button (click)="getAvergae()">get average</button>
-<button (click)="offboarding()">offboarding</button>
-<button (click)="kickplayer()">kickplayer</button>
-<button (click)="getplayerscall()">Get players</button>
+<div>
+    <input #tmn placeholder="tablemasterName" />
+    <button (click)="createTablemaster(tmn.value)">Create Tablemaster</button>
+</div>
 
 <div> {{ gamekey }} </div>
 <div> {{ playerid }} </div>
