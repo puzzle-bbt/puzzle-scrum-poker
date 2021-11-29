@@ -53,8 +53,8 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
         );
     }
 
-    public setPlayerMode(playerId: string, playerMode: string) {
-        this.httpService.setPlayerMode(this.gamekey!, +playerId, playerMode=="true").subscribe(
+    public setPlayerMode(playerId: string, playerMode: boolean) {
+        this.httpService.setPlayerMode(this.gamekey!, +playerId, playerMode).subscribe(
             () => {}
         );
     }

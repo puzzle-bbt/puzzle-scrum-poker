@@ -16,7 +16,9 @@ export class HttpService {
         getAverage: '/average/',
         offboading: 'tables/offboarding/',
         kickPlayer: '/tables/kickplayer/',
-        getPlayers: '/tables/getplayers/'
+        getPlayers: '/tables/getplayers/',
+        gameover: '/tables/gameover/',
+        gamestart: '/tables/gameStart/'
     }
 
     constructor(private httpClient: HttpClient) {
@@ -46,11 +48,17 @@ export class HttpService {
         return this.httpClient.get(this.paths.offboading + gamekey + "/" + playerid + "/" + isTablemaster);
     }
 
-    /*
     kickplayer(gamekey: string, playerid: number) {
-        return this.httpClient.get(this.kickPlayerURL + gamekey + "/" + playerid);
+        return this.httpClient.get(this.paths.kickPlayer + gamekey + "/" + playerid);
     }
-    */
+
+    public gameover(gamekey: string) {
+        return this.httpClient.get(this.paths.gameover + gamekey);
+    }
+
+    public gamestart(gamekey: string) {
+        return this.httpClient.get(this.paths.gamestart + gamekey);
+    }
 
     public getPlayers(gamekey: string) {
         return this.httpClient.get<Player[]>(this.paths.getPlayers + gamekey, {responseType: 'json'});

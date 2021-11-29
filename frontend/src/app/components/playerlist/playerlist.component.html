@@ -2,28 +2,89 @@
     <input #tmn placeholder="tablemasterName" />
     <button (click)="createTablemaster(tmn.value)">Create Tablemaster</button>
 </div>
+<div>
+    TM ID: {{ tablemasterId }}
+</div>
+<div>
+    Gamekey: {{ gamekey }}
+</div>
 
-<div> {{ gamekey }} </div>
-<div> {{ playerid }} </div>
-<div> {{ playerMode }} </div>
-<div> {{ average }} </div>
+<br />
 
-<div class="player-list">
-
-    <div *ngFor="let player of players ">
-
-        <div class="player-row selfPlayer">
-            <div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div>
-            <div class="list-item">{{ player.name }}</div>
-            <div *ngIf="player.playerMode; else elseBlock">
-                <div *ngIf="player.selectedCard; else stillChoosing"> {{ player.selectedCard }} </div>
-                <ng-template #stillChoosing>-</ng-template>
-            </div>
-            <ng-template #elseBlock><img src="assets/visibility_black_48dp.svg" width="32" height="32"></ng-template>
-        </div>
-
+<div>
+    <input #pn placeholder="playerName" />
+    <button (click)="createPlayer(pn.value)">Create Player</button>
+</div>
+<div>
+    newPlayerId: {{ playerId }}
+</div>
+<br />
+<div>
+    <input #pid1 placeholder="playerId" type="number" />
+    <input #sc placeholder="selectedCard" />
+    <button (click)="setSelectedCard(pid1.value, sc.value)">Set Selected Card</button>
+</div>
+<br />
+<div>
+    <input #pid2 placeholder="playerId" type="number" />
+    <button (click)="setPlayerMode(pid2.value, true)">Set Playermode true</button>
+</div>
+<div>
+    <input #pid2 placeholder="playerId" type="number" />
+    <button (click)="setPlayerMode(pid2.value, false)">Set Playermode false</button>
+</div>
+<br>
+<div class="container">
+    <div class="btnOne">
+        <button (click)="getPlayers()">Get players</button>
+    </div>
+    <div class="btnTwo">
+    <button (click)="gameover()">Gameover</button>
+    </div>
+    <div class="btnThree">
+        <button (click)="gamestart()">Gamestart</button>
     </div>
 </div>
+
+
+<div class="player-list">
+    <div *ngFor="let player of players ">
+        <div class="player-row">
+
+            <div *ngIf="isGameRunning; else canNotChoose">
+                <div *ngIf="player.selectedCard; else blackIcon">
+                    <div class="list-item"><img src="assets/account_circle_blue_48dp.svg"></div>
+                </div>
+                <ng-template #blackIcon><div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div></ng-template>
+            </div>
+            <ng-template #canNotChoose><div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div></ng-template>
+
+            <div class="list-item">{{ player.name}}</div>
+
+            <div *ngIf="player.playerMode; else elseBlock">
+                <div *ngIf="player.selectedCard; else stillChoosing">
+                    <div *ngIf="isGameRunning; else gameIsNotRunning">
+                        <ng-template><div class="list-item">-</div></ng-template>
+                    </div>
+                    <ng-template #gameIsNotRunning><div class="list-item">{{ player.selectedCard }}</div></ng-template>
+                </div>
+                <ng-template #stillChoosing><div class="list-item">-</div></ng-template>
+            </div>
+            <ng-template #elseBlock><div class="list-item"><img src="assets/visibility_black_48dp.svg" width="32" height="32"></div></ng-template>
+        </div>
+
+        <div class="list-item">
+            <button type="button" (click)="kickplayer(player.id)">Kick Player</button>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div *ngIf="isGameRunning; else gameIsNotRunning">
+        <ng-template><div class="list-item"></div></ng-template>
+    </div>
+    <ng-template #gameIsNotRunning><div class="list-item">Average: {{ average }}</div></ng-template>
+</div>
+
 
 
 
