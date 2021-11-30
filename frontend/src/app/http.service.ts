@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Player} from "./player";
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +20,7 @@ export class HttpService {
     constructor(private httpClient: HttpClient) {
     }
 
-    public createTablemaster(tablemasterName: string, tablename: string) {
+    public createTablemaster(tablemasterName: string, tablename: string): Observable<string> {
         return this.httpClient.get(this.paths.createTablemaster + tablemasterName + "/" + tablename, {responseType: 'text'});
     }
 

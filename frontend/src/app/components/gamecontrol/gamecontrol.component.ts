@@ -1,12 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpService} from "../../http.service";
-import {WebsocketService} from "../../websocket.service";
-import {Player} from "../../player";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpService } from '../../http.service';
+import { WebsocketService } from '../../websocket.service';
+import { Player } from '../../player';
+import { ExampleService } from '../../services/example-service';
+import { OnboardingTableMaster } from '../../models/model';
+import { Observable, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-gamecontrol',
-  templateUrl: './gamecontrol.component.html',
-  styleUrls: ['./gamecontrol.component.scss']
+    selector: 'app-gamecontrol',
+    templateUrl: './gamecontrol.component.html',
+    styleUrls: ['./gamecontrol.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GamecontrolComponent implements OnInit, OnDestroy {
 
@@ -16,13 +20,17 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     players?: Player[];
     average?: number;
 
+    onboardingTableMaster$?: Observable<OnboardingTableMaster>;
+
     constructor(
         private httpService: HttpService,
-        private websocketService: WebsocketService) { }
+        private exampleService: ExampleService,
+        private websocketService: WebsocketService) {}
 
     ngOnInit(): void {
         this.websocketService.openWSConnection(
-            () => {}
+            () => {
+            }
         );
     }
 
@@ -31,6 +39,11 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public createTablemaster(tablemasterName: string, tableName: string) {
+        // this.onboardingTableMaster$ = this.exampleService.createTablemaster(tablemasterName, tableName);
+        // this.onboardingTableMaster$.pipe(
+        //     tap(value => this.tableName = value.tableName)
+        // )
+
         this.httpService.createTablemaster(tablemasterName, tableName).subscribe(
             (text) => {
                 let contents = text.split(',');
@@ -49,13 +62,15 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
 
     public setSelectedCard(playerId: string, selectedCard: string) {
         this.httpService.setSelectedCard(this.tableName!, +playerId, selectedCard).subscribe(
-            (selectedCard) => {}
+            (selectedCard) => {
+            }
         );
     }
 
     public setPlayerMode(playerId: string, playerMode: string) {
-        this.httpService.setPlayerMode(this.tableName!, +playerId, playerMode=="true").subscribe(
-            () => {}
+        this.httpService.setPlayerMode(this.tableName!, +playerId, playerMode == 'true').subscribe(
+            () => {
+            }
         );
     }
 

@@ -11,6 +11,8 @@ import { GamecontrolComponent } from "./components/gamecontrol/gamecontrol.compo
 import { WebsocketService } from "./websocket.service";
 import { HttpService } from "./http.service";
 import {HttpClientModule} from "@angular/common/http";
+import { ExampleService } from './services/example-service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -22,13 +24,15 @@ import {HttpClientModule} from "@angular/common/http";
         GamecontrolComponent
     ],
     imports: [
+        CommonModule,
         BrowserModule,
         AppRoutingModule,
         HttpClientModule
     ],
     providers: [
         WebsocketService,
-        HttpService
+        HttpService,
+        ExampleService
     ],
     bootstrap: [AppComponent]
 })
