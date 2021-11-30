@@ -8,7 +8,7 @@ const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        /*redirectTo: 'onborarding'*/
+        redirectTo: 'onborarding'
     },
     {
         path: 'onborarding',
