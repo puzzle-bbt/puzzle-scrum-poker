@@ -25,8 +25,8 @@ export class HttpService {
     constructor(private httpClient: HttpClient) {
     }
 
-    public createTablemaster(tablemasterName: string, tablename: string): Observable<string> {
-        return this.httpClient.get(this.paths.createTablemaster + tablemasterName + "/" + tablename, {responseType: 'text'});
+    public createTablemaster(tablemasterName: string): Observable<string> {
+        return this.httpClient.get(this.paths.createTablemaster + tablemasterName, {responseType: 'text'});
     }
 
     public createPlayer(gamekey: string, playername: string) {

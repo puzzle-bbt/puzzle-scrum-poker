@@ -6,7 +6,7 @@
         <button (click)="createTablemaster(tmn.value)">Create Tablemaster</button>
     </div>
     <div>
-        tableName: {{ gamekey }}
+        tableName: {{ tableName }}
     </div>
     <div>
         tablemasterId: {{ tablemasterId }}
@@ -31,7 +31,7 @@
     <div>
         <input #pid2 placeholder="playerId" type="number" />
         <input #pm placeholder="playerMode"/>
-        <button (click)="setPlayerMode(pid2.value, true)">Set Playermode</button>
+        <button (click)="setPlayerMode(pid2.value, pm.value)">Set Playermode</button>
 
     </div>
     <br />

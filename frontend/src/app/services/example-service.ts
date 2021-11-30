@@ -25,8 +25,8 @@ export class ExampleService {
     ) {}
 
     // TODO: '/api/createTablemaster' sollte auch ein JSON zurück liefern
-    public createTablemaster(tablemasterName: string, tableName: string): Observable<OnboardingTableMaster> {
-        return this.http.get<string>(`${BASE_URL}/createTablemaster/${tablemasterName}/${tableName}`)
+    public createTablemaster(tablemasterName: string): Observable<OnboardingTableMaster> {
+        return this.http.get<string>(`${BASE_URL}/createTablemaster/${tablemasterName}`)
         .pipe(
             tap(value => console.log('-------->', value)),
             map(data => {

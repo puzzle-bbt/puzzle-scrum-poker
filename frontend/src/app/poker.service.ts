@@ -20,8 +20,8 @@ export class PokerService {
     constructor(private httpClient: HttpClient) { }
 
 
-    createTablemaster(tablemasterName: string, tablename: string) {
-       return this.httpClient.get(this.createTablemasterURL + tablemasterName + "/" + tablename, {responseType: 'text'});
+    createTablemaster(tablemasterName: string) {
+       return this.httpClient.get(this.createTablemasterURL + tablemasterName, {responseType: 'text'});
     }
 
     createPlayer(gamekey: string, playername: string) {

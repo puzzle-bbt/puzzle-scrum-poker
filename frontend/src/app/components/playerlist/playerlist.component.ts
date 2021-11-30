@@ -51,7 +51,7 @@ export class PlayerListComponent implements OnInit {
         this.httpService.createPlayer(this.gamekey!, playerName).subscribe(
             (playerId) => {
                 this.playerId = playerId;
-                this.sendWSMessage(('table=' + this.gamekey + ',' + 'playerid=' + this.playerId));
+                //this.sendWSMessage(('table=' + this.gamekey + ',' + 'playerid=' + this.playerId));
             }
         );
     }

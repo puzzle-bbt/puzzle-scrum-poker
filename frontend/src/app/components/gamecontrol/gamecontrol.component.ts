@@ -38,13 +38,13 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
         this.websocketService.closeWSConnection();
     }
 
-    public createTablemaster(tablemasterName: string, tableName: string) {
-        // this.onboardingTableMaster$ = this.exampleService.createTablemaster(tablemasterName, tableName);
+    public createTablemaster(tablemasterName: string) {
+        // this.onboardingTableMaster$ = this.exampleService.createTablemaster(tablemasterName);
         // this.onboardingTableMaster$.pipe(
         //     tap(value => this.tableName = value.tableName)
         // )
 
-        this.httpService.createTablemaster(tablemasterName, tableName).subscribe(
+        this.httpService.createTablemaster(tablemasterName).subscribe(
             (text) => {
                 let contents = text.split(',');
                 this.tableName = contents[0];
