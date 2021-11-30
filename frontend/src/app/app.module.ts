@@ -39,6 +39,7 @@ import { PlaygroundComponent } from './components/playground/playground.componen
         HttpService,
         ExampleService
     ],
+    exports: [CommonModule],
     bootstrap: [AppComponent]
 })
 export class AppModule {
