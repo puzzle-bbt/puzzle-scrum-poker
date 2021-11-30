@@ -10,4 +10,5 @@ public class ForwardController {
 	public String redirect() {
 		return "forward:/";
 	}
+
 }

@@ -40,6 +40,10 @@ export class HttpService {
         return this.httpClient.get(this.paths.setPlayerMode + gamekey + "/" + playerid + "/" + isPlaying);
     }
 
+    public getPlayerMode(gamekey: string, playerid: number) {
+        return this.httpClient.get(this.paths.getPlayerMode + gamekey + "/" + playerid);
+    }
+
     public getAverage(gamekey: string) {
         return this.httpClient.get<number>(this.paths.getAverage + gamekey, {responseType: 'json'});
     }

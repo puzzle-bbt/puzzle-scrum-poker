@@ -145,6 +145,7 @@ public class PokerService {
     }
 
     public void handleIncomingTextMessage(WebSocketSession session, String message) throws Exception {
+        message = message.replace("\"", "");
         if (message.startsWith("table=") && message.contains("playerid=")) {
             String[] messageSplit = message.split(",");
             Long playerid = Long.parseLong(messageSplit[1].substring(9));

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Player} from "../../player";
 import {HttpService} from "../../http.service";
 import {WebsocketService} from "../../websocket.service";
+import {waitForAsync} from "@angular/core/testing";
 
 @Component({
   selector: 'app-playerlist',
@@ -50,6 +51,7 @@ export class PlayerListComponent implements OnInit {
         this.httpService.createPlayer(this.gamekey!, playerName).subscribe(
             (playerId) => {
                 this.playerId = playerId;
+                this.sendWSMessage(('table=' + this.gamekey + ',' + 'playerid=' + this.playerId));
             }
         );
     }
