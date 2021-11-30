@@ -1,4 +1,5 @@
-export interface OnboardingTableMaster {
-    tableName: string;
-    tablemasterId: string;
+export interface PlayerModel {
+    id: string;
+    gameKey: string;
+    selectedCard: string | undefined;
 }

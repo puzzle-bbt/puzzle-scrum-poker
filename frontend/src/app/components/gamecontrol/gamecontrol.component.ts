@@ -3,7 +3,7 @@ import { HttpService } from '../../http.service';
 import { WebsocketService } from '../../websocket.service';
 import { Player } from '../../player';
 import { ExampleService } from '../../services/example-service';
-import { OnboardingTableMaster } from '../../models/model';
+import { PlayerModel } from '../../models/model';
 import { Observable, tap } from 'rxjs';
 
 @Component({
@@ -13,15 +13,17 @@ import { Observable, tap } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GamecontrolComponent implements OnInit, OnDestroy {
-
-
-    gamekey?: string;
-    tablemasterId?: string;
     newPlayerId?: number;
     players?: Player[];
     isGameRunning?: boolean;
     average?: number;
-    onboardingTableMaster$?: Observable<OnboardingTableMaster>;
+
+    playerModel$: Observable<PlayerModel>  | undefined;
+    playerModel: PlayerModel = {
+        gameKey: '',
+        id: '',
+        selectedCard: undefined
+    };
 
     constructor(
         private httpService: HttpService,
@@ -42,21 +44,16 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public createTablemaster(tablemasterName: string) {
-        // this.onboardingTableMaster$ = this.exampleService.createTablemaster(tablemasterName);
-        // this.onboardingTableMaster$.pipe(
-        //     tap(value => this.tableName = value.tableName)
-        // )
-
-        this.httpService.createTablemaster(tablemasterName).subscribe(
-            (text) => {
-                let contents = text.split(',');
-                this.gamekey = contents[0];
-                this.tablemasterId = contents[1];
-            });
+        this.playerModel$ = this.exampleService.createTablemaster(tablemasterName);
+        this.playerModel$.pipe(
+            tap(value => {
+                this.playerModel = value;
+            })
+        )
     }
 
     public createPlayer(playerName: string) {
-        this.httpService.createPlayer(this.gamekey!, playerName).subscribe(
+        this.httpService.createPlayer(this.playerModel.gameKey, playerName).subscribe(
             (playerId) => {
                 this.newPlayerId = playerId;
             }
@@ -64,21 +61,21 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public setSelectedCard(playerId: string, selectedCard: string) {
-        this.httpService.setSelectedCard(this.gamekey!, +playerId, selectedCard).subscribe(
+        this.httpService.setSelectedCard(this.playerModel.gameKey, +playerId, selectedCard).subscribe(
             (selectedCard) => {
             }
         );
     }
 
     public setPlayerMode(playerId: string, playerMode: string) {
-        this.httpService.setPlayerMode(this.gamekey!, +playerId, playerMode == 'true').subscribe(
+        this.httpService.setPlayerMode(this.playerModel.gameKey, +playerId, playerMode == 'true').subscribe(
             () => {
             }
         );
     }
 
     public getAverage() {
-        this.httpService.getAverage(this.gamekey!).subscribe(
+        this.httpService.getAverage(this.playerModel.gameKey).subscribe(
             (average) => {
                 this.average = average;
             }
@@ -86,7 +83,7 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public getPlayers() {
-        this.httpService.getPlayers(this.gamekey!).subscribe(
+        this.httpService.getPlayers(this.playerModel.gameKey).subscribe(
             (players) => {
                 this.players = players;
             }
@@ -98,7 +95,7 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public gameover() {
-        this.httpService.gameover(this.gamekey!).subscribe(
+        this.httpService.gameover(this.playerModel.gameKey).subscribe(
             () => {
                 this.isGameRunning = false;
             }
@@ -106,7 +103,7 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public gamestart() {
-        this.httpService.gamestart(this.gamekey!).subscribe(
+        this.httpService.gamestart(this.playerModel.gameKey).subscribe(
             () => {
                 this.isGameRunning = true;
             }
@@ -114,7 +111,7 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public kickplayer(playerId: number) {
-        this.httpService.kickplayer(this.gamekey!, playerId).subscribe(
+        this.httpService.kickplayer(this.playerModel.gameKey, playerId).subscribe(
             () => {
             }
         );

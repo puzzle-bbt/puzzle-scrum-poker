@@ -36,6 +36,7 @@ import { CommonModule } from '@angular/common';
         HttpService,
         ExampleService
     ],
+    exports: [CommonModule],
     bootstrap: [AppComponent]
 })
 export class AppModule {

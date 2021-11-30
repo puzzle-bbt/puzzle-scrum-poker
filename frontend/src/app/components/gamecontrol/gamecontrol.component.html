@@ -6,10 +6,10 @@
         <button (click)="createTablemaster(tmn.value)">Create Tablemaster</button>
     </div>
     <div>
-        tableName: {{ gamekey }}
+        tableName: {{(playerModel$ | async)?.gameKey}}
     </div>
     <div>
-        tablemasterId: {{ tablemasterId }}
+        tablemasterId: {{ playerModel.id }}
     </div>
 
     <br />
