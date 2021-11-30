@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Player} from "../../player";
-import {HttpService} from "../../http.service";
-import {WebsocketService} from "../../websocket.service";
-import {asap} from "rxjs";
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {CardService} from "../../services/card.service";
 
 @Component({
   selector: 'app-game',
@@ -12,66 +9,41 @@ import {asap} from "rxjs";
 
 export class GameComponent implements OnInit {
 
-    tableName?: string;
-    tablemasterId?: string;
-    newPlayerId?: number;
-    players?: Player[];
-    average?: number;
+    @ViewChild('cardContainer')
+    cardContainerDiv?: ElementRef<HTMLDivElement>;
 
     constructor(
-        private httpService: HttpService,
-        private websocketService: WebsocketService) { }
-
+        private cardService: CardService,
+        private changeDetectorRef: ChangeDetectorRef) {}
 
     ngOnInit(): void {
-        this.websocketService.openWSConnection(
-            () => {}
-        );
+        this.addCards();
     }
 
-    ngOnDestroy(): void {
-        this.websocketService.closeWSConnection();
+    private addCards(svgFilename: string = 'card_front.svg') {
+        this.cardService.getCardSvg(svgFilename).subscribe(
+            (data: string) => {
+
+                // TODO
+
+            });
     }
 
-    public setSelectedCard(playerId: string, selectedCard: string) {
-        this.httpService.setSelectedCard(this.tableName!, +playerId, selectedCard).subscribe(
-            (selectedCard) => {}
-        );
+    private stringToSvgElement(str: string): SVGElement {
+        let ele = document.createElement("div");
+        ele.innerHTML = str;
+        return ele.firstElementChild as SVGElement;
     }
 
-    public setSelectedCardDesktop(playerId: string, selectedCard: string, event: MouseEvent) {
-        var currentElement = event.target;
-        console.log(currentElement);
-        this.httpService.setSelectedCard(this.tableName!, +playerId, selectedCard).subscribe(
-            (selectedCard) => {}
-        );
+    private addSvgToContainer(svg: SVGElement, cardId: string, storyPoints: string): void {
+        svg.setAttribute('id', cardId);
+        svg.setAttribute('storyPoint', storyPoints);
+        svg.querySelector('#cardText')!.innerHTML = storyPoints;
+
+        this.cardContainerDiv!.nativeElement.append(svg);
+        this.changeDetectorRef.markForCheck();
     }
 
-    public addSvgToContainer(playerId: string, selectedCard: string) {
-        const cardFront = document.createElement("svg")
-        cardFront.textContent = '';
-    }
+    public setSelectedCard(cardId: string) {}
 
-    public cardListener() {
-        this.addSvgToContainer("2", "2")
-        this.addSvgToContainer("2", "2")
-        this.addSvgToContainer("2", "2")
-        this.addSvgToContainer("2", "2")
-        this.addSvgToContainer("2", "2")
-        this.addSvgToContainer("2", "2")
-        this.addSvgToContainer("2", "2")
-    }
-
-    public sendWSMessage(msg: string) {
-        this.websocketService.sendWSMessage(msg);
-    }
-
-    /**public showSvgCards(values: number) {
-        const svg = jQuery(data).find('svg').clone();
-        svg.attr('id', cardId);
-        svg.attr('storyPoint', storyPoint);
-        $('#cardText', $svg).text(storyPoint);
-        $cardContainer.append($svg);
-    }
-     **/
 }
