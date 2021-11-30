@@ -34,7 +34,6 @@ function initPlayer() {
 function onboardingTablemaster() {
     $('#create').click(function () {
         let tableMasterName = $('#tableMasterName').val();
-        let tablename = $('#tablename').val();
         if (tableMasterName.length === 0) {
             alert("You have to enter a tableMasterName");
             return;
@@ -42,12 +41,8 @@ function onboardingTablemaster() {
             alert("Your Tablemastername must be shorter");
             return;
         }
-        if (tablename.length === 0) {
-            alert("You have to enter a tablename");
-            return;
-        }
         $.ajax({
-            url: "/createTablemaster/" + tableMasterName + "/" + tablename,
+            url: "/createTablemaster/" + tableMasterName,
             type: 'GET',
             success: function(res) {
                 let gamekeyplayerID = res.split(",");

@@ -23,10 +23,10 @@ public class PokerService {
     protected final AtomicLong playerCount = new AtomicLong();
     protected Map<String, Table> tableMap = new HashMap<>();
 
-    public List<Object> addNewTable(String name, String tablename) {
+    public List<Object> addNewTable(String name) {
         String gamekey = generateGameKey();
         long playerId = playerCount.incrementAndGet();
-        tableMap.put(gamekey, new Table(gamekey, tablename, new Tablemaster(name, playerId)));
+        tableMap.put(gamekey, new Table(gamekey, new Tablemaster(name, playerId)));
 
         List<Object> returnValue = new ArrayList<>();
         returnValue.add(gamekey);
@@ -145,6 +145,7 @@ public class PokerService {
     }
 
     public void handleIncomingTextMessage(WebSocketSession session, String message) throws Exception {
+        message = message.replace("\"", "");
         if (message.startsWith("table=") && message.contains("playerid=")) {
             String[] messageSplit = message.split(",");
             Long playerid = Long.parseLong(messageSplit[1].substring(9));

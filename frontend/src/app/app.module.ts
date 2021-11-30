@@ -7,10 +7,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { ErrorComponent } from './components/error/error.component';
+import {PlayerListComponent} from "./components/playerlist/playerlist.component";
+import { HttpClientModule } from '@angular/common/http';
 import { GamecontrolComponent } from "./components/gamecontrol/gamecontrol.component";
 import { WebsocketService } from "./websocket.service";
 import { HttpService } from "./http.service";
-import {HttpClientModule} from "@angular/common/http";
 import { ExampleService } from './services/example-service';
 import { CommonModule } from '@angular/common';
 
@@ -21,6 +22,7 @@ import { CommonModule } from '@angular/common';
         FooterComponent,
         OnboardingComponent,
         ErrorComponent,
+        PlayerListComponent,
         GamecontrolComponent
     ],
     imports: [

@@ -1,0 +1,41 @@
+<div class="player-list">
+    <div *ngFor="let player of players ">
+        <div class="player-row">
+
+            <div *ngIf="isGameRunning; else canNotChoose">
+                <div *ngIf="player.selectedCard; else blackIcon">
+                    <div class="list-item"><img src="assets/account_circle_blue_48dp.svg"></div>
+                </div>
+                <ng-template #blackIcon><div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div></ng-template>
+            </div>
+            <ng-template #canNotChoose><div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div></ng-template>
+
+            <div class="list-item">{{ player.name}}</div>
+
+            <div *ngIf="player.playerMode; else elseBlock">
+                <div *ngIf="player.selectedCard; else stillChoosing">
+                    <div *ngIf="isGameRunning; else gameIsNotRunning">
+                        <ng-template><div class="list-item">-</div></ng-template>
+                    </div>
+                    <ng-template #gameIsNotRunning><div class="list-item">{{ player.selectedCard }}</div></ng-template>
+                </div>
+                <ng-template #stillChoosing><div class="list-item">-</div></ng-template>
+            </div>
+            <ng-template #elseBlock><div class="list-item"><img src="assets/visibility_black_48dp.svg" width="32" height="32"></div></ng-template>
+        </div>
+
+        <div class="list-item">
+            <button type="button" (click)="kickplayer(player.id)">Kick Player</button>
+        </div>
+
+    </div>
+    <br>
+    <div *ngIf="isGameRunning; else gameIsNotRunning">
+        <ng-template><div class="list-item"></div></ng-template>
+    </div>
+    <ng-template #gameIsNotRunning><div class="list-item">Average: {{ average }}</div></ng-template>
+</div>
+<br>
+<div>
+    <button (click)="refresh()">Aktualisieren</button>
+</div>

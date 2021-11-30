@@ -4,6 +4,7 @@ import ch.puzzle.bbt.puzzlescrumpoker.gameroles.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +26,11 @@ public class RestInterface {
         this.pokerService = pokerService;
     }
 
-    @GetMapping("/createTablemaster/{name}/{tablename}")
-    public String createTablemaster(@PathVariable(value="name") String name, @PathVariable(value="tablename") String tablename){
-        LOG.info("createTablemaster is called: /tablemaster/{}/{}", name, tablename);
+    @GetMapping("/createTablemaster/{name}")
+    public String createTablemaster(@PathVariable(value="name") String name) {
+        LOG.info("createTablemaster is called: /tablemaster/{}", name);
         try {
-            List<Object> ids = pokerService.addNewTable(name, tablename);
+            List<Object> ids = pokerService.addNewTable(name);
             return ids.get(0) + "," + ids.get(1);
         } catch (Exception e) {
             LOG.error("createTablemaster has failed: ", e);
@@ -131,6 +132,7 @@ public class RestInterface {
     }
 
     @GetMapping("/tables/getplayers/{gamekey}")
+    @CrossOrigin(origins = "http://localhost:4200")
     public List<Player> getPlayersFromTable(@PathVariable(value= "gamekey") String gamekey){
         LOG.info("getPlayersFromTable is called: /tables/getplayers/{}", gamekey);
         try {

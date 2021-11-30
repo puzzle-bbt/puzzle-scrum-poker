@@ -3,11 +3,10 @@
     <br />
     <div>
         <input #tmn placeholder="tablemasterName" />
-        <input #tn placeholder="tableName" />
-        <button (click)="createTablemaster(tmn.value, tn.value)">Create Tablemaster</button>
+        <button (click)="createTablemaster(tmn.value)">Create Tablemaster</button>
     </div>
     <div>
-        tableName: {{ tableName }}
+        tableName: {{ gamekey }}
     </div>
     <div>
         tablemasterId: {{ tablemasterId }}
@@ -31,8 +30,9 @@
     <br />
     <div>
         <input #pid2 placeholder="playerId" type="number" />
-        <input #pm placeholder="playerMode" />
+        <input #pm placeholder="playerMode"/>
         <button (click)="setPlayerMode(pid2.value, pm.value)">Set Playermode</button>
+
     </div>
     <br />
     <div>
@@ -55,5 +55,12 @@
     <div>
         <input #msg placeholder="message" />
         <button (click)="sendWSMessage(msg.value)">Send WS Message</button>
+    </div>
+    <br>
+    <div>
+        <button (click)="gameover()">Gameover</button>
+    </div>
+    <div>
+        <button (click)="gamestart()">Gamestart</button>
     </div>
 </div>
