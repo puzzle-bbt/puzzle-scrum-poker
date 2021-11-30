@@ -11,94 +11,33 @@ import {waitForAsync} from "@angular/core/testing";
 })
 
 
-export class PlayerListComponent implements OnInit {
+export class PlayerListComponent {
 
-    tablemasterId?: number;
-    playerId?: number;
     players: Player[] = [];
     gamekey?: string;
-    playerMode?: Object;
-    average?: number;
     isGameRunning?: boolean;
+    average?: number;
 
 
     constructor(
         private httpService: HttpService,
-        private websocketService: WebsocketService) { }
-
-    ngOnInit(): void {
-        this.websocketService.openWSConnection(
-            () => {}
-        );
-    }
-
-    ngOnDestroy(): void {
-        this.websocketService.closeWSConnection();
+        private websocketService: WebsocketService) {
     }
 
 
-    public createTablemaster(tablemasterName: string) {
-        this.httpService.createTablemaster(tablemasterName).subscribe(
-            (text) => {
-                let contents = text.split(',');
-                this.gamekey = contents[0];
-                this .tablemasterId = +contents[1];
-            });
-    }
-
-
-    public createPlayer(playerName: string) {
-        this.httpService.createPlayer(this.gamekey!, playerName).subscribe(
-            (playerId) => {
-                this.playerId = playerId;
-                //this.sendWSMessage(('table=' + this.gamekey + ',' + 'playerid=' + this.playerId));
-            }
-        );
-    }
-
-    public setSelectedCard(playerId: string, selectedCard: string) {
-        this.httpService.setSelectedCard(this.gamekey!, +playerId, selectedCard).subscribe(
-            (selectedCard) => {}
-        );
-    }
-
-    public setPlayerMode(playerId: string, playerMode: boolean) {
-        this.httpService.setPlayerMode(this.gamekey!, +playerId, playerMode).subscribe(
-            () => {}
-        );
-    }
-
-    public getAverage() {
-        this.httpService.getAverage(this.gamekey!).subscribe(
-            (average) => {
-                this.average = average;
-            }
-        );
-    }
-
-    public getPlayers() {
-        this.httpService.getPlayers(this.gamekey!).subscribe(
+    public refresh() {
+        this.gamekey = this.httpService.gamekey;
+        this.isGameRunning = this.httpService.isGameRunning;
+        this.httpService.getPlayers(this.gamekey).subscribe(
             (players) => {
                 this.players = players;
             }
-        );
-    }
-
-    public gameover() {
-        this.httpService.gameover(this.gamekey!).subscribe(
-            () => {
-                this.isGameRunning = false;
-                this.getAverage();
+        )
+        this.httpService.getAverage(this.gamekey).subscribe(
+            (average) => {
+                this.average = average;
             }
-        );
-    }
-
-    public gamestart() {
-        this.httpService.gamestart(this.gamekey!).subscribe(
-            () => {
-                this.isGameRunning = true;
-            }
-        );
+        )
     }
 
     public kickplayer(playerId: number) {
@@ -107,10 +46,4 @@ export class PlayerListComponent implements OnInit {
             }
         );
     }
-
-    public sendWSMessage(msg: string) {
-        this.websocketService.sendWSMessage(msg);
-    }
-
-
 }

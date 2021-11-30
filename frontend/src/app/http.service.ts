@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Player} from "./player";
-import { Observable } from 'rxjs';
+import {Observable, tap} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class HttpService {
+
+    private _gamekey?: string;
+    private _players?: Player[];
+    private _isGameRunning?: boolean;
 
     private readonly paths = {
         createTablemaster: '/api/createTablemaster/',
@@ -25,8 +29,37 @@ export class HttpService {
     constructor(private httpClient: HttpClient) {
     }
 
+    get gamekey(): string {
+        return this._gamekey!;
+    }
+
+    set gamekey(value: string) {
+        this._gamekey = value;
+    }
+
+    get players(): Player[] {
+        return this._players!;
+    }
+
+    set players(value: Player[]) {
+        this._players = value;
+    }
+
+    get isGameRunning(): boolean {
+        return this._isGameRunning!;
+    }
+
+    set isGameRunning(value: boolean) {
+        this._isGameRunning = value;
+    }
+
     public createTablemaster(tablemasterName: string): Observable<string> {
-        return this.httpClient.get(this.paths.createTablemaster + tablemasterName, {responseType: 'text'});
+        return this.httpClient.get(this.paths.createTablemaster + tablemasterName, {responseType: 'text'}).pipe(
+            tap(text => {
+                this.gamekey = text.split(",")[0];
+                console.log(this.gamekey);
+            })
+        );
     }
 
     public createPlayer(gamekey: string, playername: string) {
@@ -58,14 +91,20 @@ export class HttpService {
     }
 
     public gameover(gamekey: string) {
+        this.isGameRunning = false;
         return this.httpClient.get(this.paths.gameover + gamekey);
     }
 
     public gamestart(gamekey: string) {
+        this.isGameRunning = true;
         return this.httpClient.get(this.paths.gamestart + gamekey);
     }
 
     public getPlayers(gamekey: string) {
-        return this.httpClient.get<Player[]>(this.paths.getPlayers + gamekey, {responseType: 'json'});
+        return this.httpClient.get<Player[]>(this.paths.getPlayers + gamekey, {responseType: 'json'}).pipe(
+            tap(players => {
+                this.players = players;
+            })
+        );
     }
 }
