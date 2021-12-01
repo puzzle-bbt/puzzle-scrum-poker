@@ -1,5 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CardService} from "../../services/card.service";
+import {Element} from "@angular/compiler";
 
 @Component({
   selector: 'app-game',
@@ -23,10 +24,19 @@ export class GameComponent implements OnInit {
     private addCards(svgFilename: string = 'card_front.svg') {
         this.cardService.getCardSvg(svgFilename).subscribe(
             (data: string) => {
-
-                // TODO
-
+                this.addSvgToContainer(this.stringToSvgElement(data), 'card-1', '1')
+                this.addSvgToContainer(this.stringToSvgElement(data), 'card-2', '2')
+                this.addSvgToContainer(this.stringToSvgElement(data), 'card-3', '3')
+                this.addSvgToContainer(this.stringToSvgElement(data), 'card-4', '5')
+                this.addSvgToContainer(this.stringToSvgElement(data), 'card-5', '8')
+                this.addSvgToContainer(this.stringToSvgElement(data), 'card-6', '13')
+                this.addSvgToContainer(this.stringToSvgElement(data), 'card-7', '21')
+                this.addSvgToContainer(this.stringToSvgElement(data), 'card-8', '?')
             });
+
+
+
+
     }
 
     private stringToSvgElement(str: string): SVGElement {
@@ -39,11 +49,26 @@ export class GameComponent implements OnInit {
         svg.setAttribute('id', cardId);
         svg.setAttribute('storyPoint', storyPoints);
         svg.querySelector('#cardText')!.innerHTML = storyPoints;
+        svg.classList.add("card");
+
+        svg.addEventListener('click', (event)=>{
+            this.resetCards();
+            if (!svg.classList.contains("selectedcard")) {
+                svg.classList.add("selectedcard");
+                //TODO: add backend call to set card
+            }
+        })
 
         this.cardContainerDiv!.nativeElement.append(svg);
         this.changeDetectorRef.markForCheck();
     }
 
-    public setSelectedCard(cardId: string) {}
+    public resetCards() {
+        let cardCollection = this.cardContainerDiv!.nativeElement.querySelectorAll(".card");
+        cardCollection.forEach(card => card.classList.remove("selectedcard"));
+    }
 
+    public setSelectedCard(selectedValue:string) {
+
+    }
 }
