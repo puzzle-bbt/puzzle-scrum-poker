@@ -9,10 +9,10 @@ const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'onborarding'
+        redirectTo: 'onboarding'
     },
     {
-        path: 'onborarding',
+        path: 'onboarding',
         component: OnboardingComponent
     },
     {
