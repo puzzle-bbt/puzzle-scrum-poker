@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MobileEstinationComponent } from './mobile-estination.component';
+import { MobileEstimationComponent } from './mobile-estimation.component';
 
 describe('MobileEstinationComponent', () => {
-  let component: MobileEstinationComponent;
-  let fixture: ComponentFixture<MobileEstinationComponent>;
+  let component: MobileEstimationComponent;
+  let fixture: ComponentFixture<MobileEstimationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MobileEstinationComponent ]
+      declarations: [ MobileEstimationComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MobileEstinationComponent);
+    fixture = TestBed.createComponent(MobileEstimationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-mobile-estination',
-  templateUrl: './mobile-estination.component.html',
-  styleUrls: ['./mobile-estination.component.scss']
+  templateUrl: './mobile-estimation.component.html',
+  styleUrls: ['./mobile-estimation.component.scss']
 })
-export class MobileEstinationComponent implements OnInit {
+export class MobileEstimationComponent implements OnInit {
 
   constructor() { }
 

@@ -13,7 +13,7 @@ import { WebsocketService } from "./websocket.service";
 import { HttpService } from "./http.service";
 import { ExampleService } from './services/example-service';
 import { CommonModule } from '@angular/common';
-import { MobileEstinationComponent } from './components/mobile-estination/mobile-estination.component';
+import { MobileEstimationComponent } from './components/mobile-estimation/mobile-estimation.component';
 import { DesktopEstimationComponent } from './components/desktop-estimation/desktop-estimation.component';
 import { PlaygroundComponent } from './components/playground/playground.component';
 
@@ -24,7 +24,7 @@ import { PlaygroundComponent } from './components/playground/playground.componen
         FooterComponent,
         OnboardingComponent,
         ErrorComponent,
-        MobileEstinationComponent,
+        MobileEstimationComponent,
         DesktopEstimationComponent,
         PlaygroundComponent,
     ],
