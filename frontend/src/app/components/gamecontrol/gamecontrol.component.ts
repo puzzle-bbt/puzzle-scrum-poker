@@ -4,7 +4,7 @@ import { Player } from '../../player';
 import { ExampleService } from '../../services/example-service';
 import { PlayerModel } from '../../models/model';
 import { Observable, tap } from 'rxjs';
-import {BackendMessagesService} from "../../services/backend-messages.service";
+import {BackendMessengerService} from "../../services/backend-messenger.service";
 
 @Component({
     selector: 'app-gamecontrol',
@@ -12,7 +12,7 @@ import {BackendMessagesService} from "../../services/backend-messages.service";
     styleUrls: ['./gamecontrol.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GamecontrolComponent implements OnInit, OnDestroy {
+export class GamecontrolComponent implements OnInit {
     newPlayerId?: number;
     players?: Player[];
     isGameRunning?: boolean;
@@ -28,19 +28,10 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     constructor(
         private httpService: HttpService,
         private exampleService: ExampleService,
-        private backendMessages: BackendMessagesService) {}
-
-
+        private messenger: BackendMessengerService) {}
 
     ngOnInit(): void {
-        this.backendMessages.openWSConnection(
-            () => {
-            }
-        );
-    }
-
-    ngOnDestroy(): void {
-        this.backendMessages.closeWSConnection();
+        this.messenger.subscribe((msg: string) => {});
     }
 
     public createTablemaster(tablemasterName: string) {
@@ -91,7 +82,7 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public sendWSMessage(msg: string) {
-        this.backendMessages.sendWSMessage(msg);
+        this.messenger.sendMessage(msg);
     }
 
     public gameover() {
