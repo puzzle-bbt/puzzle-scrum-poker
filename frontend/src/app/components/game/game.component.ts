@@ -33,10 +33,6 @@ export class GameComponent implements OnInit {
                 this.addSvgToContainer(this.stringToSvgElement(data), 'card-7', '21')
                 this.addSvgToContainer(this.stringToSvgElement(data), 'card-8', '?')
             });
-
-
-
-
     }
 
     private stringToSvgElement(str: string): SVGElement {

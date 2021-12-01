@@ -14,6 +14,10 @@ import { WebsocketService } from "./websocket.service";
 import { HttpService } from "./http.service";
 import { ExampleService } from './services/example-service';
 import { CommonModule } from '@angular/common';
+import { GameComponent } from './components/game/game.component';
+import { MobileEstinationComponent } from './components/mobile-estination/mobile-estination.component';
+import { DesktopEstinationComponent } from './components/desktop-estination/desktop-estination.component';
+import { PlaygroundComponent } from './components/playground/playground.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +26,11 @@ import { CommonModule } from '@angular/common';
         FooterComponent,
         OnboardingComponent,
         ErrorComponent,
-        PlayerListComponent,
+        GamecontrolComponent,
+        GameComponent,
+        MobileEstinationComponent,
+        DesktopEstinationComponent,
+        PlaygroundComponent,
         GamecontrolComponent
     ],
     imports: [
