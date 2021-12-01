@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Player} from "./player";
 import {Observable, tap} from 'rxjs';
+import {Player} from "../player";
 
 @Injectable({
     providedIn: 'root'
 })
-export class HttpService {
+export class PokerGameService {
 
     private _gamekey?: string;
     private _players?: Player[];

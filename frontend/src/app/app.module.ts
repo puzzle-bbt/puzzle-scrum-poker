@@ -10,8 +10,6 @@ import { ErrorComponent } from './components/error/error.component';
 import {PlayerListComponent} from "./components/playerlist/playerlist.component";
 import { HttpClientModule } from '@angular/common/http';
 import { GamecontrolComponent } from "./components/gamecontrol/gamecontrol.component";
-import { HttpService } from "./http.service";
-import { ExampleService } from './services/example-service';
 import { CommonModule } from '@angular/common';
 import { PlaygroundComponent } from './components/playground/playground.component';
 import { InfoComponent } from './components/info/info.component';
@@ -38,10 +36,7 @@ import { MobileEstimationComponent } from './components/mobile-estimation/mobile
         AppRoutingModule,
         HttpClientModule
     ],
-    providers: [
-        HttpService,
-        ExampleService
-    ],
+    providers: [],
     exports: [CommonModule],
     bootstrap: [AppComponent]
 })
