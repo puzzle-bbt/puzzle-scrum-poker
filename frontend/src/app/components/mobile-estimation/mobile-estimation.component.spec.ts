@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GamecontrolComponent } from './gamecontrol.component';
+import { MobileEstimationComponent } from './mobile-estimation.component';
 
-describe('GamecontrolComponent', () => {
-  let component: GamecontrolComponent;
-  let fixture: ComponentFixture<GamecontrolComponent>;
+describe('MobileEstinationComponent', () => {
+  let component: MobileEstimationComponent;
+  let fixture: ComponentFixture<MobileEstimationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GamecontrolComponent ]
+      declarations: [ MobileEstimationComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GamecontrolComponent);
+    fixture = TestBed.createComponent(MobileEstimationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+.card {
+    width: 137px;
+    margin: 15px;
+}
+
+.selectedcard {
+    padding-bottom: 30px;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}

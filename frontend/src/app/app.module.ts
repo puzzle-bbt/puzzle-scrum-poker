@@ -9,11 +9,13 @@ import { OnboardingComponent } from './components/onboarding/onboarding.componen
 import { ErrorComponent } from './components/error/error.component';
 import {PlayerListComponent} from "./components/playerlist/playerlist.component";
 import { HttpClientModule } from '@angular/common/http';
-import { GamecontrolComponent } from "./components/gamecontrol/gamecontrol.component";
 import { WebsocketService } from "./websocket.service";
 import { HttpService } from "./http.service";
 import { ExampleService } from './services/example-service';
 import { CommonModule } from '@angular/common';
+import { MobileEstimationComponent } from './components/mobile-estimation/mobile-estimation.component';
+import { DesktopEstimationComponent } from './components/desktop-estimation/desktop-estimation.component';
+import { PlaygroundComponent } from './components/playground/playground.component';
 
 @NgModule({
     declarations: [
@@ -22,8 +24,9 @@ import { CommonModule } from '@angular/common';
         FooterComponent,
         OnboardingComponent,
         ErrorComponent,
-        PlayerListComponent,
-        GamecontrolComponent
+        MobileEstimationComponent,
+        DesktopEstimationComponent,
+        PlaygroundComponent,
     ],
     imports: [
         CommonModule,
