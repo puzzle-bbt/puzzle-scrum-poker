@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpService } from '../../http.service';
+import { PokerGameService } from '../../poker-game.service';
 import { Player } from '../../player';
 import { ExampleService } from '../../services/example-service';
 import { PlayerModel } from '../../models/model';
@@ -26,7 +26,7 @@ export class GamecontrolComponent implements OnInit {
     };
 
     constructor(
-        private httpService: HttpService,
+        private httpService: PokerGameService,
         private exampleService: ExampleService,
         private messenger: BackendMessengerService) {}
 

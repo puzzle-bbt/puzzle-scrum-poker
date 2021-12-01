@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpService } from './http.service';
+import { PokerGameService } from './poker-game.service';
 
 describe('HttpService', () => {
-  let service: HttpService;
+  let service: PokerGameService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HttpService);
+    service = TestBed.inject(PokerGameService);
   });
 
   it('should be created', () => {

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Player} from "../../player";
-import {HttpService} from "../../http.service";
+import {PokerGameService} from "../../poker-game.service";
 
 @Component({
   selector: 'app-playerlist',
@@ -18,7 +18,7 @@ export class PlayerListComponent {
 
 
     constructor(
-        private httpService: HttpService) {
+        private httpService: PokerGameService) {
     }
 
 
