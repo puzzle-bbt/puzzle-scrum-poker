@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { PokerGameService } from '../../poker-game.service';
 import { Player } from '../../player';
 import { ExampleService } from '../../services/example-service';
 import { PlayerModel } from '../../models/model';
 import { Observable, tap } from 'rxjs';
 import {BackendMessengerService} from "../../services/backend-messenger.service";
+import {PokerGameService} from "../../services/poker-game.service";
 
 @Component({
     selector: 'app-gamecontrol',
@@ -26,7 +26,7 @@ export class GamecontrolComponent implements OnInit {
     };
 
     constructor(
-        private httpService: PokerGameService,
+        private pokerService: PokerGameService,
         private exampleService: ExampleService,
         private messenger: BackendMessengerService) {}
 
@@ -44,38 +44,38 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public createPlayer(playerName: string) {
-        this.httpService.createPlayer(this.playerModel.gameKey, playerName).subscribe(
-            (playerId) => {
+        this.pokerService.createPlayer(this.playerModel.gameKey, playerName).subscribe(
+            (playerId: number) => {
                 this.newPlayerId = playerId;
             }
         );
     }
 
     public setSelectedCard(playerId: string, selectedCard: string) {
-        this.httpService.setSelectedCard(this.playerModel.gameKey, +playerId, selectedCard).subscribe(
-            (selectedCard) => {
+        this.pokerService.setSelectedCard(this.playerModel.gameKey, +playerId, selectedCard).subscribe(
+            (selectedCard: string) => {
             }
         );
     }
 
     public setPlayerMode(playerId: string, playerMode: string) {
-        this.httpService.setPlayerMode(this.playerModel.gameKey, +playerId, playerMode == 'true').subscribe(
+        this.pokerService.setPlayerMode(this.playerModel.gameKey, +playerId, playerMode == 'true').subscribe(
             () => {
             }
         );
     }
 
     public getAverage() {
-        this.httpService.getAverage(this.playerModel.gameKey).subscribe(
-            (average) => {
+        this.pokerService.getAverage(this.playerModel.gameKey).subscribe(
+            (average: number) => {
                 this.average = average;
             }
         );
     }
 
     public getPlayers() {
-        this.httpService.getPlayers(this.playerModel.gameKey).subscribe(
-            (players) => {
+        this.pokerService.getPlayers(this.playerModel.gameKey).subscribe(
+            (players: Player[]) => {
                 this.players = players;
             }
         );
@@ -86,7 +86,7 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public gameover() {
-        this.httpService.gameover(this.playerModel.gameKey).subscribe(
+        this.pokerService.gameover(this.playerModel.gameKey).subscribe(
             () => {
                 this.isGameRunning = false;
             }
@@ -94,7 +94,7 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public gamestart() {
-        this.httpService.gamestart(this.playerModel.gameKey).subscribe(
+        this.pokerService.gamestart(this.playerModel.gameKey).subscribe(
             () => {
                 this.isGameRunning = true;
             }
@@ -102,7 +102,7 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public kickplayer(playerId: number) {
-        this.httpService.kickplayer(this.playerModel.gameKey, playerId).subscribe(
+        this.pokerService.kickplayer(this.playerModel.gameKey, playerId).subscribe(
             () => {
             }
         );
