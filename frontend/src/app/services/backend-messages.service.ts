@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy, OnInit} from '@angular/core';
 import {webSocket, WebSocketSubject} from "rxjs/webSocket";
 
 @Injectable({
   providedIn: 'root'
 })
-export class WebsocketService {
+export class BackendMessagesService {
 
     private wsSubject : WebSocketSubject<string>;
 
