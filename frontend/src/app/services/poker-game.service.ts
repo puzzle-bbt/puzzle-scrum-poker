@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable, tap} from 'rxjs';
 import {Player} from "../player";
-import {AppModule} from "../app.module";
 
 @Injectable({
     providedIn: 'root'

@@ -1,6 +1,7 @@
 package ch.puzzle.bbt.puzzlescrumpoker;
 
 import ch.puzzle.bbt.puzzlescrumpoker.gameroles.Player;
+import ch.puzzle.bbt.puzzlescrumpoker.models.PlayerModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -27,11 +28,11 @@ public class RestInterface {
     }
 
     @GetMapping("/createTablemaster/{name}")
-    public String createTablemaster(@PathVariable(value="name") String name) {
+    public PlayerModel createTablemaster(@PathVariable(value="name") String name) {
         LOG.info("createTablemaster is called: /tablemaster/{}", name);
         try {
             List<Object> ids = pokerService.addNewTable(name);
-            return ids.get(0) + "," + ids.get(1);
+            return new PlayerModel(ids.get(0).toString(), ids.get(1).toString(), null);
         } catch (Exception e) {
             LOG.error("createTablemaster has failed: ", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

@@ -24,16 +24,14 @@ export class ExampleService {
         private readonly http: HttpClient
     ) {}
 
-    // TODO: '/api/createTablemaster' sollte auch ein JSON zurück liefern
     public createTablemaster(tablemasterName: string): Observable<PlayerModel> {
-        return this.http.get(`${BASE_URL}/createTablemaster/${tablemasterName}`, {responseType: 'text'})
+        return this.http.get<PlayerModel>(`${BASE_URL}/createTablemaster/${tablemasterName}`, BASE_GET_REQUEST_OPTIONS)
         .pipe(
             tap(value => console.log('-------->', value)),
             map(data => {
-                let dataArray = data.split(',');
                 return {
-                    gameKey: dataArray[0],
-                    id: dataArray[1],
+                    gameKey: data.gameKey,
+                    id: data.id,
                     selectedCard: undefined
                 } as PlayerModel;
             }),
