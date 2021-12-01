@@ -3,10 +3,10 @@ import {CardService} from "../../services/card.service";
 
 @Component({
   selector: 'app-desktop-estination',
-  templateUrl: './desktop-estination.component.html',
-  styleUrls: ['./desktop-estination.component.scss']
+  templateUrl: './desktop-estimation.component.html',
+  styleUrls: ['./desktop-estimation.component.scss']
 })
-export class DesktopEstinationComponent implements OnInit {
+export class DesktopEstimationComponent implements OnInit {
 
     @ViewChild('cardContainer')
     cardContainerDiv?: ElementRef<HTMLDivElement>;

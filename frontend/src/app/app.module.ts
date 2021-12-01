@@ -9,14 +9,12 @@ import { OnboardingComponent } from './components/onboarding/onboarding.componen
 import { ErrorComponent } from './components/error/error.component';
 import {PlayerListComponent} from "./components/playerlist/playerlist.component";
 import { HttpClientModule } from '@angular/common/http';
-import { GamecontrolComponent } from "./components/gamecontrol/gamecontrol.component";
 import { WebsocketService } from "./websocket.service";
 import { HttpService } from "./http.service";
 import { ExampleService } from './services/example-service';
 import { CommonModule } from '@angular/common';
-import { GameComponent } from './components/game/game.component';
 import { MobileEstinationComponent } from './components/mobile-estination/mobile-estination.component';
-import { DesktopEstinationComponent } from './components/desktop-estination/desktop-estination.component';
+import { DesktopEstimationComponent } from './components/desktop-estimation/desktop-estimation.component';
 import { PlaygroundComponent } from './components/playground/playground.component';
 
 @NgModule({
@@ -26,12 +24,9 @@ import { PlaygroundComponent } from './components/playground/playground.componen
         FooterComponent,
         OnboardingComponent,
         ErrorComponent,
-        GamecontrolComponent,
-        GameComponent,
         MobileEstinationComponent,
-        DesktopEstinationComponent,
+        DesktopEstimationComponent,
         PlaygroundComponent,
-        GamecontrolComponent
     ],
     imports: [
         CommonModule,
