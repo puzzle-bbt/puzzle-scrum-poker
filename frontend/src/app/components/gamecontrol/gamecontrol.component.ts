@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpService } from '../../http.service';
-import { WebsocketService } from '../../websocket.service';
 import { Player } from '../../player';
 import { ExampleService } from '../../services/example-service';
 import { PlayerModel } from '../../models/model';
 import { Observable, tap } from 'rxjs';
+import {BackendMessagesService} from "../../services/backend-messages.service";
 
 @Component({
     selector: 'app-gamecontrol',
@@ -28,19 +28,19 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     constructor(
         private httpService: HttpService,
         private exampleService: ExampleService,
-        private websocketService: WebsocketService) {}
+        private backendMessages: BackendMessagesService) {}
 
 
 
     ngOnInit(): void {
-        this.websocketService.openWSConnection(
+        this.backendMessages.openWSConnection(
             () => {
             }
         );
     }
 
     ngOnDestroy(): void {
-        this.websocketService.closeWSConnection();
+        this.backendMessages.closeWSConnection();
     }
 
     public createTablemaster(tablemasterName: string) {
@@ -91,7 +91,7 @@ export class GamecontrolComponent implements OnInit, OnDestroy {
     }
 
     public sendWSMessage(msg: string) {
-        this.websocketService.sendWSMessage(msg);
+        this.backendMessages.sendWSMessage(msg);
     }
 
     public gameover() {

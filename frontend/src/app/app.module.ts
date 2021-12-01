@@ -10,7 +10,6 @@ import { ErrorComponent } from './components/error/error.component';
 import {PlayerListComponent} from "./components/playerlist/playerlist.component";
 import { HttpClientModule } from '@angular/common/http';
 import { GamecontrolComponent } from "./components/gamecontrol/gamecontrol.component";
-import { WebsocketService } from "./websocket.service";
 import { HttpService } from "./http.service";
 import { ExampleService } from './services/example-service';
 import { CommonModule } from '@angular/common';
@@ -40,7 +39,6 @@ import { MobileEstimationComponent } from './components/mobile-estimation/mobile
         HttpClientModule
     ],
     providers: [
-        WebsocketService,
         HttpService,
         ExampleService
     ],

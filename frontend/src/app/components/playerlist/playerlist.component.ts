@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Player} from "../../player";
 import {HttpService} from "../../http.service";
-import {WebsocketService} from "../../websocket.service";
-import {waitForAsync} from "@angular/core/testing";
 
 @Component({
   selector: 'app-playerlist',
@@ -20,8 +18,7 @@ export class PlayerListComponent {
 
 
     constructor(
-        private httpService: HttpService,
-        private websocketService: WebsocketService) {
+        private httpService: HttpService) {
     }
 
 
