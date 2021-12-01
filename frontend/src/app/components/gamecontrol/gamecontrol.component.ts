@@ -35,12 +35,12 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public createTablemaster(tablemasterName: string) {
-        this.playerModel$ = this.exampleService.createTablemaster(tablemasterName);
-        this.playerModel$.pipe(
-            tap(value => {
-                this.playerModel = value;
-            })
-        )
+        this.playerModel$ = this.exampleService.createTablemaster(tablemasterName)
+            .pipe(
+                tap((value: PlayerModel) => {
+                    this.playerModel = value;
+                })
+            );
     }
 
     public createPlayer(playerName: string) {
