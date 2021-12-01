@@ -9,13 +9,12 @@ import { OnboardingComponent } from './components/onboarding/onboarding.componen
 import { ErrorComponent } from './components/error/error.component';
 import {PlayerListComponent} from "./components/playerlist/playerlist.component";
 import { HttpClientModule } from '@angular/common/http';
-import { WebsocketService } from "./websocket.service";
-import { HttpService } from "./http.service";
-import { ExampleService } from './services/example-service';
+import { GamecontrolComponent } from "./components/gamecontrol/gamecontrol.component";
 import { CommonModule } from '@angular/common';
-import { MobileEstimationComponent } from './components/mobile-estimation/mobile-estimation.component';
-import { DesktopEstimationComponent } from './components/desktop-estimation/desktop-estimation.component';
 import { PlaygroundComponent } from './components/playground/playground.component';
+import { InfoComponent } from './components/info/info.component';
+import { DesktopEstimationComponent } from './components/desktop-estimation/desktop-estimation.component';
+import { MobileEstimationComponent } from './components/mobile-estimation/mobile-estimation.component';
 
 @NgModule({
     declarations: [
@@ -24,9 +23,12 @@ import { PlaygroundComponent } from './components/playground/playground.componen
         FooterComponent,
         OnboardingComponent,
         ErrorComponent,
-        MobileEstimationComponent,
-        DesktopEstimationComponent,
+        PlayerListComponent,
+        GamecontrolComponent,
         PlaygroundComponent,
+        InfoComponent,
+        DesktopEstimationComponent,
+        MobileEstimationComponent
     ],
     imports: [
         CommonModule,
@@ -34,11 +36,8 @@ import { PlaygroundComponent } from './components/playground/playground.componen
         AppRoutingModule,
         HttpClientModule
     ],
-    providers: [
-        WebsocketService,
-        HttpService,
-        ExampleService
-    ],
+    providers: [],
+    exports: [CommonModule],
     bootstrap: [AppComponent]
 })
 export class AppModule {

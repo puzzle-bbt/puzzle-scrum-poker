@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angu
 import {CardService} from "../../services/card.service";
 
 @Component({
-  selector: 'app-desktop-estination',
+  selector: 'app-desktop-estimation',
   templateUrl: './desktop-estimation.component.html',
   styleUrls: ['./desktop-estimation.component.scss']
 })

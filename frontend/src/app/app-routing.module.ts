@@ -2,21 +2,26 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { ErrorComponent } from './components/error/error.component';
-import {PlayerListComponent} from "./components/playerlist/playerlist.component";
+import { PlaygroundComponent } from './components/playground/playground.component';
+import { InfoComponent } from './components/info/info.component';
 
 const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        /*redirectTo: 'onborarding'*/
+        redirectTo: 'onboarding'
     },
     {
-        path: 'onborarding',
+        path: 'onboarding',
         component: OnboardingComponent
     },
     {
-        path: 'playerlist',
-        component: PlayerListComponent
+        path: 'playground',
+        component: PlaygroundComponent
+    },
+    {
+        path: 'info',
+        component: InfoComponent
     },
     {
         path: 'error',

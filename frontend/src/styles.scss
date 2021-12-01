@@ -13,3 +13,29 @@ html, body {
     height: 100%;
     margin: 0;
 }
+
+/* For mobile phones: */
+body {
+    background-color: tan;
+}
+
+/* For desktops: */
+@media only screen and (max-width: 600px) {
+    body {
+        background-color: lightblue;
+    }
+}
+
+
+/* For mobile phones: */
+body {
+    background-color: tan;
+}
+
+/* For desktops: */
+@media only screen and (max-width: 600px) {
+    body {
+        background-color: lightblue;
+    }
+}
+
