@@ -12,4 +12,8 @@ export class MobileEstinationComponent implements OnInit {
   ngOnInit(): void {
   }
 
+    public setSelectedCard(selectedValue:string) {
+
+    }
+
 }
