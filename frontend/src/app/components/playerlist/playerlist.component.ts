@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Player} from "../../player";
-import {PokerGameService} from "../../poker-game.service";
+import {PokerGameService} from "../../services/poker-game.service";
 
 @Component({
   selector: 'app-playerlist',
@@ -18,27 +18,27 @@ export class PlayerListComponent {
 
 
     constructor(
-        private httpService: PokerGameService) {
+        private pokerService: PokerGameService) {
     }
 
 
     public refresh() {
-        this.gamekey = this.httpService.gamekey;
-        this.isGameRunning = this.httpService.isGameRunning;
-        this.httpService.getPlayers(this.gamekey).subscribe(
-            (players) => {
+        this.gamekey = this.pokerService.gamekey;
+        this.isGameRunning = this.pokerService.isGameRunning;
+        this.pokerService.getPlayers(this.gamekey).subscribe(
+            (players: Player[]) => {
                 this.players = players;
             }
         )
-        this.httpService.getAverage(this.gamekey).subscribe(
-            (average) => {
+        this.pokerService.getAverage(this.gamekey).subscribe(
+            (average: number) => {
                 this.average = average;
             }
         )
     }
 
     public kickplayer(playerId: number) {
-        this.httpService.kickplayer(this.gamekey!, playerId).subscribe(
+        this.pokerService.kickplayer(this.gamekey!, playerId).subscribe(
             () => {
             }
         );
