@@ -1,15 +1,10 @@
-app-desktop-estination {
-    display: none;
-}
-app-mobile-estination {
-    display: block;
-}
+
 
 @media only screen and (min-width: 768px) {
-    app-desktop-estination {
+    app-desktop-estimation {
         display: block;
     }
-    app-mobile-estination {
+    app-mobile-estimation {
         display: none;
     }
 }
