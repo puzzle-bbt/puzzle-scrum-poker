@@ -224,7 +224,7 @@ public class PokerService {
     public void sendWebsocketMessage(Table table, String message) {
         for (WebSocketSession webSocketSession : table.getWebsocketsession().values()) {
             try {
-                webSocketSession.sendMessage(new TextMessage(message));
+                webSocketSession.sendMessage(new TextMessage("\"" + message + "\""));
             } catch (IOException e) {
                 checkWebsocketConnection(table, webSocketSession, e.getMessage());
             }
