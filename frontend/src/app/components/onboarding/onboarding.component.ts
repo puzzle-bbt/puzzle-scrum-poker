@@ -27,7 +27,7 @@ export class OnboardingComponent implements OnInit {
       }
     }
 
-    public checkForTablemaster(username: string) {
+    public create(username: string) {
         if(this.cacheService.isTablemaster) {
             this.createTablemaster(username);
         } else {

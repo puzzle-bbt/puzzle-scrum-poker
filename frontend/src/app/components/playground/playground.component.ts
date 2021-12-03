@@ -8,14 +8,11 @@ import {CacheService} from "../../services/cache.service";
 })
 export class PlaygroundComponent implements OnInit {
 
+    displayButton: boolean | null = this.cacheService.isTablemaster;
+
   constructor(private cacheService: CacheService) { }
 
   ngOnInit(): void {
-      console.log(this.cacheService.isTablemaster);
-      if (!this.cacheService.isTablemaster) {
-          const element = <HTMLElement> document.getElementsByClassName('middleButton')[0];
-          element.style.display = 'none';
-      }
   }
 
 }
