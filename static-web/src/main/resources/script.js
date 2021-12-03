@@ -262,10 +262,10 @@ function printTextForSpectators(gameModeOfCurrentPlayer) {
 function fillPlayerlist(playerID, arrayWithAllPlayers, gamekey) {
     let playerList = $('.player-list');
     for (var i = 0; i < arrayWithAllPlayers.length; i++) {
-        var visibilityIcon = '<img src="../../../../frontend/src/assets/images/visibility_black_48dp.svg" width="32" height="32">';
+        var visibilityIcon = '<img src="Cards/visibility_black_48dp.svg" width="32" height="32">';
 
         if (arrayWithAllPlayers[i].playerMode) {
-            visibilityIcon = '<img src="../../../../frontend/src/assets/images/visibility_off_black_48dp.svg" width="32" height="32">'
+            visibilityIcon = '<img src="Cards/visibility_off_black_48dp.svg" width="32" height="32">'
         }
 
         var playerNameAtI = arrayWithAllPlayers[i].name;
@@ -306,13 +306,13 @@ function fillPlayerlist(playerID, arrayWithAllPlayers, gamekey) {
 
 function coveredCard(player) {
     if (!player.playerMode) {
-        return '<img class="blank-card-gray" src="../../../../frontend/src/assets/images/Blank-card.svg" width="28" height="45">';
+        return '<img class="blank-card-gray" src="Cards/Blank-card.svg" width="28" height="45">';
     }
     else if (player.selectedCard != null) {
-        return '<img class="blank-card-green" src="../../../../frontend/src/assets/images/Blank-card.svg" width="28" height="45">';
+        return '<img class="blank-card-green" src="Cards/Blank-card.svg" width="28" height="45">';
     }
     else {
-        return '<img class="blank-card" src="../../../../frontend/src/assets/images/Blank-card.svg" width="28" height="45">';
+        return '<img class="blank-card" src="Cards/Blank-card.svg" width="28" height="45">';
     }
 }
 
