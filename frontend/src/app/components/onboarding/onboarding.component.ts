@@ -3,7 +3,7 @@ import {PokerGameService} from "../../services/poker-game.service";
 import {Observable, tap} from "rxjs";
 import {PlayerModel} from "../../models/model";
 import {ExampleService} from "../../services/example-service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CacheService} from "../../services/cache.service";
 
 @Component({
@@ -14,7 +14,7 @@ import {CacheService} from "../../services/cache.service";
 
 export class OnboardingComponent implements OnInit {
 
-    constructor(private route: ActivatedRoute,  private exampleService: ExampleService, private cacheService: CacheService) { }
+    constructor(private router: Router, private route: ActivatedRoute,  private exampleService: ExampleService, private cacheService: CacheService) { }
 
     ngOnInit(): void {
       const gamekey = this.route.snapshot.paramMap.get('gamekey');
@@ -43,6 +43,7 @@ export class OnboardingComponent implements OnInit {
                     this.cacheService.gamekey = value.gameKey!;
                 })
             ).subscribe();
+        this.router.navigateByUrl("/playground");
     }
 
     public createPlayer(playerName: string) {
@@ -52,10 +53,7 @@ export class OnboardingComponent implements OnInit {
                     this.cacheService.id = +value.id;
                 })
             ).subscribe();
-    }
-
-    public redirectPlayground() {
-        window.location.href = "playground";
+        this.router.navigateByUrl("/playground");
     }
 
 }
