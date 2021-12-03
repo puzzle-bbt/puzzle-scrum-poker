@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CacheService} from "../../services/cache.service";
 
 @Component({
   selector: 'app-playground',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlaygroundComponent implements OnInit {
 
-  constructor() { }
+  constructor(private cacheService: CacheService) { }
 
   ngOnInit(): void {
+      console.log(this.cacheService.isTablemaster);
+      if (!this.cacheService.isTablemaster) {
+          const element = <HTMLElement> document.getElementsByClassName('middleButton')[0];
+          element.style.display = 'none';
+      }
   }
 
 }
