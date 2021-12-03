@@ -44,7 +44,7 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public createPlayer(playerName: string) {
-        this.pokerService.createPlayer(this.playerModel.gameKey, playerName).subscribe(
+        this.pokerService.createPlayer(this.playerModel.gameKey!, playerName).subscribe(
             (playerId: number) => {
                 this.newPlayerId = playerId;
             }
@@ -52,21 +52,21 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public setSelectedCard(playerId: string, selectedCard: string) {
-        this.pokerService.setSelectedCard(this.playerModel.gameKey, +playerId, selectedCard).subscribe(
+        this.pokerService.setSelectedCard(this.playerModel.gameKey!, +playerId, selectedCard).subscribe(
             (selectedCard: string) => {
             }
         );
     }
 
     public setPlayerMode(playerId: string, playerMode: string) {
-        this.pokerService.setPlayerMode(this.playerModel.gameKey, +playerId, playerMode == 'true').subscribe(
+        this.pokerService.setPlayerMode(this.playerModel.gameKey!, +playerId, playerMode == 'true').subscribe(
             () => {
             }
         );
     }
 
     public getAverage() {
-        this.pokerService.getAverage(this.playerModel.gameKey).subscribe(
+        this.pokerService.getAverage(this.playerModel.gameKey!).subscribe(
             (average: number) => {
                 this.average = average;
             }
@@ -74,7 +74,7 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public getPlayers() {
-        this.pokerService.getPlayers(this.playerModel.gameKey).subscribe(
+        this.pokerService.getPlayers(this.playerModel.gameKey!).subscribe(
             (players: Player[]) => {
                 this.players = players;
             }
@@ -86,7 +86,7 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public gameover() {
-        this.pokerService.gameover(this.playerModel.gameKey).subscribe(
+        this.pokerService.gameover(this.playerModel.gameKey!).subscribe(
             () => {
                 this.isGameRunning = false;
             }
@@ -94,7 +94,7 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public gamestart() {
-        this.pokerService.gamestart(this.playerModel.gameKey).subscribe(
+        this.pokerService.gamestart(this.playerModel.gameKey!).subscribe(
             () => {
                 this.isGameRunning = true;
             }
@@ -102,7 +102,7 @@ export class GamecontrolComponent implements OnInit {
     }
 
     public kickplayer(playerId: number) {
-        this.pokerService.kickplayer(this.playerModel.gameKey, playerId).subscribe(
+        this.pokerService.kickplayer(this.playerModel.gameKey!, playerId).subscribe(
             () => {
             }
         );

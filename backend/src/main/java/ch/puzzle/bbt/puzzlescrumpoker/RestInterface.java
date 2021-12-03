@@ -40,10 +40,11 @@ public class RestInterface {
     }
 
     @GetMapping("/createPlayer/{name}/{table}")
-    public long createPlayer(@PathVariable(value="name") String name, @PathVariable(value="table") String gamekey) {
+    public PlayerModel createPlayer(@PathVariable(value="name") String name, @PathVariable(value="table") String gamekey) {
         LOG.info("createPlayer is called: /createPlayer/{}/{}", name, gamekey);
         try {
-            return pokerService.addNewPlayer(name, gamekey);
+            String playerid = Long.toString(pokerService.addNewPlayer(name, gamekey));
+            return new PlayerModel(null, playerid, null);
         } catch (Exception e) {
             LOG.error("createPlayer has failed: ", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

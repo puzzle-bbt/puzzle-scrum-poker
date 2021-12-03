@@ -16,6 +16,10 @@ const routes: Routes = [
         component: OnboardingComponent
     },
     {
+        path: 'onboarding/:gamekey',
+        component: OnboardingComponent
+    },
+    {
         path: 'playground',
         component: PlaygroundComponent
     },

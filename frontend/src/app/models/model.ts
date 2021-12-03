@@ -1,5 +1,5 @@
 export interface PlayerModel {
-    gameKey: string;
+    gameKey: string | undefined;
     id: string;
     selectedCard: string | undefined;
 }
