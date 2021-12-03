@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CacheService} from "../../services/cache.service";
 
 @Component({
   selector: 'app-playground',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlaygroundComponent implements OnInit {
 
-  constructor() { }
+    displayButton: boolean | null = this.cacheService.isTablemaster;
+
+  constructor(private cacheService: CacheService) { }
 
   ngOnInit(): void {
   }

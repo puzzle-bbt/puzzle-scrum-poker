@@ -41,4 +41,22 @@ export class ExampleService {
             })
         )
     }
+
+    public createPlayer(playerName: string, gamekey: string): Observable<PlayerModel> {
+        return this.http.get<PlayerModel>(`${BASE_URL}/createPlayer/${playerName}/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
+        .pipe(
+            tap(value => console.log('-------->', value)),
+            map(data => {
+                return {
+                    gameKey: undefined,
+                    id: data.id,
+                    selectedCard: undefined
+                } as PlayerModel;
+            }),
+            catchError(error => {
+                console.error('Can not create a player: ', error);
+                return EMPTY;
+            })
+        )
+    }
 }

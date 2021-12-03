@@ -3,3 +3,16 @@
 <p>Das Puzzle Scrum Poker Tool ist dazu da um im Team Stories zu schätzen.</p>
 
 <p>Username erstellen</p>
+<div>
+    <label for="fname">Username: </label>
+    <input #un placeholder="Username" type="text" id="fname" name="fname">
+</div>
+<div>
+    <p>Dies ist dein Benutzername, welcher von allen anderen Spieler zu sehen sein wird.</p>
+</div>
+<br>
+<div>
+    <button (click)="create(un.value)">Erstellen</button>
+</div>
+<br>
+<br>
