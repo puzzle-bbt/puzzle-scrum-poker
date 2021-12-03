@@ -1,5 +1,3 @@
-playerlist
-{{ gamekey }}
 <div class="player-list">
     <div *ngFor="let player of players ">
 
@@ -36,4 +34,7 @@ playerlist
         <ng-template><div class="list-item"></div></ng-template>
     </div>
     <ng-template #gameIsNotRunning><div class="list-item">Average: {{ average }}</div></ng-template>
+
+    <button class="copyButton" (click)="copyLink()">Einladungslink kopieren</button>
+
 </div>

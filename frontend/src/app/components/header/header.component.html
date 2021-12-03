@@ -1,8 +1,11 @@
 <div class="containter">
     <div>
-    <p>header works!</p>
+    <p>Puzzle Scrum Poker</p>
+    </div>
+    <div *ngIf="isCurrentlyOnPlayground()">
+        <img (click)="changeSpectator()" src="assets/visibility_white_48dp.svg" height="30" width="30">
     </div>
     <div>
-        <img (click)="changeSpectator()" src="assets/visibility_white_48dp.svg" height="30" width="30">
+        <img src="assets/info_white_48dp.svg" height="30" width="30" routerLink="/info">
     </div>
 </div>

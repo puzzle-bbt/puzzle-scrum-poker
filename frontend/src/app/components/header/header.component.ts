@@ -10,6 +10,7 @@ import {PokerGameService} from "../../services/poker-game.service";
 export class HeaderComponent implements OnInit {
 
     isPlaying?: boolean = true;
+    isOnPlayground?: boolean;
 
     constructor(private cacheService: CacheService, private pokerGameService: PokerGameService) {
     }
@@ -19,13 +20,21 @@ export class HeaderComponent implements OnInit {
 
     public changeSpectator() {
         if (this.isPlaying) {
-            this.pokerGameService.setPlayerMode(this.cacheService.gamekey!, this.cacheService.id!, false);
+            this.pokerGameService.setPlayerMode(this.cacheService.gamekey!, this.cacheService.id!, false).subscribe();
             this.isPlaying = false;
         }
         else {
-            this.pokerGameService.setPlayerMode(this.cacheService.gamekey!, this.cacheService.id!, true);
+            this.pokerGameService.setPlayerMode(this.cacheService.gamekey!, this.cacheService.id!, true).subscribe();
             this.isPlaying = true;
         }
     }
 
+    public isCurrentlyOnPlayground() {
+        let url = window.location.toString();
+        if (url.includes("playground")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
