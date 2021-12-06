@@ -58,11 +58,7 @@ export class DesktopEstimationComponent implements OnInit {
             this.resetCards();
             if (!svg.classList.contains("selectedcard")) {
                 svg.classList.add("selectedcard");
-                this.pokerService.setSelectedCard(this.gamekey!, this.playerid!, storyPoints).subscribe(
-                    () => {
-
-                    }
-                );
+                this.pokerService.setSelectedCard(this.gamekey!, this.playerid!, storyPoints).subscribe();
             }
         })
 

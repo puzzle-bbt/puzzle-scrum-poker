@@ -20,11 +20,7 @@ export class MobileEstimationComponent implements OnInit {
   }
 
     public setSelectedCard(selectedValue:string) {
-        this.pokerService.setSelectedCard(this.gamekey!, this.playerid!, selectedValue).subscribe(
-            () => {
-
-            }
-        );
+        this.pokerService.setSelectedCard(this.gamekey!, this.playerid!, selectedValue).subscribe();
     }
 
 }
