@@ -10,7 +10,6 @@ import {PokerGameService} from "../../services/poker-game.service";
 export class HeaderComponent implements OnInit {
 
     isPlaying?: boolean = true;
-    isOnPlayground?: boolean;
 
     constructor(private cacheService: CacheService, private pokerGameService: PokerGameService) {
     }

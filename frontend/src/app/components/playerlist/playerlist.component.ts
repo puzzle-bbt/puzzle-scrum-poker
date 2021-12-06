@@ -29,30 +29,30 @@ export class PlayerListComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        this.refresh();
-        this.messenger.subscribe((message) => {
-            if (message.includes("RefreshPlayer")) {
-                this.refresh();
-            }
-        });
         if (this.cacheService.isTablemaster) {
             this.isTablemaster = true;
         }
         else {
             this.isTablemaster = false;
         }
+        this.gamekey = this.cacheService.gamekey!;
+        this.playerid = this.cacheService.id!;
+        this.messenger.subscribe((message) => {
+            if (message.includes("RefreshPlayer")) {
+                this.refresh();
+            }
+        });
+        this.refresh();
     }
 
     public refresh() {
-        this.gamekey = this.cacheService.gamekey!;
         this.isGameRunning = this.pokerService.isGameRunning;
-        this.playerid = this.cacheService.id!;
-        this.pokerService.getPlayers(this.gamekey).subscribe(
+        this.pokerService.getPlayers(this.gamekey!).subscribe(
             (players: Player[]) => {
                 this.players = players;
             }
         )
-        this.pokerService.getAverage(this.gamekey).subscribe(
+        this.pokerService.getAverage(this.gamekey!).subscribe(
             (average: number) => {
                 this.average = average;
             }
@@ -72,7 +72,7 @@ export class PlayerListComponent implements OnInit{
         selBox.style.left = '0';
         selBox.style.top = '0';
         selBox.style.opacity = '0';
-        selBox.value = "localhost:4200/onboarding/" + this.gamekey;
+        selBox.value = window.location.host + "/onboarding/" + this.gamekey;
         document.body.appendChild(selBox);
         selBox.focus();
         selBox.select();
