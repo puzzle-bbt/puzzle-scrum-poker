@@ -5,6 +5,7 @@ import {PlayerModel} from "../../models/model";
 import {ExampleService} from "../../services/example-service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CacheService} from "../../services/cache.service";
+import {BackendMessengerService} from "../../services/backend-messenger.service";
 
 @Component({
   selector: 'app-onboarding',
@@ -14,7 +15,7 @@ import {CacheService} from "../../services/cache.service";
 
 export class OnboardingComponent implements OnInit {
 
-    constructor(private router: Router, private route: ActivatedRoute,  private exampleService: ExampleService, private cacheService: CacheService) { }
+    constructor(private router: Router, private route: ActivatedRoute,  private exampleService: ExampleService, private cacheService: CacheService, private messenger: BackendMessengerService) { }
 
     ngOnInit(): void {
       const gamekey = this.route.snapshot.paramMap.get('gamekey');
@@ -41,9 +42,10 @@ export class OnboardingComponent implements OnInit {
                 tap((value: PlayerModel) => {
                     this.cacheService.id = +value.id;
                     this.cacheService.gamekey = value.gameKey!;
+                    this.messenger.sendMessage(`table=${this.cacheService.gamekey},playerid=${this.cacheService.id}`);
+                    this.router.navigateByUrl("/playground");
                 })
             ).subscribe();
-        this.router.navigateByUrl("/playground");
     }
 
     public createPlayer(playerName: string) {
@@ -51,9 +53,9 @@ export class OnboardingComponent implements OnInit {
             .pipe(
                 tap((value: PlayerModel) => {
                     this.cacheService.id = +value.id;
+                    this.messenger.sendMessage(`table=${this.cacheService.gamekey},playerid=${this.cacheService.id}`);
+                    this.router.navigateByUrl("/playground");
                 })
             ).subscribe();
-        this.router.navigateByUrl("/playground");
     }
-
 }
