@@ -21,7 +21,13 @@ const routes: Routes = [
     },
     {
         path: 'playground',
-        component: PlaygroundComponent
+        component: PlaygroundComponent,
+        children: [
+            {
+                path: 'info',
+                component: InfoComponent
+            }
+        ]
     },
     {
         path: 'error',
