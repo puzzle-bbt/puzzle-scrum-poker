@@ -1,41 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* For styling HTML elements which are added dynamically */
-.card {
-    width: 137px;
-    margin: 15px;
-}
-
-.selectedcard {
-    padding-bottom: 30px;
-}
-
-
-/* For mobile phones: */
 body {
-    background-color: lightblue;
+  margin: 0;
+  padding: 0;
 }
-
-app-desktop-estimation {
-    display: none;
-}
-
-app-mobile-estimation {
-    display: block;
-}
-
-/* For desktops: */
-@media only screen and (min-width: 768px) {
-    body {
-        background-color: tan;
-    }
-
-    app-desktop-estimation {
-        display: block;
-    }
-
-    app-mobile-estimation {
-        display: none;
-    }
-}
-

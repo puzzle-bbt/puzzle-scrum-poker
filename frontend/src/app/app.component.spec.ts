@@ -1,28 +1,32 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { PokerGameService } from './services/poker-game.service';
+import { CacheService } from './services/cache.service';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule
-            ],
-            declarations: [
-                AppComponent
-            ],
-        }).compileComponents();
-    });
+  let pokerGameService;
+  let cacheService;
 
-    it('should create the app', () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.componentInstance;
-        expect(app).toBeTruthy();
-    });
+  beforeEach(async () => {
+    pokerGameService = jasmine.createSpyObj('PokerGameService', ['setPlayerMode']);
+    pokerGameService.setPlayerMode.and.returnvalue(of(''));
 
-    it(`should have as title 'frontend'`, () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.componentInstance;
-        expect(app.title).toEqual('frontend');
-    });
+    cacheService = jasmine.createSpyObj('CacheService', [], { id: 5, gamekey: 'ZZ456' } );
+
+    await TestBed.configureTestingModule({
+      imports: [],
+      declarations: [ AppComponent ],
+      providers: [
+        { provider: PokerGameService, useValue: pokerGameService},
+        { provider: PokerGameService, useValue: pokerGameService}
+      ]
+    }).compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
 });
