@@ -1,7 +1,14 @@
 <div class="player-list">
+
+    <h3>Team</h3>
+    <div class="heading">
+        <div class="username">Username</div>
+        <div class="estimate">Schätzung (PT)</div>
+    </div>
+
     <div *ngFor="let player of players ">
 
-            <div class="player-row" [class.selfPlayer]="playerid == player.id" [class.otherPlayer]="playerid != player.id">
+            <div class="player-row" [class.selfPlayer]="playerid == player.id">
 
                 <div *ngIf="isGameRunning; else canNotChoose">
                     <div *ngIf="player.selectedCard; else blackIcon">
@@ -11,30 +18,36 @@
                 </div>
                 <ng-template #canNotChoose><div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div></ng-template>
 
-                <div class="list-item">{{ player.name}}</div>
+                <div *ngIf="playerid == player.id; else notThisPlayer">
+                        <div class="list-item"><div class="list-item">{{ player.name + " (Ich)"}}</div></div>
+                    </div>
+                    <ng-template #notThisPlayer><div class="list-item">{{ player.name}}</div></ng-template>
 
                 <div *ngIf="player.playerMode; else elseBlock">
                     <div *ngIf="player.selectedCard; else stillChoosing">
                         <div *ngIf="isGameRunning; else gameIsNotRunning">
-                            <ng-template><div class="list-item">-</div></ng-template>
+                            <ng-template><div class="list-item lastItem">-</div></ng-template>
                         </div>
-                        <ng-template #gameIsNotRunning><div class="list-item">{{ player.selectedCard }}</div></ng-template>
+                        <ng-template #gameIsNotRunning><div class="list-item lastItem">{{ player.selectedCard }}</div></ng-template>
                     </div>
-                    <ng-template #stillChoosing><div class="list-item">-</div></ng-template>
+                    <ng-template #stillChoosing><div class="list-item lastItem">-</div></ng-template>
                 </div>
-                <ng-template #elseBlock><div class="list-item"><img src="assets/visibility_black_48dp.svg" width="32" height="32"></div></ng-template>
+                <ng-template #elseBlock><div class="list-item lastItem"><img src="assets/visibility_black_48dp.svg" width="32" height="32"></div></ng-template>
 
-                <div *ngIf="isTablemaster && player.id != playerid" class="list-item">
+                <div *ngIf="isTablemaster && player.id != playerid" class="list-item lastItem">
                    <img (click)="kickplayer(player.id)" src="assets/close_black_24dp.svg">
                 </div>
             </div>
         </div>
     <br>
+    <!--
     <div *ngIf="isGameRunning; else gameIsNotRunning">
         <ng-template><div class="list-item"></div></ng-template>
     </div>
     <ng-template #gameIsNotRunning><div class="list-item">Average: {{ average }}</div></ng-template>
-
+    -->
     <button class="copyButton" (click)="copyLink()">Einladungslink kopieren</button>
 
 </div>
+
+

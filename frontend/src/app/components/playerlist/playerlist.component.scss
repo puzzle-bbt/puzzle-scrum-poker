@@ -8,9 +8,11 @@
     margin-top: 1%;
     margin-right: 5%;
     margin-left: 3%;
-    width: 20vh;
+    width: 30vh;
+    height: 100%;
     overflow: auto;
     flex-direction: column;
+    border-right: 4px solid black;
 }
 
 .player-row {
@@ -21,16 +23,22 @@
     margin-bottom: 10px;
 }
 
-.otherPlayer {
-    background-color: white;
-}
-
 .selfPlayer {
-    background-color: #1c8def;
     font-weight: bold;
 }
 
 .copyButton {
     height: auto;
-    width: auto;
+    width: 20vh;
+}
+
+.heading {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.lastItem {
+    margin-right: 30px;
 }
