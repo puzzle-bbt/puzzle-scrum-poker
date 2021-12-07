@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CacheService} from "../../services/cache.service";
 import {PokerGameService} from "../../services/poker-game.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-header',
@@ -10,11 +11,13 @@ import {PokerGameService} from "../../services/poker-game.service";
 export class HeaderComponent implements OnInit {
 
     isPlaying?: boolean = true;
+    url?: string;
 
-    constructor(private cacheService: CacheService, private pokerGameService: PokerGameService) {
+    constructor(private cacheService: CacheService, private pokerGameService: PokerGameService, private router: Router) {
     }
 
     ngOnInit(): void {
+        this.url = window.location.toString();
     }
 
     public changeSpectator() {
@@ -29,11 +32,11 @@ export class HeaderComponent implements OnInit {
     }
 
     public isCurrentlyOnPlayground() {
-        let url = window.location.toString();
-        if (url.includes("playground")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.url!.includes("playground");
+    }
+
+    public navigateToInfo() {
+        this.router.navigate([window.location.pathname + "/info"]);
+        console.log(window.location.pathname + "/info");
     }
 }
