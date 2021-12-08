@@ -1,7 +1,5 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CardService} from "../../services/card.service";
 import {PokerGameService} from "../../services/poker-game.service";
-import {CacheService} from "../../services/cache.service";
 
 @Component({
   selector: 'app-desktop-estimation',
@@ -10,26 +8,20 @@ import {CacheService} from "../../services/cache.service";
 })
 export class DesktopEstimationComponent implements OnInit {
 
-    gamekey?: string;
-    playerid?: number;
-
     @ViewChild('cardContainer')
     cardContainerDiv?: ElementRef<HTMLDivElement>;
 
     constructor(
-        private cardService: CardService,
         private changeDetectorRef: ChangeDetectorRef,
-        private pokerService: PokerGameService,
-        private cacheService: CacheService) {}
+        private pokerService: PokerGameService
+        ) {}
 
     ngOnInit(): void {
         this.addCards();
-        this.gamekey = this.cacheService.gamekey!;
-        this.playerid = this.cacheService.id!;
     }
 
     private addCards(svgFilename: string = 'card_front.svg') {
-        this.cardService.getCardSvg(svgFilename).subscribe(
+        this.pokerService.getCardSvg(svgFilename).subscribe(
             (data: string) => {
                 this.addSvgToContainer(this.stringToSvgElement(data), 'card-1', '1')
                 this.addSvgToContainer(this.stringToSvgElement(data), 'card-2', '2')
@@ -58,7 +50,7 @@ export class DesktopEstimationComponent implements OnInit {
             this.resetCards();
             if (!svg.classList.contains("selectedcard")) {
                 svg.classList.add("selectedcard");
-                this.pokerService.setSelectedCard(this.gamekey!, this.playerid!, storyPoints).subscribe();
+                this.pokerService.setSelectedCard(this.pokerService.gamekey!, this.pokerService.id!, storyPoints).subscribe();
             }
         })
 

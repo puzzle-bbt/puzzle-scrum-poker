@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CacheService } from './services/cache.service';
 import { PokerGameService } from './services/poker-game.service';
 
 @Component({
@@ -12,17 +11,16 @@ export class AppComponent {
   isPlaying?: boolean = true;
 
   constructor(
-    private cacheService: CacheService,
-    private pokerGameService: PokerGameService
+    private pokerService: PokerGameService
     ) {
   }
 
   public changeSpectator() {
     if (this.isPlaying) {
-      this.pokerGameService.setPlayerMode(this.cacheService.gamekey!, this.cacheService.id!, false).subscribe();
+      this.pokerService.setPlayerMode(this.pokerService.gamekey!, this.pokerService.id!, false).subscribe();
       this.isPlaying = false;
     } else {
-      this.pokerGameService.setPlayerMode(this.cacheService.gamekey!, this.cacheService.id!, true).subscribe();
+      this.pokerService.setPlayerMode(this.pokerService.gamekey!, this.pokerService.id!, true).subscribe();
       this.isPlaying = true;
     }
   }

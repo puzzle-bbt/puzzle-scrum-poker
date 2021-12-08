@@ -8,7 +8,6 @@ import { OnboardingComponent } from './components/onboarding/onboarding.componen
 import { ErrorComponent } from './components/error/error.component';
 import {PlayerListComponent} from "./components/playerlist/playerlist.component";
 import { HttpClientModule } from '@angular/common/http';
-import { GamecontrolComponent } from "./components/gamecontrol/gamecontrol.component";
 import { CommonModule } from '@angular/common';
 import { PlaygroundComponent } from './components/playground/playground.component';
 import { InfoComponent } from './components/info/info.component';
@@ -22,7 +21,6 @@ import { MobileEstimationComponent } from './components/mobile-estimation/mobile
         OnboardingComponent,
         ErrorComponent,
         PlayerListComponent,
-        GamecontrolComponent,
         PlaygroundComponent,
         InfoComponent,
         DesktopEstimationComponent,
