@@ -429,8 +429,8 @@ class PokerServiceTest {
         // then
         verify(tableMock, times(1)).getWebsocketsession();
         assertEquals(2, tableMock.getWebsocketsession().size());
-        verify(webSocketSessionMock1, times(1)).sendMessage(new TextMessage(WEBSOCKET_MESSAGE));
-        verify(webSocketSessionMock2, times(1)).sendMessage(new TextMessage(WEBSOCKET_MESSAGE));
+        verify(webSocketSessionMock1, times(1)).sendMessage(new TextMessage("\"" + WEBSOCKET_MESSAGE + "\""));
+        verify(webSocketSessionMock2, times(1)).sendMessage(new TextMessage("\"" + WEBSOCKET_MESSAGE + "\""));
     }
 
     @Test
