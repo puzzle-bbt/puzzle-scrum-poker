@@ -8,9 +8,6 @@ import {PokerGameService} from "../../services/poker-game.service";
 })
 export class DesktopEstimationComponent implements OnInit {
 
-    gamekey?: string;
-    playerid?: number;
-
     @ViewChild('cardContainer')
     cardContainerDiv?: ElementRef<HTMLDivElement>;
 
@@ -21,8 +18,6 @@ export class DesktopEstimationComponent implements OnInit {
 
     ngOnInit(): void {
         this.addCards();
-        this.gamekey = this.pokerService.gamekey!;
-        this.playerid = this.pokerService.id!;
     }
 
     private addCards(svgFilename: string = 'card_front.svg') {
@@ -55,7 +50,7 @@ export class DesktopEstimationComponent implements OnInit {
             this.resetCards();
             if (!svg.classList.contains("selectedcard")) {
                 svg.classList.add("selectedcard");
-                this.pokerService.setSelectedCard(this.gamekey!, this.playerid!, storyPoints).subscribe();
+                this.pokerService.setSelectedCard(this.pokerService.gamekey!, this.pokerService.id!, storyPoints).subscribe();
             }
         })
 

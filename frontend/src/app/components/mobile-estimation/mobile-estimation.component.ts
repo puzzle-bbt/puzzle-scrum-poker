@@ -8,18 +8,13 @@ import {PokerGameService} from "../../services/poker-game.service";
 })
 export class MobileEstimationComponent implements OnInit {
 
-    gamekey?: string;
-    playerid?: number;
-
   constructor(private pokerService: PokerGameService) { }
 
   ngOnInit(): void {
-      this.gamekey = this.pokerService.gamekey!;
-      this.playerid = this.pokerService.id!;
   }
 
     public setSelectedCard(selectedValue:string) {
-        this.pokerService.setSelectedCard(this.gamekey!, this.playerid!, selectedValue).subscribe();
+        this.pokerService.setSelectedCard(this.pokerService.gamekey!, this.pokerService.id!, selectedValue).subscribe();
     }
 
 }
