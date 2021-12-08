@@ -110,44 +110,104 @@ export class PokerGameService {
     }
 
     public setSelectedCard(gamekey: string, playerid: number, selectedCard: string) {
-        return this.httpClient.get(`${BASE_URL}/players/setselectedcard/${gamekey}/${playerid}/${selectedCard}`, BASE_GET_REQUEST_OPTIONS);
+        return this.httpClient.get(`${BASE_URL}/players/setselectedcard/${gamekey}/${playerid}/${selectedCard}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                tap(value => console.log('-------->', value)),
+                catchError(error => {
+                    console.error('Can not select card: ', error);
+                    return EMPTY;
+                })
+            )
     }
 
     public setPlayerMode(gamekey: string, playerid: number, isPlaying: boolean) {
-        return this.httpClient.get(`${BASE_URL}/players/setplayermode/${gamekey}/${playerid}/${isPlaying}`, BASE_GET_REQUEST_OPTIONS);
+        return this.httpClient.get(`${BASE_URL}/players/setplayermode/${gamekey}/${playerid}/${isPlaying}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                tap(value => console.log('-------->', value)),
+                catchError(error => {
+                    console.error('Can not set playermode: ', error);
+                    return EMPTY;
+                })
+            );
     }
 
     public getPlayerMode(gamekey: string, playerid: number) {
-        return this.httpClient.get(`${BASE_URL}/players/getplayermode/${gamekey}/${playerid}`, BASE_GET_REQUEST_OPTIONS);
+        return this.httpClient.get(`${BASE_URL}/players/getplayermode/${gamekey}/${playerid}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                tap(value => console.log('-------->', value)),
+                catchError(error => {
+                    console.error('Can not get playermode: ', error);
+                    return EMPTY;
+                })
+            );
     }
 
     public getAverage(gamekey: string): Observable<number> {
-        return this.httpClient.get<number>(`${BASE_URL}/average/${gamekey}`, BASE_GET_REQUEST_OPTIONS);
+        return this.httpClient.get<number>(`${BASE_URL}/average/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                tap(value => console.log('-------->', value)),
+                catchError(error => {
+                    console.error('Can not get average: ', error);
+                    return EMPTY;
+                })
+            );
     }
 
     offboarding(gamekey: string, playerid: number, isTablemaster: object) {
-        return this.httpClient.get(`${BASE_URL}/tables/offboarding/${gamekey}/${playerid}/${isTablemaster}`, BASE_GET_REQUEST_OPTIONS);
+        return this.httpClient.get(`${BASE_URL}/tables/offboarding/${gamekey}/${playerid}/${isTablemaster}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                tap(value => console.log('-------->', value)),
+                catchError(error => {
+                    console.error('Can not offboard player: ', error);
+                    return EMPTY;
+                })
+            );
     }
 
     kickplayer(gamekey: string, playerid: number) {
-        return this.httpClient.get(`${BASE_URL}/tables/kickplayer/${gamekey}/${playerid}`, BASE_GET_REQUEST_OPTIONS);
+        return this.httpClient.get(`${BASE_URL}/tables/kickplayer/${gamekey}/${playerid}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                tap(value => console.log('-------->', value)),
+                catchError(error => {
+                    console.error('Can not kick player: ', error);
+                    return EMPTY;
+                })
+            );
     }
 
     public gameover(gamekey: string) {
         this.isGameRunning = false;
-        return this.httpClient.get(`${BASE_URL}/tables/gameover/${gamekey}`, BASE_GET_REQUEST_OPTIONS);
+        return this.httpClient.get(`${BASE_URL}/tables/gameover/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                tap(value => console.log('-------->', value)),
+                catchError(error => {
+                    console.error('Can not end game: ', error);
+                    return EMPTY;
+                })
+            );
     }
 
     public gamestart(gamekey: string) {
         this.isGameRunning = true;
-        return this.httpClient.get(`${BASE_URL}/tables/gameStart/${gamekey}`, BASE_GET_REQUEST_OPTIONS);
+        return this.httpClient.get(`${BASE_URL}/tables/gameStart/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                tap(value => console.log('-------->', value)),
+                catchError(error => {
+                    console.error('Can not start game: ', error);
+                    return EMPTY;
+                })
+            );
     }
 
     public getPlayers(gamekey: string) {
           return this.httpClient.get<Player[]>(`${BASE_URL}/tables/getplayers/${gamekey}`, BASE_GET_REQUEST_OPTIONS).pipe(
                 tap(players => {
                     this.players = players;
-                })
+                }),
+                  catchError(error => {
+                      console.error('Can not get players: ', error);
+                      return EMPTY;
+                  })
           );
     }
 
