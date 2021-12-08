@@ -1,4 +1,9 @@
 <div>
+    <div class="roundInformation"></div>
+    <div class="gameInformation" *ngIf="isGameRunning; else gameIsNotRunning">
+        <div>Spieler sind am abstimmen.</div>
+    </div>
+    <ng-template #gameIsNotRunning><div>Runde ist fertig.</div></ng-template>
     <div class="cardContainer-mobile">
         <select>
             <option class="cardSelect" selected="selected">-</option>
