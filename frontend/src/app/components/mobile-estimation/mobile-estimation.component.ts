@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {CacheService} from "../../services/cache.service";
 import {PokerGameService} from "../../services/poker-game.service";
 
 @Component({
@@ -12,11 +11,11 @@ export class MobileEstimationComponent implements OnInit {
     gamekey?: string;
     playerid?: number;
 
-  constructor(private cacheService: CacheService, private pokerService: PokerGameService) { }
+  constructor(private pokerService: PokerGameService) { }
 
   ngOnInit(): void {
-      this.gamekey = this.cacheService.gamekey!;
-      this.playerid = this.cacheService.id!;
+      this.gamekey = this.pokerService.gamekey!;
+      this.playerid = this.pokerService.id!;
   }
 
     public setSelectedCard(selectedValue:string) {

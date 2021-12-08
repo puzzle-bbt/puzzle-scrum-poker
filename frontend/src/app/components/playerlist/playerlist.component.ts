@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Player} from "../../player";
 import {PokerGameService} from "../../services/poker-game.service";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
-import {CacheService} from "../../services/cache.service";
 
 @Component({
   selector: 'app-playerlist',
@@ -25,18 +24,18 @@ export class PlayerListComponent implements OnInit{
 
 
     constructor(
-        private pokerService: PokerGameService, private messenger: BackendMessengerService, private cacheService: CacheService) {
+        private pokerService: PokerGameService, private messenger: BackendMessengerService) {
     }
 
     ngOnInit(): void {
-        if (this.cacheService.isTablemaster) {
+        if (this.pokerService.isTablemaster) {
             this.isTablemaster = true;
         }
         else {
             this.isTablemaster = false;
         }
-        this.gamekey = this.cacheService.gamekey!;
-        this.playerid = this.cacheService.id!;
+        this.gamekey = this.pokerService.gamekey!;
+        this.playerid = this.pokerService.id!;
         this.messenger.subscribe((message) => {
             if (message.includes("RefreshPlayer")) {
                 this.refresh();

@@ -9,8 +9,10 @@ import {Player} from "../player";
 export class PokerGameService {
 
     private _gamekey?: string;
-    private _players?: Player[];
-    private _isGameRunning?: boolean;
+  private _id: number | null = null;
+  private _players?: Player[];
+  private _isGameRunning?: boolean;
+    private _isTablemaster: boolean | null = null;
 
     private readonly paths = {
         createTablemaster: '/api/createTablemaster/',
@@ -35,6 +37,22 @@ export class PokerGameService {
 
     set gamekey(value: string) {
         this._gamekey = value;
+    }
+
+    get id(): number | null {
+      return this._id;
+    }
+
+    set id(value: number | null) {
+      this._id = value;
+    }
+
+    get isTablemaster(): boolean | null {
+      return this._isTablemaster;
+    }
+
+    set isTablemaster(value: boolean | null) {
+      this._isTablemaster = value;
     }
 
     get players(): Player[] {
@@ -107,4 +125,11 @@ export class PokerGameService {
             })
         );
     }
+
+    //Card Service
+    public getCardSvg(cardName: string): Observable<string> {
+      return this.httpClient.get(`../assets/images/${cardName}`, {responseType: 'text'});
+    }
+
+
 }

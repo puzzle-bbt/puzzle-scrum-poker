@@ -1,7 +1,5 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CardService} from "../../services/card.service";
 import {PokerGameService} from "../../services/poker-game.service";
-import {CacheService} from "../../services/cache.service";
 
 @Component({
   selector: 'app-desktop-estimation',
@@ -17,19 +15,18 @@ export class DesktopEstimationComponent implements OnInit {
     cardContainerDiv?: ElementRef<HTMLDivElement>;
 
     constructor(
-        private cardService: CardService,
         private changeDetectorRef: ChangeDetectorRef,
-        private pokerService: PokerGameService,
-        private cacheService: CacheService) {}
+        private pokerService: PokerGameService
+        ) {}
 
     ngOnInit(): void {
         this.addCards();
-        this.gamekey = this.cacheService.gamekey!;
-        this.playerid = this.cacheService.id!;
+        this.gamekey = this.pokerService.gamekey!;
+        this.playerid = this.pokerService.id!;
     }
 
     private addCards(svgFilename: string = 'card_front.svg') {
-        this.cardService.getCardSvg(svgFilename).subscribe(
+        this.pokerService.getCardSvg(svgFilename).subscribe(
             (data: string) => {
                 this.addSvgToContainer(this.stringToSvgElement(data), 'card-1', '1')
                 this.addSvgToContainer(this.stringToSvgElement(data), 'card-2', '2')
