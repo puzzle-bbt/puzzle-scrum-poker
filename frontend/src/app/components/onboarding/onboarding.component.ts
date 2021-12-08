@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {PokerGameService} from "../../services/poker-game.service";
 import {Observable, tap} from "rxjs";
 import {PlayerModel} from "../../models/model";
-import {ExampleService} from "../../services/example-service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
 
@@ -14,7 +13,7 @@ import {BackendMessengerService} from "../../services/backend-messenger.service"
 
 export class OnboardingComponent implements OnInit {
 
-    constructor(private router: Router, private route: ActivatedRoute,  private exampleService: ExampleService, private messenger: BackendMessengerService, private pokerService: PokerGameService) { }
+    constructor(private router: Router, private route: ActivatedRoute, private messenger: BackendMessengerService, private pokerService: PokerGameService) { }
 
     ngOnInit(): void {
       const gamekey = this.route.snapshot.paramMap.get('gamekey');
@@ -36,7 +35,7 @@ export class OnboardingComponent implements OnInit {
     }
 
     public createTablemaster(tablemasterName: string) {
-        this.exampleService.createTablemaster(tablemasterName)
+        this.pokerService.createTablemaster(tablemasterName)
             .pipe(
                 tap((value: PlayerModel) => {
                     this.pokerService.id = +value.id;
@@ -48,7 +47,7 @@ export class OnboardingComponent implements OnInit {
     }
 
     public createPlayer(playerName: string) {
-        this.exampleService.createPlayer(playerName, this.pokerService.gamekey!)
+        this.pokerService.createPlayer(playerName, this.pokerService.gamekey!)
             .pipe(
                 tap((value: PlayerModel) => {
                     this.pokerService.id = +value.id;

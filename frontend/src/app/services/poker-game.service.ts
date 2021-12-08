@@ -1,7 +1,21 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, tap} from 'rxjs';
+import {catchError, EMPTY, map, Observable, tap} from 'rxjs';
 import {Player} from "../player";
+import {PlayerModel} from "../models/model";
+
+const BASE_URL = '/api';
+const BASE_GET_REQUEST_OPTIONS = {
+  headers: {
+    'responseType': 'json'
+  }
+}
+
+const BASE_POST_REQUEST_OPTIONS = {
+  headers: {
+    'content-type': 'application/json'
+  }
+}
 
 @Injectable({
     providedIn: 'root'
@@ -9,27 +23,15 @@ import {Player} from "../player";
 export class PokerGameService {
 
     private _gamekey?: string;
-  private _id: number | null = null;
-  private _players?: Player[];
-  private _isGameRunning?: boolean;
+    private _id: number | null = null;
+    private _players?: Player[];
+    private _isGameRunning?: boolean;
     private _isTablemaster: boolean | null = null;
 
-    private readonly paths = {
-        createTablemaster: '/api/createTablemaster/',
-        createPlayer: '/api/createPlayer/',
-        setSelectedCard: '/api/players/setselectedcard/',
-        setPlayerMode: '/api/players/setplayermode/',
-        getPlayerMode: '/api/players/getplayermode/',
-        getAverage: '/api/average/',
-        offboading: '/api/tables/offboarding/',
-        kickPlayer: '/api/tables/kickplayer/',
-        getPlayers: '/api/tables/getplayers/',
-        gameover: '/api/tables/gameover/',
-        gamestart: '/api/tables/gameStart/'
-    }
-
-    constructor(private httpClient: HttpClient) {
-    }
+    readonly url = '/api';
+    constructor(
+      private readonly httpClient: HttpClient
+    ) {}
 
     get gamekey(): string {
         return this._gamekey!;
@@ -71,59 +73,82 @@ export class PokerGameService {
         this._isGameRunning = value;
     }
 
-    public createTablemaster(tablemasterName: string): Observable<string> {
-        return this.httpClient.get(this.paths.createTablemaster + tablemasterName, {responseType: 'text'}).pipe(
-            tap(text => {
-                this.gamekey = text.split(",")[0];
-                console.log(this.gamekey);
-            })
-        );
+    public createTablemaster(tablemasterName: string): Observable<PlayerModel> {
+      return this.httpClient.get<PlayerModel>(`${BASE_URL}/createTablemaster/${tablemasterName}`, BASE_GET_REQUEST_OPTIONS)
+        .pipe(
+          tap(value => console.log('-------->', value)),
+          map(data => {
+            return {
+              gameKey: data.gameKey,
+              id: data.id,
+              selectedCard: undefined
+            } as PlayerModel;
+          }),
+          catchError(error => {
+            console.error('Can not create a table master: ', error);
+            return EMPTY;
+          })
+        )
     }
 
-    public createPlayer(gamekey: string, playername: string) {
-        return this.httpClient.get<number>(this.paths.createPlayer + playername + "/" + gamekey, {responseType: 'json'});
+    public createPlayer(playerName: string, gamekey: string): Observable<PlayerModel> {
+      return this.httpClient.get<PlayerModel>(`${BASE_URL}/createPlayer/${playerName}/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
+            .pipe(
+                  tap(value => console.log('-------->', value)),
+                  map(data => {
+                    return {
+                      gameKey: undefined,
+                      id: data.id,
+                      selectedCard: undefined
+                    } as PlayerModel;
+              }),
+              catchError(error => {
+                console.error('Can not create a player: ', error);
+                return EMPTY;
+              })
+            )
     }
 
     public setSelectedCard(gamekey: string, playerid: number, selectedCard: string) {
-        return this.httpClient.get(this.paths.setSelectedCard + gamekey + "/" + playerid + "/" + selectedCard, {responseType: 'text'});
+        return this.httpClient.get(`${BASE_URL}/players/setselectedcard/${gamekey}/${playerid}/${selectedCard}`, BASE_GET_REQUEST_OPTIONS);
     }
 
     public setPlayerMode(gamekey: string, playerid: number, isPlaying: boolean) {
-        return this.httpClient.get(this.paths.setPlayerMode + gamekey + "/" + playerid + "/" + isPlaying);
+        return this.httpClient.get(`${BASE_URL}/players/setplayermode/${gamekey}/${playerid}/${isPlaying}`, BASE_GET_REQUEST_OPTIONS);
     }
 
     public getPlayerMode(gamekey: string, playerid: number) {
-        return this.httpClient.get(this.paths.getPlayerMode + gamekey + "/" + playerid);
+        return this.httpClient.get(`${BASE_URL}/players/getplayermode/${gamekey}/${playerid}`, BASE_GET_REQUEST_OPTIONS);
     }
 
-    public getAverage(gamekey: string) {
-        return this.httpClient.get<number>(this.paths.getAverage + gamekey, {responseType: 'json'});
+    public getAverage(gamekey: string): Observable<number> {
+        return this.httpClient.get<number>(`${BASE_URL}/average/${gamekey}`, BASE_GET_REQUEST_OPTIONS);
     }
 
     offboarding(gamekey: string, playerid: number, isTablemaster: object) {
-        return this.httpClient.get(this.paths.offboading + gamekey + "/" + playerid + "/" + isTablemaster);
+        return this.httpClient.get(`${BASE_URL}/tables/offboarding/${gamekey}/${playerid}/${isTablemaster}`, BASE_GET_REQUEST_OPTIONS);
     }
 
     kickplayer(gamekey: string, playerid: number) {
-        return this.httpClient.get(this.paths.kickPlayer + gamekey + "/" + playerid);
+        return this.httpClient.get(`${BASE_URL}/tables/kickplayer/${gamekey}/${playerid}`, BASE_GET_REQUEST_OPTIONS);
     }
 
     public gameover(gamekey: string) {
         this.isGameRunning = false;
-        return this.httpClient.get(this.paths.gameover + gamekey);
+        return this.httpClient.get(`${BASE_URL}/tables/gameover/${gamekey}`, BASE_GET_REQUEST_OPTIONS);
     }
 
     public gamestart(gamekey: string) {
         this.isGameRunning = true;
-        return this.httpClient.get(this.paths.gamestart + gamekey);
+        return this.httpClient.get(`${BASE_URL}/tables/gameStart/${gamekey}`, BASE_GET_REQUEST_OPTIONS);
     }
 
     public getPlayers(gamekey: string) {
-        return this.httpClient.get<Player[]>(this.paths.getPlayers + gamekey, {responseType: 'json'}).pipe(
-            tap(players => {
-                this.players = players;
-            })
-        );
+          return this.httpClient.get<Player[]>(`${BASE_URL}/tables/getplayers/${gamekey}`, BASE_GET_REQUEST_OPTIONS).pipe(
+                tap(players => {
+                    this.players = players;
+                })
+          );
     }
 
     //Card Service
