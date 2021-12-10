@@ -47,6 +47,11 @@ export class PlayerListComponent implements OnInit{
                 this.refresh();
             }
         });
+        this.messenger.subscribe((message) => {
+            if (message.includes("gameStart")) {
+                this.refresh();
+            }
+        });
         this.refresh();
     }
 
@@ -57,14 +62,6 @@ export class PlayerListComponent implements OnInit{
                 this.players = players;
             }
         )
-        /*
-        this.pokerService.getAverage(this.gamekey!).subscribe(
-            (average: number) => {
-                this.average = average;
-            }
-        )
-
-         */
     }
 
     public kickplayer(playerId: number) {
