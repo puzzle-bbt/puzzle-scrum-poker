@@ -37,6 +37,5 @@ export class HeaderComponent implements OnInit {
 
     public navigateToInfo() {
         this.router.navigate([window.location.pathname + "/info"]);
-        console.log(window.location.pathname + "/info");
     }
 }
