@@ -1,0 +1,23 @@
+.visible {
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+.backSide {
+  margin-right: 20px;
+}
+
+.cardContainerFront {
+  height: 200vh;
+  width: 120vh;
+}
+
+.gaminfo {
+  background-color: #e3e4e6;
+  width: 250px;
+  height: 30px;
+  text-align: center;
+}

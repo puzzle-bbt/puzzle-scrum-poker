@@ -1,1 +1,39 @@
-<div #cardContainer class="cardContainer-desktop"></div>
+<div>
+
+  <div>
+    <h3>Runde {{ roundName }}</h3>
+  </div>
+
+  <div class="gaminfo">
+    <div *ngIf="pokerService.isGameRunning != undefined; else startedOnceOrMore">
+      <div *ngIf="pokerService.isGameRunning; else isNotRunning">
+
+        <p class="infoLabel">Spieler sind am abstimmen...</p>
+      </div>
+
+      <ng-template #isNotRunning><p class="infoLabel">Runde ist fertig</p></ng-template>
+
+    </div>
+    <ng-template #startedOnceOrMore><p class="infoLabel">Spiel hat noch nicht gestartet</p></ng-template>
+
+  </div>
+
+  <div>
+    <h3>Deine Schätzung in Storypoints</h3>
+  </div>
+
+  <div #cardContainerFront id="cardContainerFront" class="cardContainer-desktop"></div>
+
+  <div #cardContainerBack id="cardContainerBack" class="cardContainerBack-desktop">
+    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+  </div>
+
+</div>
+

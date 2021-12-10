@@ -1,5 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PokerGameService} from "../../services/poker-game.service";
+import {BackendMessengerService} from "../../services/backend-messenger.service";
 
 @Component({
   selector: 'app-desktop-estimation',
@@ -8,16 +9,33 @@ import {PokerGameService} from "../../services/poker-game.service";
 })
 export class DesktopEstimationComponent implements OnInit {
 
-    @ViewChild('cardContainer')
-    cardContainerDiv?: ElementRef<HTMLDivElement>;
+    @ViewChild('cardContainerFront')
+    cardFrontContainerDiv?: ElementRef<HTMLDivElement>;
+
+    public roundName?: string;
 
     constructor(
         private changeDetectorRef: ChangeDetectorRef,
-        private pokerService: PokerGameService
+        public pokerService: PokerGameService,
+        private messenger: BackendMessengerService
         ) {}
 
     ngOnInit(): void {
+      this.roundName = "Story 1561";
+      this.messenger.subscribe((message) => {
+        if (message.includes("gameOver")) {
+          console.log("Message websocket");
+          this.turnCards();
+        }
+      });
+      this.messenger.subscribe((message) => {
+        if (message.includes("gameStart")) {
+          console.log("Message websocket");
+          this.turnCards();
+        }
+      });
         this.addCards();
+        this.turnCards();
     }
 
     private addCards(svgFilename: string = 'card_front.svg') {
@@ -44,6 +62,7 @@ export class DesktopEstimationComponent implements OnInit {
         svg.setAttribute('id', cardId);
         svg.setAttribute('storyPoint', storyPoints);
         svg.querySelector('#cardText')!.innerHTML = storyPoints;
+        svg.querySelector('#cardText')!.setAttribute("style", "font-size: 30px");
         svg.classList.add("card");
 
         svg.addEventListener('click', (event)=>{
@@ -54,13 +73,29 @@ export class DesktopEstimationComponent implements OnInit {
             }
         })
 
-        this.cardContainerDiv!.nativeElement.append(svg);
+        this.cardFrontContainerDiv!.nativeElement.append(svg);
         this.changeDetectorRef.markForCheck();
     }
 
     public resetCards() {
-        let cardCollection = this.cardContainerDiv!.nativeElement.querySelectorAll(".card");
+        let cardCollection = this.cardFrontContainerDiv!.nativeElement.querySelectorAll(".card");
         cardCollection.forEach(card => card.classList.remove("selectedcard"));
+    }
+
+    public turnCards() {
+      let frontCards = document.getElementById("cardContainerFront");
+      let backCards = document.getElementById("cardContainerBack");
+      if (!this.pokerService.isGameRunning) {
+        backCards!.classList.add("visible");
+        backCards!.classList.remove("hidden");
+        frontCards!.classList.add("hidden");
+        frontCards!.classList.remove("visible");
+      } else {
+        backCards!.classList.add("hidden");
+        backCards!.classList.remove("visible");
+        frontCards!.classList.add("visible");
+        frontCards!.classList.remove("hidden");
+      }
     }
 
 }
