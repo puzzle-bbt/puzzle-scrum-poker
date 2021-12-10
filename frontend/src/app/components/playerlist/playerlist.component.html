@@ -31,9 +31,10 @@
                 </div>
                 <ng-template #spectator><div class="list-item lastItem"><img src="assets/visibility_black_48dp.svg" width="32" height="32"></div></ng-template>
 
-                <div *ngIf="isTablemaster && player.id != playerid" class="list-item lastItem">
+                <div *ngIf="isTablemaster && player.id != playerid; else blankDiv" class="list-item lastItem">
                    <img (click)="kickplayer(player.id)" src="assets/close_black_24dp.svg">
                 </div>
+                <ng-template #blankDiv><div class="list-item blankDiv lastItem"></div></ng-template>
             </div>
         <br>
     </div>

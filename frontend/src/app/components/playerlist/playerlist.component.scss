@@ -3,8 +3,7 @@
 }
 
 .player-list {
-    display: flex;
-    float: left;
+    display: grid;
     margin-top: 1%;
     margin-right: 5%;
     margin-left: 3%;
@@ -16,11 +15,21 @@
 }
 
 .player-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
     justify-content: space-between;
     padding: 3px;
     align-items: center;
     margin-bottom: 10px;
+}
+
+.lastItem {
+    margin-right: 30px;
+}
+
+.blankDiv {
+    height: 24px;
+    width: 24px;
 }
 
 .selfPlayer {
@@ -39,6 +48,3 @@
     margin-bottom: 20px;
 }
 
-.lastItem {
-    margin-right: 30px;
-}
