@@ -19,17 +19,17 @@
                 <ng-template #canNotChoose><div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div></ng-template>
 
                 <div *ngIf="playerid == player.id; else notThisPlayer">
-                        <div class="list-item">{{ player.name + " (Ich)"}}</div>
+                        <div class="list-item usernameDiv">{{ player.name + " (Ich)"}}</div>
                 </div>
-                <ng-template #notThisPlayer><div class="list-item">{{ player.name}}</div></ng-template>
+                <ng-template #notThisPlayer><div class="list-item usernameDiv">{{ player.name}}</div></ng-template>
 
                 <div *ngIf="player.playerMode; else spectator">
                     <div *ngIf="isGameRunning || isGameRunning == undefined; else gameIsNotRunning">
-                        <div class="list-item lastItem">-</div>
+                        <div class="list-item lastItem choosenValue">-</div>
                     </div>
-                    <ng-template #gameIsNotRunning><div class="list-item lastItem">{{ player.selectedCard }}</div></ng-template>
+                    <ng-template #gameIsNotRunning><div class="list-item lastItem choosenValue">{{ player.selectedCard }}</div></ng-template>
                 </div>
-                <ng-template #spectator><div class="list-item lastItem"><img src="assets/visibility_black_48dp.svg" width="32" height="32"></div></ng-template>
+                <ng-template #spectator><div class="list-item lastItem choosenValue"><img src="assets/visibility_black_48dp.svg" width="32" height="32"></div></ng-template>
 
                 <div *ngIf="isTablemaster && player.id != playerid; else blankDiv" class="list-item lastItem">
                    <img (click)="kickplayer(player.id)" src="assets/close_black_24dp.svg">

@@ -7,7 +7,7 @@
     margin-top: 1%;
     margin-right: 5%;
     margin-left: 3%;
-    width: 30vh;
+    width: 380px; //377 px
     height: 100%;
     overflow: auto;
     flex-direction: column;
@@ -23,6 +23,18 @@
     margin-bottom: 10px;
 }
 
+.usernameDiv {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 120px;
+}
+
+.choosenValue {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 30px;
+}
+
 .lastItem {
     margin-right: 30px;
 }
@@ -34,6 +46,16 @@
 
 .selfPlayer {
     font-weight: bold;
+}
+
+.username {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.estimate {
+    margin-left: auto;
+    margin-right: 10px;
 }
 
 .copyButton {
