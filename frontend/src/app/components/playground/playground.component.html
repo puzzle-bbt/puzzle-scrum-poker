@@ -1,8 +1,19 @@
 
 <app-mobile-estimation></app-mobile-estimation>
 
+<!--
 <app-playerlist></app-playerlist>
+-->
 
 <app-desktop-estimation></app-desktop-estimation>
 
-<button *ngIf="displayButton" class="middleButton" (click)="changeGameState()">Runde start/stopp</button>
+<div class="button">
+<button *ngIf="displayButton" class="middleButton" (click)="changeGameState()">
+
+  <div *ngIf="buttonText == undefined; else roundStartetOnceOrMore">
+      Runde starten
+  </div>
+  <ng-template #roundStartetOnceOrMore>  {{ buttonText }}  </ng-template>
+</button>
+
+</div>

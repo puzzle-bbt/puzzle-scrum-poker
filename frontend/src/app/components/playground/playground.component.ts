@@ -9,6 +9,7 @@ import {PokerGameService} from "../../services/poker-game.service";
 export class PlaygroundComponent implements OnInit {
 
     displayButton: boolean | null = this.pokerGameService.isTablemaster;
+    buttonText?: string;
 
   constructor(private pokerGameService: PokerGameService) { }
 
@@ -18,10 +19,14 @@ export class PlaygroundComponent implements OnInit {
   public changeGameState() {
       if (this.pokerGameService.isGameRunning) {
           this.pokerGameService.gameover(this.pokerGameService.gamekey!).subscribe();
+          this.buttonText = "Runde starten";
       }
       else {
-          this.pokerGameService.gamestart(this.pokerGameService.gamekey!).subscribe();
+        this.pokerGameService.gamestart(this.pokerGameService.gamekey!).subscribe();
+        this.buttonText = "Runde beenden";
       }
   }
+
+
 
 }
