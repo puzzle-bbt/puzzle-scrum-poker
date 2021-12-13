@@ -7,7 +7,7 @@
     margin-top: 1%;
     margin-right: 5%;
     margin-left: 3%;
-    width: 380px; //377 px
+    width: 380px;
     height: 100%;
     overflow: auto;
     flex-direction: column;
@@ -51,11 +51,13 @@
 .username {
     margin-left: 0;
     margin-right: auto;
+    grid-column: 2;
 }
 
 .estimate {
     margin-left: auto;
     margin-right: 10px;
+    grid-column: 4;
 }
 
 .copyButton {

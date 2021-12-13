@@ -3,7 +3,7 @@
     <h3>Team</h3>
     <div class="heading">
         <div class="username">Username</div>
-        <div class="estimate">Schätzung (PT)</div>
+        <div class="estimate">Schätzung</div>
     </div>
 
     <div *ngFor="let player of players ">
@@ -19,12 +19,12 @@
                 <ng-template #canNotChoose><div class="list-item"><img src="assets/account_circle_black_48dp.svg"></div></ng-template>
 
                 <div *ngIf="playerid == player.id; else notThisPlayer">
-                        <div class="list-item usernameDiv">{{ player.name + " (Ich)"}}</div>
+                        <div class="list-item usernameDiv">{{ player.name + " (Ich)" }}</div>
                 </div>
-                <ng-template #notThisPlayer><div class="list-item usernameDiv">{{ player.name}}</div></ng-template>
+                <ng-template #notThisPlayer><div class="list-item usernameDiv">{{ player.name }}</div></ng-template>
 
                 <div *ngIf="player.playerMode; else spectator">
-                    <div *ngIf="isGameRunning || isGameRunning == undefined; else gameIsNotRunning">
+                    <div *ngIf="isGameRunning || isGameRunning == undefined || player.selectedCard == null; else gameIsNotRunning">
                         <div class="list-item lastItem choosenValue">-</div>
                     </div>
                     <ng-template #gameIsNotRunning><div class="list-item lastItem choosenValue">{{ player.selectedCard }}</div></ng-template>
