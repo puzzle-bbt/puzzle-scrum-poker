@@ -11,5 +11,4 @@ public class PlayerModel {
 		this.selectedCard = selectedCard;
 	}
 
-	public PlayerModel() {}
 }

@@ -2,6 +2,7 @@ package ch.puzzle.bbt.puzzlescrumpoker;
 
 import ch.puzzle.bbt.puzzlescrumpoker.gameroles.Player;
 import ch.puzzle.bbt.puzzlescrumpoker.models.PlayerModel;
+import ch.puzzle.bbt.puzzlescrumpoker.models.RoundInfoModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -180,10 +181,10 @@ public class RestInterface {
     }
 
     @GetMapping("/tables/getroundname/{gamekey}")
-    public void getRoundName(@PathVariable(value= "gamekey") String gamekey) {
-        LOG.info("gameStart is called: /tables/getroundname/{}", gamekey);
+    public RoundInfoModel getRoundName(@PathVariable(value= "gamekey") String gamekey) {
+        LOG.info("getRoundName is called: /tables/getroundname/{}", gamekey);
         try {
-            pokerService.getRoundName(gamekey);
+            return new RoundInfoModel(pokerService.getRoundName(gamekey), "");
         } catch (Exception e) {
             LOG.error("getRoundName has failed: ", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
