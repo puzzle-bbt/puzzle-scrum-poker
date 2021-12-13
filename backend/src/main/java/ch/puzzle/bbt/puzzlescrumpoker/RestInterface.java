@@ -2,6 +2,7 @@ package ch.puzzle.bbt.puzzlescrumpoker;
 
 import ch.puzzle.bbt.puzzlescrumpoker.gameroles.Player;
 import ch.puzzle.bbt.puzzlescrumpoker.models.PlayerModel;
+import ch.puzzle.bbt.puzzlescrumpoker.models.RoundInfoModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -164,6 +165,28 @@ public class RestInterface {
 
         } catch (Exception e) {
             LOG.error("gameStart has failed: ", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @GetMapping("/tables/setroundname/{gamekey}/{roundname}")
+    public void setRoundName(@PathVariable(value= "gamekey") String gamekey, @PathVariable(value = "roundname") String roundName) {
+        LOG.info("setRoundName is called: /tables/setroundname/{}/{}", gamekey, roundName);
+        try {
+            pokerService.setRoundName(gamekey, roundName);
+        } catch (Exception e) {
+            LOG.error("setRoundName has failed: ", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @GetMapping("/tables/getroundname/{gamekey}")
+    public RoundInfoModel getRoundName(@PathVariable(value= "gamekey") String gamekey) {
+        LOG.info("getRoundName is called: /tables/getroundname/{}", gamekey);
+        try {
+            return new RoundInfoModel(pokerService.getRoundName(gamekey), "");
+        } catch (Exception e) {
+            LOG.error("getRoundName has failed: ", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }

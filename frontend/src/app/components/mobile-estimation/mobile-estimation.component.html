@@ -1,6 +1,11 @@
-<div>
+<div class="container">
+    <div class="roundInformation">
+        <p class="round">Runde</p>
+        <p class="storyname">{{roundName}}</p>
+    </div>
     <div class="cardContainer-mobile">
-        <select>
+        <p>Deine Schätzung in Story Points</p>
+        <select class="dropdown">
             <option class="cardSelect" selected="selected">-</option>
             <option value="1" (click)="setSelectedCard('1')">1</option>
             <option value="2" (click)="setSelectedCard('2')">2</option>
@@ -11,5 +16,10 @@
             <option value="21" (click)="setSelectedCard('21')">21</option>
             <option value="?" (click)="setSelectedCard('?')">?</option>
         </select>
+    </div>
+
+    <div class="gameInformation">
+        <div *ngIf="isGameRunning; else gameIsNotRunning">Spieler sind am abstimmen...</div>
+        <ng-template #gameIsNotRunning><div>Runde ist fertig.</div></ng-template>
     </div>
 </div>

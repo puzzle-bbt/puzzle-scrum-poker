@@ -1,0 +1,44 @@
+.gameInformation {
+  background-color: rgba(70,188,192,0.5);
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+
+.roundInformation {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  margin: 10px 0 0 20px;
+}
+
+.cardContainer-mobile {
+  font-weight: bold;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  width: fit-content;
+  height: fit-content;
+  align-items: center;
+}
+
+.dropdown {
+  width: 70%;
+  height: 70%;
+  margin: 20%;
+}
+
+.round {
+  font-weight: bold;
+}
+
+.storyname {
+  align-items: center;
+}
