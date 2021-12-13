@@ -211,6 +211,26 @@ export class PokerGameService {
           );
     }
 
+    public getRoundName(gamekey: string) {
+        return this.httpClient.get<String>(`${BASE_URL}/tables/getroundname/${gamekey}`, BASE_GET_REQUEST_OPTIONS).pipe(
+            tap(value => console.log('-------->', value)),
+            catchError(error => {
+                console.error('Can not get roundname: ', error);
+                return EMPTY;
+            })
+        );
+    }
+
+    public setRoundName(gamekey: string, roundname: string) {
+        return this.httpClient.get<String>(`${BASE_URL}/tables/setroundname/${gamekey}/${roundname}`, BASE_GET_REQUEST_OPTIONS).pipe(
+            tap(value => console.log('-------->', value)),
+            catchError(error => {
+                console.error('Can not set roundname: ', error);
+                return EMPTY;
+            })
+        );
+    }
+
     //Card Service
     public getCardSvg(cardName: string): Observable<string> {
       return this.httpClient.get(`../assets/images/${cardName}`, {responseType: 'text'});
