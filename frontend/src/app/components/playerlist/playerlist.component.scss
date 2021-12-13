@@ -16,27 +16,31 @@
 
 .player-row {
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: [first] 48px [username] 120px [kickplayer] 24px [selectedCard] 30px [end];
     justify-content: space-between;
     padding: 3px;
     align-items: center;
     margin-bottom: 10px;
 }
 
+.accountCircle {
+    grid-column-start: span first;
+    grid-column-end: span username;
+}
+
 .usernameDiv {
-    margin-left: 20px;
-    margin-right: 20px;
-    width: 120px;
+    grid-column-start: span username;
+    grid-column-end: span kickplayer;
+    text-align: center;
 }
 
 .choosenValue {
-    margin-left: 20px;
-    margin-right: 20px;
-    width: 30px;
+    grid-column-start: span selectedCard;
+    grid-column-end: span end;
 }
 
 .lastItem {
-    margin-right: 30px;
+    margin-right: 20px;
 }
 
 .blankDiv {
