@@ -3,34 +3,76 @@
 }
 
 .player-list {
-    display: flex;
-    float: left;
+    display: grid;
     margin-top: 1%;
     margin-right: 5%;
     margin-left: 3%;
-    width: 20vh;
+    width: 380px;
+    height: 100%;
     overflow: auto;
     flex-direction: column;
+    border-right: 4px solid black;
 }
 
 .player-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: [first] 48px [username] 120px [kickplayer] 24px [selectedCard] 30px [end];
     justify-content: space-between;
     padding: 3px;
     align-items: center;
     margin-bottom: 10px;
 }
 
-.otherPlayer {
-    background-color: white;
+.accountCircle {
+    grid-column-start: span first;
+    grid-column-end: span username;
+}
+
+.usernameDiv {
+    grid-column-start: span username;
+    grid-column-end: span kickplayer;
+    text-align: center;
+}
+
+.choosenValue {
+    grid-column-start: span selectedCard;
+    grid-column-end: span end;
+}
+
+.lastItem {
+    margin-right: 20px;
+}
+
+.blankDiv {
+    height: 24px;
+    width: 24px;
 }
 
 .selfPlayer {
-    background-color: #1c8def;
     font-weight: bold;
+}
+
+.username {
+    margin-left: 0;
+    margin-right: auto;
+    grid-column: 2;
+}
+
+.estimate {
+    margin-left: auto;
+    margin-right: 10px;
+    grid-column: 4;
 }
 
 .copyButton {
     height: auto;
-    width: auto;
+    width: 20vh;
 }
+
+.heading {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+

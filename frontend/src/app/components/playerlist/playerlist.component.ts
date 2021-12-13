@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Player} from "../../player";
 import {PokerGameService} from "../../services/poker-game.service";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
@@ -6,7 +6,8 @@ import {BackendMessengerService} from "../../services/backend-messenger.service"
 @Component({
   selector: 'app-playerlist',
   templateUrl: './playerlist.component.html',
-  styleUrls: ['./playerlist.component.scss']
+  styleUrls: ['./playerlist.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 
@@ -41,6 +42,16 @@ export class PlayerListComponent implements OnInit{
                 this.refresh();
             }
         });
+        this.messenger.subscribe((message) => {
+            if (message.includes("gameOver")) {
+                this.refresh();
+            }
+        });
+        this.messenger.subscribe((message) => {
+            if (message.includes("gameStart")) {
+                this.refresh();
+            }
+        });
         this.refresh();
     }
 
@@ -49,11 +60,6 @@ export class PlayerListComponent implements OnInit{
         this.pokerService.getPlayers(this.gamekey!).subscribe(
             (players: Player[]) => {
                 this.players = players;
-            }
-        )
-        this.pokerService.getAverage(this.gamekey!).subscribe(
-            (average: number) => {
-                this.average = average;
             }
         )
     }
