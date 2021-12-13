@@ -221,6 +221,18 @@ public class PokerService {
         }
     }
 
+    public void setRoundName(String gamekey, String roundName) {
+        try {
+            getTableById(gamekey).setRoundName(roundName);
+        } catch (Exception e) {
+            LOG.error("Couldn't set Round Name", e);
+        }
+    }
+
+    public String getRoundName(String gamekey) throws Exception {
+        return getTableById(gamekey).getRoundName();
+    }
+
     public void sendWebsocketMessage(Table table, String message) {
         for (WebSocketSession webSocketSession : table.getWebsocketsession().values()) {
             try {

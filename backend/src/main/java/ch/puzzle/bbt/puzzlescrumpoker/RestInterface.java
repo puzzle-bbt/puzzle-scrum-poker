@@ -168,4 +168,26 @@ public class RestInterface {
         }
     }
 
+    @GetMapping("/tables/setroundname/{gamekey}/{roundname}")
+    public void setRoundName(@PathVariable(value= "gamekey") String gamekey, @PathVariable(value = "roundname") String roundName) {
+        LOG.info("setRoundName is called: /tables/setroundname/{}/{}", gamekey, roundName);
+        try {
+            pokerService.setRoundName(gamekey, roundName);
+        } catch (Exception e) {
+            LOG.error("setRoundName has failed: ", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @GetMapping("/tables/getroundname/{gamekey}")
+    public void getRoundName(@PathVariable(value= "gamekey") String gamekey) {
+        LOG.info("gameStart is called: /tables/getroundname/{}", gamekey);
+        try {
+            pokerService.getRoundName(gamekey);
+        } catch (Exception e) {
+            LOG.error("getRoundName has failed: ", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
 }

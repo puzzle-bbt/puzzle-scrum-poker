@@ -13,6 +13,7 @@ public class Table {
     private boolean isNewTablemasterNeeded = false;
 
     private Tablemaster tablemaster;
+    private String roundName;
     private final Map<Long, Player> playerMap = new HashMap<>();
     private Map<Long, WebSocketSession> websocketsession = new HashMap<>();
 
@@ -28,6 +29,14 @@ public class Table {
 
     public Tablemaster getTablemaster() {
         return tablemaster;
+    }
+
+    public String getRoundName() {
+        return roundName;
+    }
+
+    public void setRoundName(String roundName) {
+        this.roundName = roundName;
     }
 
     public boolean isNewTablemasterNeeded() {
