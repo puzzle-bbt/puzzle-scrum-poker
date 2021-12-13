@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Player} from "../../player";
 import {PokerGameService} from "../../services/poker-game.service";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
@@ -7,7 +7,8 @@ import {CacheService} from "../../services/cache.service";
 @Component({
   selector: 'app-playerlist',
   templateUrl: './playerlist.component.html',
-  styleUrls: ['./playerlist.component.scss']
+  styleUrls: ['./playerlist.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 
