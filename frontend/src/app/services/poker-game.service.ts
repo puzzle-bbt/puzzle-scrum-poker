@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, EMPTY, map, Observable, tap} from 'rxjs';
 import {Player} from "../player";
 import {PlayerModel} from "../models/model";
+import {RoundInfoModel} from "../models/RoundInfoModel";
 
 const BASE_URL = '/api';
 const BASE_GET_REQUEST_OPTIONS = {
@@ -212,8 +213,14 @@ export class PokerGameService {
     }
 
     public getRoundName(gamekey: string) {
-        return this.httpClient.get<String>(`${BASE_URL}/tables/getroundname/${gamekey}`, BASE_GET_REQUEST_OPTIONS).pipe(
+        return this.httpClient.get<RoundInfoModel>(`${BASE_URL}/tables/getroundname/${gamekey}`, BASE_GET_REQUEST_OPTIONS).pipe(
             tap(value => console.log('-------->', value)),
+            map(data => {
+                return {
+                    roundInfo: data.roundInfo,
+                    roundInfoLink: data.roundInfoLink
+                } as RoundInfoModel;
+            }),
             catchError(error => {
                 console.error('Can not get roundname: ', error);
                 return EMPTY;
@@ -221,8 +228,8 @@ export class PokerGameService {
         );
     }
 
-    public setRoundName(gamekey: string, roundname: string) {
-        return this.httpClient.get<String>(`${BASE_URL}/tables/setroundname/${gamekey}/${roundname}`, BASE_GET_REQUEST_OPTIONS).pipe(
+    public setRoundName(gamekey: string, roundname: string): Observable<RoundInfoModel> {
+        return this.httpClient.get<RoundInfoModel>(`${BASE_URL}/tables/setroundname/${gamekey}/${roundname}`, BASE_GET_REQUEST_OPTIONS).pipe(
             tap(value => console.log('-------->', value)),
             catchError(error => {
                 console.error('Can not set roundname: ', error);

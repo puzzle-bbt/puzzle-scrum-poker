@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {PokerGameService} from "../../services/poker-game.service";
-import {Player} from "../../player";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
 
 @Component({
   selector: 'app-mobile-estimation',
   templateUrl: './mobile-estimation.component.html',
-  styleUrls: ['./mobile-estimation.component.scss']
+  styleUrls: ['./mobile-estimation.component.scss'],
 })
 export class MobileEstimationComponent implements OnInit {
 
   isGameRunning?: boolean;
-  arePlayersVoting?: boolean;
+  roundName?: string;
 
   constructor(private pokerService: PokerGameService, private messenger: BackendMessengerService) { }
 
@@ -21,6 +20,7 @@ export class MobileEstimationComponent implements OnInit {
           this.refresh();
         }
         });
+
       this.refresh();
     }
 
@@ -31,5 +31,11 @@ export class MobileEstimationComponent implements OnInit {
 
   public refresh() {
     this.isGameRunning = this.pokerService.isGameRunning;
+    this.pokerService.getRoundName(this.pokerService.gamekey).subscribe(roundInfo =>
+      {
+        this.roundName = roundInfo.roundInfo;
+      }
+    );
+    console.log(this.roundName);
   }
 }
