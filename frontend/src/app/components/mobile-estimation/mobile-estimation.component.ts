@@ -6,6 +6,7 @@ import {BackendMessengerService} from "../../services/backend-messenger.service"
   selector: 'app-mobile-estimation',
   templateUrl: './mobile-estimation.component.html',
   styleUrls: ['./mobile-estimation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MobileEstimationComponent implements OnInit {
 
