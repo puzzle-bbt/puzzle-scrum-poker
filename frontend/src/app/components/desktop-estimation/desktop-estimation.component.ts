@@ -13,6 +13,8 @@ export class DesktopEstimationComponent implements OnInit {
     cardFrontContainerDiv?: ElementRef<HTMLDivElement>;
 
     public roundName?: string;
+    public isGameRunning?: boolean;
+    public isNotFirstTime?: boolean;
 
     constructor(
         private changeDetectorRef: ChangeDetectorRef,
@@ -21,21 +23,18 @@ export class DesktopEstimationComponent implements OnInit {
         ) {}
 
     ngOnInit(): void {
-      this.roundName = "Story 1561";
-      this.messenger.subscribe((message) => {
-        if (message.includes("gameOver")) {
-          console.log("Message websocket");
-          this.turnCards();
-        }
-      });
-      this.messenger.subscribe((message) => {
-        if (message.includes("gameStart")) {
-          console.log("Message websocket");
-          this.turnCards();
-        }
-      });
+
+        this.messenger.subscribe((message) => {
+          if (message.includes("gameStart") || message.includes("gameOver")) {
+            this.refresh();
+            this.turnCards(false);
+            this.isNotFirstTime = true;
+          }
+        });
+      this.isNotFirstTime = false;
+      this.refresh();
         this.addCards();
-        this.turnCards();
+        this.turnCards(true);
     }
 
     private addCards(svgFilename: string = 'card_front.svg') {
@@ -82,10 +81,10 @@ export class DesktopEstimationComponent implements OnInit {
         cardCollection.forEach(card => card.classList.remove("selectedcard"));
     }
 
-    public turnCards() {
+    public turnCards(firstTime: boolean) {
       let frontCards = document.getElementById("cardContainerFront");
       let backCards = document.getElementById("cardContainerBack");
-      if (!this.pokerService.isGameRunning) {
+      if (this.pokerService.game$.value.isGameRunning) {
         backCards!.classList.add("visible");
         backCards!.classList.remove("hidden");
         frontCards!.classList.add("hidden");
@@ -96,6 +95,18 @@ export class DesktopEstimationComponent implements OnInit {
         frontCards!.classList.add("visible");
         frontCards!.classList.remove("hidden");
       }
+
+      if (firstTime) {
+        backCards!.classList.add("visible");
+        backCards!.classList.remove("hidden");
+        frontCards!.classList.add("hidden");
+        frontCards!.classList.remove("visible");
+      }
+
     }
+
+  public refresh() {
+      this.isGameRunning = this.pokerService.game$.value.isGameRunning;
+  }
 
 }

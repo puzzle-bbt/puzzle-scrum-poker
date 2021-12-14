@@ -3,18 +3,12 @@
     <h3>Runde {{ roundName }}</h3>
   </div>
 
-  <div class="gaminfo">
-    <div *ngIf="pokerService.isGameRunning != undefined; else startedOnceOrMore">
-      <div *ngIf="pokerService.isGameRunning; else isNotRunning">
-
-        <p class="infoLabel">Spieler sind am abstimmen...</p>
-      </div>
-
-      <ng-template #isNotRunning><p class="infoLabel">Runde ist fertig</p></ng-template>
-
+  <div class="gameInformation">
+    <div *ngIf="isNotFirstTime; else isFirstTime">
+      <div *ngIf="!isGameRunning; else gameIsNotRunning">Spieler sind am abstimmen...</div>
+      <ng-template #gameIsNotRunning><div>Runde ist fertig.</div></ng-template>
     </div>
-    <ng-template #startedOnceOrMore><p class="infoLabel">Spiel hat noch nicht gestartet</p></ng-template>
-
+    <ng-template #isFirstTime>Spiel noch nicht gestartet</ng-template>
   </div>
 
   <div>
