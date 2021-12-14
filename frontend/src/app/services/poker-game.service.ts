@@ -102,7 +102,13 @@ export class PokerGameService {
         }),
         catchError(error => {
           console.error('Can not create a table master: ', error);
-          return of(false);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
+            return of(false);
         })
       )
   }
@@ -120,7 +126,13 @@ export class PokerGameService {
         }),
         catchError(error => {
           console.error('Can not create a player: ', error);
-          return of(false);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
+            return of(false);
         })
       )
   }
@@ -131,6 +143,12 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not select card: ', error);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
           return EMPTY;
         })
       )
@@ -142,6 +160,12 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not set playermode: ', error);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
           return EMPTY;
         })
       );
@@ -153,6 +177,12 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not get playermode: ', error);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
           return EMPTY;
         })
       );
@@ -164,6 +194,12 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not get average: ', error);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
           return EMPTY;
         })
       );
@@ -175,6 +211,12 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not offboard player: ', error);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
           return EMPTY;
         })
       );
@@ -186,6 +228,12 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not kick player: ', error);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
           return EMPTY;
         })
       );
@@ -201,6 +249,12 @@ export class PokerGameService {
         }),
         catchError(error => {
           console.error('Can not end game: ', error);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
           return EMPTY;
         })
       );
@@ -212,6 +266,12 @@ export class PokerGameService {
         }),
         catchError(error => {
           console.error('Can not start game: ', error);
+            const usererror: UserError = {
+                httpCode: 500,
+                message: error.message,
+            }
+            this.error$.next(usererror);
+            this.router.navigateByUrl("/error");
           return EMPTY;
         })
       );
@@ -226,6 +286,12 @@ export class PokerGameService {
       }),
       catchError(error => {
         console.error('Can not get players: ', error);
+          const usererror: UserError = {
+              httpCode: 500,
+              message: error.message,
+          }
+          this.error$.next(usererror);
+          this.router.navigateByUrl("/error");
         return EMPTY;
       })
     );
@@ -242,6 +308,12 @@ export class PokerGameService {
       }),
       catchError(error => {
         console.error('Can not get roundname: ', error);
+          const usererror: UserError = {
+              httpCode: 500,
+              message: error.message,
+          }
+          this.error$.next(usererror);
+          this.router.navigateByUrl("/error");
         return EMPTY;
       })
     );
@@ -252,6 +324,12 @@ export class PokerGameService {
       tap(value => console.log('-------->', value)),
       catchError(error => {
         console.error('Can not set roundname: ', error);
+          const usererror: UserError = {
+              httpCode: 500,
+              message: error.message,
+          }
+          this.error$.next(usererror);
+          this.router.navigateByUrl("/error");
         return EMPTY;
       })
     );

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {BehaviorSubject} from "rxjs";
+import {UserError} from "../../models/model";
+import {PokerGameService} from "../../services/poker-game.service";
 
 @Component({
   selector: 'app-error',
@@ -6,8 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./error.component.scss']
 })
 export class ErrorComponent implements OnInit {
-
-  constructor() { }
+  
+  constructor(public pokerGameService: PokerGameService) { }
 
   ngOnInit(): void {
   }
