@@ -17,10 +17,10 @@ export class AppComponent {
 
   public changeSpectator() {
     if (this.isPlaying) {
-      this.pokerService.setPlayerMode(this.pokerService.gamekey!, this.pokerService.id!, false).subscribe();
+      this.pokerService.setPlayerMode(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, false).subscribe();
       this.isPlaying = false;
     } else {
-      this.pokerService.setPlayerMode(this.pokerService.gamekey!, this.pokerService.id!, true).subscribe();
+      this.pokerService.setPlayerMode(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, true).subscribe();
       this.isPlaying = true;
     }
   }

@@ -12,7 +12,7 @@ public class Tablemaster extends Player {
         return "Tablemaster{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", isPlaying=" + isPlaying +
+                ", isPlaying=" + playing +
                 ", selectedCard='" + selectedCard + '\'' +
                 '}';
     }

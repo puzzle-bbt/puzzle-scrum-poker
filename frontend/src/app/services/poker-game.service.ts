@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, EMPTY, map, Observable, of, Subject, tap } from 'rxjs';
-import { Game, Player, PlayerModel, UserError } from '../models/model';
+import { BehaviorSubject, catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
+import { Game, Player, UserError } from '../models/model';
 import { RoundInfoModel } from '../models/RoundInfoModel';
+import { Router } from '@angular/router';
+import { BackendMessengerService } from './backend-messenger.service';
 
 const BASE_URL = '/api';
 const BASE_GET_REQUEST_OPTIONS = {
@@ -17,7 +19,7 @@ const BASE_POST_REQUEST_OPTIONS = {
   }
 }
 
-interface CreateTableMasterModel {
+interface OnboardingModel {
   id: string;
   gameKey: string;
   selectedCard: string;
@@ -28,8 +30,11 @@ interface CreateTableMasterModel {
 })
 export class PokerGameService {
 
-  player: Subject<Player> = new Subject<Player>();
-  game: BehaviorSubject<Game> = new BehaviorSubject<Game>({
+  // current player list
+  players$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>([]);
+
+  // current game data
+  game$: BehaviorSubject<Game> = new BehaviorSubject<Game>({
     // TODO: backend should get a number
     gameKey: '',
     isGameRunning: false,
@@ -38,87 +43,61 @@ export class PokerGameService {
     roundInfo: undefined,
     roundInfoLink: undefined
   });
-  error: BehaviorSubject<UserError> = new BehaviorSubject<UserError>({
+
+  // current error data
+  error$: BehaviorSubject<UserError> = new BehaviorSubject<UserError>({
     httpCode: undefined,
     message: ''
   });
 
-  private _gamekey?: string;
-  private _id: number | null = null;
-  private _players?: Player[];
-  private _isGameRunning?: boolean;
-  private _isTablemaster: boolean | null = null;
-
-  readonly url = '/api';
-
-  constructor(private readonly httpClient: HttpClient) {
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly router: Router,
+    private readonly messenger: BackendMessengerService
+  ) {
   }
 
-  get gamekey(): string {
-    return this._gamekey!;
+  setAsTableMaster() {
+    this.game$.next({ ...this.game$.value, iAmTableMaster: true });
   }
 
-  set gamekey(value: string) {
-    this._gamekey = value;
+  setGameKey(gameKey: string) {
+    this.game$.next({ ...this.game$.value, gameKey: gameKey });
   }
 
-  get id(): number | null {
-    return this._id;
+  setGameRunning(isRunning: boolean) {
+    this.game$.next({ ...this.game$.value, isGameRunning: isRunning });
   }
+  private initializeModel( onboardingModel: OnboardingModel, iAmTableMaster: boolean = false) {
+    const player: Player = {
+      // TODO: backend should get a number
+      id: Number(onboardingModel.id),
+      name: '',
+      playing: true,
+      selectedCard: undefined
+    };
+    const game: Game = {
+      gameKey: onboardingModel.gameKey,
+      isGameRunning: false,
+      me: player,
+      iAmTableMaster: iAmTableMaster,
+      roundInfo: undefined,
+      roundInfoLink:undefined
+    }
 
-  set id(value: number | null) {
-    this._id = value;
-  }
-
-  get isTablemaster(): boolean | null {
-    return this._isTablemaster;
-  }
-
-  set isTablemaster(value: boolean | null) {
-    this._isTablemaster = value;
-  }
-
-  get players(): Player[] {
-    return this._players!;
-  }
-
-  set players(value: Player[]) {
-    this._players = value;
-  }
-
-  get isGameRunning(): boolean {
-    return this._isGameRunning!;
-  }
-
-  set isGameRunning(value: boolean) {
-    this._isGameRunning = value;
+    this.game$.next(game);
+    console.log('game --> ', this.game$.value);
   }
 
   public createTablemaster(tablemasterName: string): Observable<boolean> {
-
-    return this.httpClient.get<CreateTableMasterModel>(`${BASE_URL}/createTablemaster/${tablemasterName}`, BASE_GET_REQUEST_OPTIONS)
+    return this.httpClient.get<OnboardingModel>(`${BASE_URL}/createTablemaster/${tablemasterName}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
         tap(value => console.log('-------->', value)),
-        map(data => {
-          const player: Player = {
-            // TODO: backend should get a number
-            id: Number(data.id),
-            name: '',
-            isPlaying: true,
-            selectedCard: undefined
-          };
-          const game: Game = {
-            // TODO: backend should get a number
-            gameKey: data.gameKey,
-            isGameRunning: false,
-            me: player,
-            iAmTableMaster: true,
-            roundInfo: undefined,
-            roundInfoLink:undefined
-          }
-          this.player.next(player);
-          this.game.next(game);
+        map(createModel => {
+          this.initializeModel(createModel, true)
 
+          this.messenger.sendMessage(`table=${this.game$.value.gameKey},playerid=${this.game$.value.me!.id}`);
+          this.router.navigateByUrl("/playground");
           return true;
         }),
         catchError(error => {
@@ -128,20 +107,20 @@ export class PokerGameService {
       )
   }
 
-  public createPlayer(playerName: string, gamekey: string): Observable<PlayerModel> {
-    return this.httpClient.get<PlayerModel>(`${BASE_URL}/createPlayer/${playerName}/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
+  public createPlayer(playerName: string): Observable<boolean> {
+    return this.httpClient.get<OnboardingModel>(`${BASE_URL}/createPlayer/${playerName}/${this.game$.value.gameKey}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
         tap(value => console.log('-------->', value)),
-        map(data => {
-          return {
-            gameKey: undefined,
-            id: data.id,
-            selectedCard: undefined
-          } as PlayerModel;
+        map(createModel => {
+          this.initializeModel(createModel)
+
+          this.messenger.sendMessage(`table=${this.game$.value.gameKey},playerid=${this.game$.value.me!.id}`);
+          this.router.navigateByUrl("/playground");
+          return true;
         }),
         catchError(error => {
           console.error('Can not create a player: ', error);
-          return EMPTY;
+          return of(false);
         })
       )
   }
@@ -212,34 +191,38 @@ export class PokerGameService {
       );
   }
 
-  public gameover(gamekey: string) {
-    this.isGameRunning = false;
-    return this.httpClient.get(`${BASE_URL}/tables/gameover/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
-      .pipe(
+  // TODO: Backend should have a toggleGameRunning method and response the new running state.
+  public toggleGameRunning(): Observable<any> {
+    if(this.game$.value.isGameRunning) {
+      return this.httpClient.get(`${BASE_URL}/tables/gameover/${this.game$.value.gameKey}`, BASE_GET_REQUEST_OPTIONS).pipe(
         tap(value => console.log('-------->', value)),
+        map(() => {
+          this.setGameRunning(false);
+        }),
         catchError(error => {
           console.error('Can not end game: ', error);
           return EMPTY;
         })
       );
-  }
-
-  public gamestart(gamekey: string) {
-    this.isGameRunning = true;
-    return this.httpClient.get(`${BASE_URL}/tables/gameStart/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
-      .pipe(
+    } else {
+      return this.httpClient.get(`${BASE_URL}/tables/gameStart/${this.game$.value.gameKey}`, BASE_GET_REQUEST_OPTIONS).pipe(
         tap(value => console.log('-------->', value)),
+        map(() => {
+          this.setGameRunning(true);
+        }),
         catchError(error => {
           console.error('Can not start game: ', error);
           return EMPTY;
         })
       );
+    }
   }
 
-  public getPlayers() {
-    return this.httpClient.get<Player[]>(`${BASE_URL}/tables/getplayers/${this.game.getValue().gameKey}`, BASE_GET_REQUEST_OPTIONS).pipe(
-      tap(players => {
-        this.players = players;
+  public getPlayers(): Observable<any> {
+    return this.httpClient.get<Player[]>(`${BASE_URL}/tables/getplayers/${this.game$.getValue().gameKey}`, BASE_GET_REQUEST_OPTIONS).pipe(
+      tap(value => console.log('-------->', value)),
+      map(players => {
+        this.players$.next(players);
       }),
       catchError(error => {
         console.error('Can not get players: ', error);

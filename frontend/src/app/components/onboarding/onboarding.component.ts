@@ -1,33 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import {PokerGameService} from "../../services/poker-game.service";
-import {Observable, tap} from "rxjs";
-import {PlayerModel} from "../../models/model";
-import {ActivatedRoute, Router} from "@angular/router";
-import {BackendMessengerService} from "../../services/backend-messenger.service";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { PokerGameService } from '../../services/poker-game.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
-  styleUrls: ['./onboarding.component.scss']
+  styleUrls: ['./onboarding.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class OnboardingComponent implements OnInit {
 
-    constructor(private router: Router, private route: ActivatedRoute, private messenger: BackendMessengerService, private pokerService: PokerGameService) { }
+    constructor(
+      private readonly route: ActivatedRoute,
+      private readonly pokerService: PokerGameService
+    ) { }
 
     ngOnInit(): void {
-      const gamekey = this.route.snapshot.paramMap.get('gamekey');
-      if (gamekey == null) {
-          this.pokerService.isTablemaster = true;
-      }
-      else {
-          this.pokerService.isTablemaster  = false;
-          this.pokerService.gamekey = gamekey;
+      const gameKey = this.route.snapshot.paramMap.get('gamekey');
+      if (gameKey == null) {
+        this.pokerService.setAsTableMaster();
+      } else {
+        this.pokerService.setGameKey(gameKey);
       }
     }
 
     public create(username: string) {
-        if(this.pokerService.isTablemaster) {
+        if(this.pokerService.game$.value.iAmTableMaster) {
             this.createTablemaster(username);
         } else {
             this.createPlayer(username);
@@ -35,24 +33,10 @@ export class OnboardingComponent implements OnInit {
     }
 
     public createTablemaster(tablemasterName: string) {
-        this.pokerService.createTablemaster(tablemasterName).subscribe(successful => {
-          if (successful) {
-            this.messenger.sendMessage(`table=${this.pokerService.gamekey},playerid=${this.pokerService.id}`);
-            this.router.navigateByUrl("/playground");
-          } else {
-            // TODO: show a error message
-          }
-        });
+        this.pokerService.createTablemaster(tablemasterName).subscribe();
     }
 
     public createPlayer(playerName: string) {
-        this.pokerService.createPlayer(playerName, this.pokerService.gamekey!)
-            .pipe(
-                tap((value: PlayerModel) => {
-                    this.pokerService.id = +value.id;
-                    this.messenger.sendMessage(`table=${this.pokerService.gamekey},playerid=${this.pokerService.id}`);
-                    this.router.navigateByUrl("/playground");
-                })
-            ).subscribe();
+        this.pokerService.createPlayer(playerName).subscribe();
     }
 }

@@ -2,17 +2,21 @@ package ch.puzzle.bbt.puzzlescrumpoker.gameroles;
 
 import java.util.Objects;
 
+/**
+ * Warning:
+ * This class must contain the same properties as Player interface from frontend!
+ */
 public class Player {
         protected final long id;
         protected final String name;
-        protected boolean isPlaying;
+        protected boolean playing;
         protected String selectedCard;
 
 
     public Player(String name, long id) {
         this.id = id;
         this.name = name;
-        this.isPlaying = true;
+        this.playing = true;
     }
 
     public long getId() {
@@ -23,17 +27,18 @@ public class Player {
         return name;
     }
 
+    public boolean isPlaying() {
+        return playing;
+    }
+
     public String getSelectedCard() {
         return selectedCard;
     }
 
-    public void setPlayerMode(boolean player){
-        this.isPlaying = player;
+    public void setPlaying(boolean plisPlayingayer){
+        this.playing = playing;
     }
 
-    public boolean getPlayerMode() {
-        return isPlaying;
-    }
 
     public void setSelectedCard(String selectedCard) {
         this.selectedCard = selectedCard;
@@ -44,12 +49,12 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player1 = (Player) o;
-        return id == player1.id && isPlaying == player1.isPlaying && name.equals(player1.name) && Objects.equals(selectedCard, player1.selectedCard);
+        return id == player1.id && playing == player1.playing && name.equals(player1.name) && Objects.equals(selectedCard, player1.selectedCard);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, isPlaying, selectedCard);
+        return Objects.hash(id, name, playing, selectedCard);
     }
 
     @Override
@@ -57,7 +62,7 @@ public class Player {
         return "Player{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", isPlaying=" + isPlaying +
+                ", isPlaying=" + playing +
                 ", selectedCard='" + selectedCard + '\'' +
                 '}';
     }

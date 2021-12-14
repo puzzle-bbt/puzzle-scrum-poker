@@ -1,16 +1,12 @@
-/**
- * @deprecated The method should be deleted
- */
-export interface PlayerModel {
-  id: string;
-  gameKey: string | undefined;
-  selectedCard: string | undefined;
-}
 
+/**
+ * Warning:
+ * This interface must contain the same properties as the ch.puzzle.bbt.puzzlescrumpoker.gameroles.Player object!
+ */
 export interface Player  {
   id: number;
   name: string;
-  isPlaying: boolean;
+  playing: boolean;
   selectedCard: string | undefined;
 }
 

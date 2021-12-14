@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PokerGameService } from '../../services/poker-game.service';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-playground',
@@ -7,22 +8,15 @@ import { PokerGameService } from '../../services/poker-game.service';
   styleUrls: ['./playground.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlaygroundComponent implements OnInit {
+export class PlaygroundComponent {
 
-    displayButton: boolean | null = this.pokerGameService.isTablemaster;
+  displayButton$: Observable<boolean> = this.pokerGameService.game$.pipe(
+    map(game => game.iAmTableMaster)
+  );
 
   constructor(private pokerGameService: PokerGameService) { }
 
-  ngOnInit(): void {
-  }
-
   public changeGameState() {
-      if (this.pokerGameService.isGameRunning) {
-          this.pokerGameService.gameover(this.pokerGameService.gamekey!).subscribe();
-      }
-      else {
-          this.pokerGameService.gamestart(this.pokerGameService.gamekey!).subscribe();
-      }
+    this.pokerGameService.toggleGameRunning().subscribe();
   }
-
 }

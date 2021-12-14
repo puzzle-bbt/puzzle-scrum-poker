@@ -22,7 +22,7 @@ class PlayerTest {
         assertEquals(PLAYER_ID, player.getId());
         assertEquals(PLAYER_NAME, player.getName());
         assertNull(player.getSelectedCard());
-        assertTrue(player.getPlayerMode());
+        assertTrue(player.isPlaying());
     }
 
 

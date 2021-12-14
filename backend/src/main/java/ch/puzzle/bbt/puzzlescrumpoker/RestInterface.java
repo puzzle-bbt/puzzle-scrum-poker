@@ -45,7 +45,7 @@ public class RestInterface {
         LOG.info("createPlayer is called: /createPlayer/{}/{}", name, gamekey);
         try {
             String playerid = Long.toString(pokerService.addNewPlayer(name, gamekey));
-            return new PlayerModel(null, playerid, null);
+            return new PlayerModel(gamekey, playerid, null);
         } catch (Exception e) {
             LOG.error("createPlayer has failed: ", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

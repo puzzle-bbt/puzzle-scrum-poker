@@ -5,5 +5,5 @@
 </div>
 
 <div class="playgroud-button">
-  <button *ngIf="displayButton" class="middleButton" (click)="changeGameState()">Runde start/stopp</button>
+  <button *ngIf="(displayButton$ |async)" class="middleButton" (click)="changeGameState()">Runde start/stopp</button>
 </div>

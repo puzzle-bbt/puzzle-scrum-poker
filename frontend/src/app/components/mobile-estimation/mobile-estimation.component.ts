@@ -26,13 +26,13 @@ export class MobileEstimationComponent implements OnInit {
     }
 
     public setSelectedCard(selectedValue:string) {
-        this.pokerService.setSelectedCard(this.pokerService.gamekey!, this.pokerService.id!, selectedValue).subscribe();
+        this.pokerService.setSelectedCard(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, selectedValue).subscribe();
     }
 
 
   public refresh() {
-    this.isGameRunning = this.pokerService.isGameRunning;
-    this.pokerService.getRoundName(this.pokerService.gamekey).subscribe(roundInfo =>
+    this.isGameRunning = this.pokerService.game$.value.isGameRunning;
+    this.pokerService.getRoundName(this.pokerService.game$.value.gameKey).subscribe(roundInfo =>
       {
         this.roundName = roundInfo.roundInfo;
       }

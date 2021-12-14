@@ -24,10 +24,6 @@ const routes: Routes = [
         component: PlaygroundComponent
     },
     {
-        path: 'info',
-        component: InfoComponent
-    },
-    {
         path: 'error',
         component: ErrorComponent
     },

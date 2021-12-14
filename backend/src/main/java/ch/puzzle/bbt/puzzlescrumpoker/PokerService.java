@@ -55,12 +55,12 @@ public class PokerService {
     }
 
     public void setPlayerMode(String gamekey, long playerid, boolean playerMode) throws Exception {
-        getTableById(gamekey).getPlayerById(playerid).setPlayerMode(playerMode);
+        getTableById(gamekey).getPlayerById(playerid).setPlaying(playerMode);
         sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer"+","+playerid);
     }
 
     public boolean getPlayerMode(String gamekey, long playerid) throws Exception {
-        return getTableById(gamekey).getPlayerById(playerid).getPlayerMode();
+        return getTableById(gamekey).getPlayerById(playerid).isPlaying();
     }
 
     public void setRunning(String gamekey, boolean gamerunning) throws Exception {
@@ -124,7 +124,7 @@ public class PokerService {
         int sum = 0;
         int count = 0;
         for (Player player : getTableById(gamekey).getPlayerMap().values()) {
-            if (player.getPlayerMode() && player.getSelectedCard() != null && isNumeric.matcher(player.getSelectedCard()).matches()) {
+            if (player.isPlaying() && player.getSelectedCard() != null && isNumeric.matcher(player.getSelectedCard()).matches()) {
                 sum += Integer.parseInt(player.getSelectedCard());
                 count++;
             }
@@ -135,7 +135,7 @@ public class PokerService {
     // an example of average calculation with a java stream
     public double getAverageStream(String gamekey) throws Exception {
         OptionalDouble average = getTableById(gamekey).getPlayerMap().values().parallelStream()
-                .filter(Player::getPlayerMode)
+                .filter(Player::isPlaying)
                 .map(Player::getSelectedCard)
                 .filter(Objects::nonNull)
                 .filter(value -> isNumeric.matcher(value).matches())

@@ -1,43 +1,26 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PokerGameService } from '../../services/poker-game.service';
 import { BackendMessengerService } from '../../services/backend-messenger.service';
-import { Subject } from 'rxjs';
-import { Player } from '../../models/model';
+import { BehaviorSubject } from 'rxjs';
+import { Game, Player } from '../../models/model';
 
 @Component({
   selector: 'app-playerlist',
   templateUrl: './playerlist.component.html',
   styleUrls: ['./playerlist.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-
-
 export class PlayerListComponent implements OnInit{
 
-    players$: Subject<Player[]> = new Subject<Player[]>();
-    gamekey?: string;
-    isGameRunning?: boolean;
-    average?: number;
-    playerid?: number;
-
-    isTablemaster?: boolean;
-
-    cssClasses?: string;
-
+    game$: BehaviorSubject<Game> = this.pokerService.game$;
+    players$: BehaviorSubject<Player[]> = this.pokerService.players$;
 
     constructor(
-        private pokerService: PokerGameService, private messenger: BackendMessengerService) {
+        private readonly pokerService: PokerGameService,
+        private readonly messenger: BackendMessengerService) {
     }
 
     ngOnInit(): void {
-        if (this.pokerService.isTablemaster) {
-            this.isTablemaster = true;
-        }
-        else {
-            this.isTablemaster = false;
-        }
-        this.gamekey = this.pokerService.gamekey!;
-        this.playerid = this.pokerService.id!;
         this.messenger.subscribe((message) => {
             if (message.includes("RefreshPlayer")) {
                 this.refresh();
@@ -58,14 +41,11 @@ export class PlayerListComponent implements OnInit{
     }
 
     public refresh() {
-      this.isGameRunning = this.pokerService.isGameRunning;
-      this.pokerService.getPlayers().subscribe(players =>
-        this.players$.next(players)
-      );
+      this.pokerService.getPlayers().subscribe();
     }
 
     public kickplayer(playerId: number) {
-        this.pokerService.kickplayer(this.gamekey!, playerId).subscribe(
+        this.pokerService.kickplayer(this.pokerService.game$.value.gameKey, playerId).subscribe(
             () => {
             }
         );
@@ -77,7 +57,7 @@ export class PlayerListComponent implements OnInit{
         selBox.style.left = '0';
         selBox.style.top = '0';
         selBox.style.opacity = '0';
-        selBox.value = window.location.host + "/onboarding/" + this.gamekey;
+        selBox.value = window.location.host + "/onboarding/" + this.pokerService.game$.value.gameKey;
         document.body.appendChild(selBox);
         selBox.focus();
         selBox.select();

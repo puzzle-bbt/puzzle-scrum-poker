@@ -9,17 +9,17 @@
 
     <div *ngFor="let player of (players$ | async) ">
 
-            <div class="player-row" [class.selfPlayer]="playerid == player.id">
+            <div class="player-row" [class.selfPlayer]="(game$ | async)?.me?.id == player.id">
 
-                <div *ngIf="isGameRunning; else canNotChoose">
+                <div *ngIf="(game$ |async)?.isGameRunning; else canNotChoose">
                     <div *ngIf="player.selectedCard; else canNotChoose">
                         <div class="list-item accountCircle"><img src="assets/account_circle_blue-green_48dp.svg"></div>
                     </div>
                 </div>
                 <ng-template #canNotChoose><div class="list-item accountCircle"><img src="assets/account_circle_black_48dp.svg"></div></ng-template>
 
-                <div *ngIf="playerid != player.id; else thisPlayer">
-                    <div *ngIf="isTablemaster; else isNotTablemaster">
+                <div *ngIf="(game$ | async)?.me?.id != player.id; else thisPlayer">
+                    <div *ngIf="(game$ | async)?.iAmTableMaster; else isNotTablemaster">
                         <div class="list-item usernameDiv">{{ player.name }}<img (click)="kickplayer(player.id)" src="assets/cancel_black_24dp.svg">
                         </div>
                     </div>
@@ -27,8 +27,8 @@
                 </div>
                 <ng-template #thisPlayer><div class="list-item usernameDiv">{{ player.name + " (Ich)" }}</div></ng-template>
 
-                <div *ngIf="player.isPlaying; else spectator">
-                    <div *ngIf="isGameRunning || isGameRunning == undefined || player.selectedCard == null; else gameIsNotRunning">
+                <div *ngIf="player.playing; else spectator">
+                    <div *ngIf="(game$ |async)?.isGameRunning || player.selectedCard == null; else gameIsNotRunning">
                         <div class="list-item lastItem choosenValue">-</div>
                     </div>
                     <ng-template #gameIsNotRunning><div class="list-item lastItem choosenValue">{{ player.selectedCard }}</div></ng-template>
