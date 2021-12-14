@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PokerGameService} from "../../services/poker-game.service";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
 
@@ -19,8 +19,9 @@ export class DesktopEstimationComponent implements OnInit {
     constructor(
         private changeDetectorRef: ChangeDetectorRef,
         public pokerService: PokerGameService,
-        private messenger: BackendMessengerService
-        ) {}
+        private messenger: BackendMessengerService,
+        changeDetection: ChangeDetectionStrategy.OnPush
+    ) {}
 
     ngOnInit(): void {
 
