@@ -5,7 +5,8 @@ import {BackendMessengerService} from "../../services/backend-messenger.service"
 @Component({
   selector: 'app-desktop-estimation',
   templateUrl: './desktop-estimation.component.html',
-  styleUrls: ['./desktop-estimation.component.scss']
+  styleUrls: ['./desktop-estimation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DesktopEstimationComponent implements OnInit {
 
@@ -19,8 +20,7 @@ export class DesktopEstimationComponent implements OnInit {
     constructor(
         private changeDetectorRef: ChangeDetectorRef,
         public pokerService: PokerGameService,
-        private messenger: BackendMessengerService,
-        changeDetection: ChangeDetectionStrategy.OnPush
+        private messenger: BackendMessengerService
     ) {}
 
     ngOnInit(): void {

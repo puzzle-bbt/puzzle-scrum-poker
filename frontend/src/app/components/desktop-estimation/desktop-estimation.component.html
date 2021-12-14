@@ -4,7 +4,7 @@
   </div>
 
   <div class="gameInformation">
-    <div *ngIf="(isNotFirstTime); else isFirstTime">
+    <div *ngIf="isNotFirstTime; else isFirstTime">
       <div *ngIf="!isGameRunning; else gameIsNotRunning">Spieler sind am abstimmen...</div>
       <ng-template #gameIsNotRunning><div>Runde ist fertig.</div></ng-template>
     </div>
