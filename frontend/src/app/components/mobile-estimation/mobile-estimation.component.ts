@@ -1,6 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {PokerGameService} from "../../services/poker-game.service";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
+import { Observable } from 'rxjs';
+import { Game } from '../../models/model';
 
 @Component({
   selector: 'app-mobile-estimation',
@@ -10,10 +12,12 @@ import {BackendMessengerService} from "../../services/backend-messenger.service"
 })
 export class MobileEstimationComponent implements OnInit {
 
-  isGameRunning?: boolean;
-  roundName?: string;
+  game$: Observable<Game> = this.pokerService.game$.asObservable();
 
-  constructor(private pokerService: PokerGameService, private messenger: BackendMessengerService) { }
+  constructor(
+    private readonly pokerService: PokerGameService,
+    private readonly messenger: BackendMessengerService
+  ) { }
 
     ngOnInit(): void {
       this.messenger.subscribe((message) => {
@@ -31,12 +35,6 @@ export class MobileEstimationComponent implements OnInit {
 
 
   public refresh() {
-    this.isGameRunning = this.pokerService.game$.value.isGameRunning;
-    this.pokerService.getRoundName(this.pokerService.game$.value.gameKey).subscribe(roundInfo =>
-      {
-        this.roundName = roundInfo.roundInfo;
-      }
-    );
-    console.log(this.roundName);
+    this.pokerService.getRoundName(this.pokerService.game$.value.gameKey).subscribe();
   }
 }

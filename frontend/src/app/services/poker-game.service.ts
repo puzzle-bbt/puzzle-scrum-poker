@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { BehaviorSubject, catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
 import { Game, Player, UserError } from '../models/model';
-import { RoundInfoModel } from '../models/RoundInfoModel';
 import { Router } from '@angular/router';
 import { BackendMessengerService } from './backend-messenger.service';
 
@@ -11,18 +10,6 @@ const BASE_GET_REQUEST_OPTIONS = {
   headers: {
     'responseType': 'json'
   }
-}
-
-const BASE_POST_REQUEST_OPTIONS = {
-  headers: {
-    'content-type': 'application/json'
-  }
-}
-
-interface OnboardingModel {
-  id: string;
-  gameKey: string;
-  selectedCard: string;
 }
 
 @Injectable({
@@ -242,29 +229,25 @@ export class PokerGameService {
     );
   }
 
-  public getRoundName(gamekey: string) {
+  public getRoundName(gamekey: string): Observable<any> {
     return this.httpClient.get<RoundInfoModel>(`${BASE_URL}/tables/getroundname/${gamekey}`, BASE_GET_REQUEST_OPTIONS).pipe(
       tap(value => console.log('-------->', value)),
       map(data => {
-        return {
-          roundInfo: data.roundInfo,
-          roundInfoLink: data.roundInfoLink
-        } as RoundInfoModel;
+        this.game$.next({ ...this.game$.value, roundInfo: data.roundInfo, roundInfoLink: data.roundInfoLink });
       }),
       catchError(error => {
         console.error('Can not get roundname: ', error);
-          this.handleError(error);
+        this.handleError(error);
         return EMPTY;
       })
     );
   }
 
-  public setRoundName(gamekey: string, roundname: string): Observable<RoundInfoModel> {
-    return this.httpClient.get<RoundInfoModel>(`${BASE_URL}/tables/setroundname/${gamekey}/${roundname}`, BASE_GET_REQUEST_OPTIONS).pipe(
-      tap(value => console.log('-------->', value)),
+  public setRoundName(gamekey: string, roundname: string): Observable<void> {
+    return this.httpClient.get<void>(`${BASE_URL}/tables/setroundname/${gamekey}/${roundname}`, BASE_GET_REQUEST_OPTIONS).pipe(
       catchError(error => {
         console.error('Can not set roundname: ', error);
-          this.handleError(error);
+        this.handleError(error);
         return EMPTY;
       })
     );
@@ -286,4 +269,15 @@ export class PokerGameService {
   }
 
 
+}
+
+interface OnboardingModel {
+  id: string;
+  gameKey: string;
+  selectedCard: string;
+}
+
+interface RoundInfoModel {
+  roundInfo : string | undefined;
+  roundInfoLink: string;
 }

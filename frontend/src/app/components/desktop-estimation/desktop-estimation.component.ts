@@ -41,18 +41,18 @@ export class DesktopEstimationComponent implements OnInit {
     private addCards(svgFilename: string = 'card_front.svg') {
         this.pokerService.getCardSvg(svgFilename).subscribe(
             (data: string) => {
-                this.addSvgToContainer(this.stringToSvgElement(data), 'card-1', '1')
-                this.addSvgToContainer(this.stringToSvgElement(data), 'card-2', '2')
-                this.addSvgToContainer(this.stringToSvgElement(data), 'card-3', '3')
-                this.addSvgToContainer(this.stringToSvgElement(data), 'card-4', '5')
-                this.addSvgToContainer(this.stringToSvgElement(data), 'card-5', '8')
-                this.addSvgToContainer(this.stringToSvgElement(data), 'card-6', '13')
-                this.addSvgToContainer(this.stringToSvgElement(data), 'card-7', '21')
-                this.addSvgToContainer(this.stringToSvgElement(data), 'card-8', '?')
+                this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-1', '1')
+                this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-2', '2')
+                this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-3', '3')
+                this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-4', '5')
+                this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-5', '8')
+                this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-6', '13')
+                this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-7', '21')
+                this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-8', '?')
             });
     }
 
-    private stringToSvgElement(str: string): SVGElement {
+    private static stringToSvgElement(str: string): SVGElement {
         let ele = document.createElement("div");
         ele.innerHTML = str;
         return ele.firstElementChild as SVGElement;
@@ -65,7 +65,7 @@ export class DesktopEstimationComponent implements OnInit {
         svg.querySelector('#cardText')!.setAttribute("style", "font-size: 30px");
         svg.classList.add("card");
 
-        svg.addEventListener('click', (event)=>{
+        svg.addEventListener('click', ()=>{
             this.resetCards();
             if (!svg.classList.contains("selectedcard")) {
                 svg.classList.add("selectedcard");

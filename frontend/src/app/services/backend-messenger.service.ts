@@ -1,6 +1,6 @@
-import {Injectable, OnDestroy, OnInit} from '@angular/core';
-import {webSocket, WebSocketSubject} from "rxjs/webSocket";
-import {Subscription} from "rxjs";
+import { Injectable, OnDestroy } from '@angular/core';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

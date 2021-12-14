@@ -1,7 +1,7 @@
 <div class="container">
     <div class="roundInformation">
         <p class="round">Runde</p>
-        <p class="storyname">{{roundName}}</p>
+        <p class="storyname">{{(game$ | async)?.roundInfo}}</p>
     </div>
     <div class="cardContainer-mobile">
         <p>Deine Schätzung in Story Points</p>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="gameInformation">
-        <div *ngIf="isGameRunning; else gameIsNotRunning">Spieler sind am abstimmen...</div>
+        <div *ngIf="(game$ | async)?.isGameRunning; else gameIsNotRunning">Spieler sind am abstimmen...</div>
         <ng-template #gameIsNotRunning><div>Runde ist fertig.</div></ng-template>
     </div>
 </div>
