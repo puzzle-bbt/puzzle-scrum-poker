@@ -30,10 +30,6 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'info',
-        component: InfoComponent
-    },
-    {
         path: 'error',
         component: ErrorComponent
     },

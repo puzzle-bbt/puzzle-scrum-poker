@@ -13,7 +13,7 @@
 
     <img class="header-link" *ngIf="isCurrentlyOnPlayground()" (click)="changeSpectator()" src="assets/visibility_white_48dp.svg" height="30" width="30" alt="toggle spectator mode">
 
-    <img class="header-link" routerLink="info" src="assets/info_white_48dp.svg" height="30" width="30" alt="show info page">
+    <img class="header-link" routerLink="/playground/info" src="assets/info_white_48dp.svg" height="30" width="30" alt="show info page">
 
   </pzsh-topbar>
 
@@ -35,7 +35,7 @@
         <a routerLink="/">/</a>,&nbsp;&nbsp;&nbsp;&nbsp;
         <a routerLink="/onboarding">/onborarding</a>,&nbsp;&nbsp;&nbsp;&nbsp;
         <a routerLink="/playground">/playground</a>,&nbsp;&nbsp;&nbsp;&nbsp;
-        <a routerLink="/info">/info</a>,&nbsp;&nbsp;&nbsp;&nbsp;
+        <a routerLink="/playground/info">/info</a>,&nbsp;&nbsp;&nbsp;&nbsp;
         <a routerLink="/error">/error</a>
       </p>
     </div>
