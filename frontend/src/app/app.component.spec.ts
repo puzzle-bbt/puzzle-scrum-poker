@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { PokerGameService } from './services/poker-game.service';
-import { CacheService } from './services/cache.service';
 import { of } from 'rxjs';
 
 describe('AppComponent', () => {

@@ -1,7 +1,8 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Player} from "../../player";
-import {PokerGameService} from "../../services/poker-game.service";
-import {BackendMessengerService} from "../../services/backend-messenger.service";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { PokerGameService } from '../../services/poker-game.service';
+import { BackendMessengerService } from '../../services/backend-messenger.service';
+import { Subject } from 'rxjs';
+import { Player } from '../../models/model';
 
 @Component({
   selector: 'app-playerlist',
@@ -13,7 +14,7 @@ import {BackendMessengerService} from "../../services/backend-messenger.service"
 
 export class PlayerListComponent implements OnInit{
 
-    players: Player[] = [];
+    players$: Subject<Player[]> = new Subject<Player[]>();
     gamekey?: string;
     isGameRunning?: boolean;
     average?: number;
@@ -53,15 +54,14 @@ export class PlayerListComponent implements OnInit{
             }
         });
         this.refresh();
+
     }
 
     public refresh() {
-        this.isGameRunning = this.pokerService.isGameRunning;
-        this.pokerService.getPlayers(this.gamekey!).subscribe(
-            (players: Player[]) => {
-                this.players = players;
-            }
-        )
+      this.isGameRunning = this.pokerService.isGameRunning;
+      this.pokerService.getPlayers().subscribe(players =>
+        this.players$.next(players)
+      );
     }
 
     public kickplayer(playerId: number) {

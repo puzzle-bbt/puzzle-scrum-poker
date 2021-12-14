@@ -7,7 +7,7 @@
         <div class="list-item choosenValue lastItem">Schätzung</div>
     </div>
 
-    <div *ngFor="let player of players ">
+    <div *ngFor="let player of (players$ | async) ">
 
             <div class="player-row" [class.selfPlayer]="playerid == player.id">
 
@@ -27,7 +27,7 @@
                 </div>
                 <ng-template #thisPlayer><div class="list-item usernameDiv">{{ player.name + " (Ich)" }}</div></ng-template>
 
-                <div *ngIf="player.playerMode; else spectator">
+                <div *ngIf="player.isPlaying; else spectator">
                     <div *ngIf="isGameRunning || isGameRunning == undefined || player.selectedCard == null; else gameIsNotRunning">
                         <div class="list-item lastItem choosenValue">-</div>
                     </div>

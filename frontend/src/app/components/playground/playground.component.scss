@@ -1,0 +1,40 @@
+@import "../../../variables";
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.playground {
+  display: flex;
+  flex-direction: column;
+  row-gap: $default-spacing;
+  column-gap: $default-double-spacing;
+}
+
+.playgroud-button {
+  display: flex;
+  justify-content: end;
+  padding-top: $default-spacing;
+  row-gap: $default-spacing;
+  column-gap: $default-double-spacing;
+}
+
+/* For desktops: */
+@media only screen and (min-width: 768px) {
+  .playground {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    row-gap: $default-spacing;
+    column-gap: $default-double-spacing;
+  }
+
+  app-desktop-estimation {
+    display: block;
+  }
+
+  app-mobile-estimation {
+    display: none;
+  }
+}

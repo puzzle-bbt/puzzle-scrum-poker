@@ -35,15 +35,14 @@ export class OnboardingComponent implements OnInit {
     }
 
     public createTablemaster(tablemasterName: string) {
-        this.pokerService.createTablemaster(tablemasterName)
-            .pipe(
-                tap((value: PlayerModel) => {
-                    this.pokerService.id = +value.id;
-                    this.pokerService.gamekey = value.gameKey!;
-                    this.messenger.sendMessage(`table=${this.pokerService.gamekey},playerid=${this.pokerService.id}`);
-                    this.router.navigateByUrl("/playground");
-                })
-            ).subscribe();
+        this.pokerService.createTablemaster(tablemasterName).subscribe(successful => {
+          if (successful) {
+            this.messenger.sendMessage(`table=${this.pokerService.gamekey},playerid=${this.pokerService.id}`);
+            this.router.navigateByUrl("/playground");
+          } else {
+            // TODO: show a error message
+          }
+        });
     }
 
     public createPlayer(playerName: string) {

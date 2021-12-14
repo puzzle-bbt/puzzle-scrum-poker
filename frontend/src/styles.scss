@@ -1,4 +1,20 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: lightblue;
+}
+
+app-desktop-estimation {
+  display: none;
+}
+
+app-mobile-estimation {
+  display: block;
+}
+
+/* For desktops: */
+@media only screen and (min-width: 768px) {
+  body {
+    background-color: tan;
+  }
 }
