@@ -1,0 +1,27 @@
+.visible {
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+.backSide {
+  margin-right: 20px;
+}
+
+.cardContainerFront {
+  height: 200vh;
+  width: 120vh;
+}
+
+.gameInformation {
+  background-color: rgba(70,188,192,0.5);
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  border-radius: 8px;
+}
+
