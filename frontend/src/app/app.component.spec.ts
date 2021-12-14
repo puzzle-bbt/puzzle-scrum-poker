@@ -11,14 +11,14 @@ describe('AppComponent', () => {
     pokerGameService = jasmine.createSpyObj('PokerGameService', ['setPlayerMode']);
     pokerGameService.setPlayerMode.and.returnvalue(of(''));
 
-    cacheService = jasmine.createSpyObj('CacheService', [], { id: 5, gamekey: 'ZZ456' } );
+    cacheService = jasmine.createSpyObj('CacheService', [], {id: 5, gamekey: 'ZZ456'});
 
     await TestBed.configureTestingModule({
       imports: [],
-      declarations: [ AppComponent ],
+      declarations: [AppComponent],
       providers: [
-        { provider: PokerGameService, useValue: pokerGameService},
-        { provider: PokerGameService, useValue: pokerGameService}
+        {provider: PokerGameService, useValue: pokerGameService},
+        {provider: PokerGameService, useValue: pokerGameService}
       ]
     }).compileComponents();
   });

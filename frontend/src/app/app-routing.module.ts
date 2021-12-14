@@ -6,43 +6,43 @@ import { PlaygroundComponent } from './components/playground/playground.componen
 import { InfoComponent } from './components/info/info.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'onboarding'
-    },
-    {
-        path: 'onboarding',
-        component: OnboardingComponent
-    },
-    {
-        path: 'onboarding/:gamekey',
-        component: OnboardingComponent
-    },
-    {
-        path: 'playground',
-        component: PlaygroundComponent,
-        children: [
-            {
-                path: 'info',
-                component: InfoComponent
-            }
-        ]
-    },
-    {
-        path: 'error',
-        component: ErrorComponent
-    },
-    {
-        path: '**',
-        redirectTo: 'error'
-    }
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'onboarding'
+  },
+  {
+    path: 'onboarding',
+    component: OnboardingComponent
+  },
+  {
+    path: 'onboarding/:gamekey',
+    component: OnboardingComponent
+  },
+  {
+    path: 'playground',
+    component: PlaygroundComponent,
+    children: [
+      {
+        path: 'info',
+        component: InfoComponent
+      }
+    ]
+  },
+  {
+    path: 'error',
+    component: ErrorComponent
+  },
+  {
+    path: '**',
+    redirectTo: 'error'
+  }
 
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {
 }

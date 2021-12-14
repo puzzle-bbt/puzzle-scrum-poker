@@ -8,7 +8,8 @@ import { PokerGameService } from '../../services/poker-game.service';
 })
 export class ErrorComponent implements OnInit {
 
-  constructor(public pokerGameService: PokerGameService) { }
+  constructor(public pokerGameService: PokerGameService) {
+  }
 
   ngOnInit(): void {
   }

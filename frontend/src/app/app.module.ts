@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { ErrorComponent } from './components/error/error.component';
-import {PlayerListComponent} from "./components/playerlist/playerlist.component";
+import { PlayerListComponent } from './components/playerlist/playerlist.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { PlaygroundComponent } from './components/playground/playground.component';
@@ -15,27 +15,27 @@ import { DesktopEstimationComponent } from './components/desktop-estimation/desk
 import { MobileEstimationComponent } from './components/mobile-estimation/mobile-estimation.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        FooterComponent,
-        OnboardingComponent,
-        ErrorComponent,
-        PlayerListComponent,
-        PlaygroundComponent,
-        InfoComponent,
-        DesktopEstimationComponent,
-        MobileEstimationComponent
-    ],
-    imports: [
-        CommonModule,
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule
-    ],
-    providers: [],
-    exports: [CommonModule],
-    bootstrap: [AppComponent],
-    schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  declarations: [
+    AppComponent,
+    FooterComponent,
+    OnboardingComponent,
+    ErrorComponent,
+    PlayerListComponent,
+    PlaygroundComponent,
+    InfoComponent,
+    DesktopEstimationComponent,
+    MobileEstimationComponent
+  ],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule
+  ],
+  providers: [],
+  exports: [CommonModule],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 }
