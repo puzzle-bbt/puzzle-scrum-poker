@@ -35,14 +35,12 @@ export class DesktopEstimationComponent implements OnInit {
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
         this.refresh();
-        this.turnCards(false);
         this.isNotFirstTime = true;
       }
     });
     this.isNotFirstTime = false;
     this.refresh();
     this.addCards();
-    this.turnCards(true);
   }
 
   public resetCards() {
@@ -50,10 +48,13 @@ export class DesktopEstimationComponent implements OnInit {
     cardCollection.forEach(card => card.classList.remove('selectedcard'));
   }
 
-  public turnCards(firstTime: boolean) {
+
+
+  public turnCards() {
     let frontCards = document.getElementById('cardContainerFront');
     let backCards = document.getElementById('cardContainerBack');
-    if (this.pokerService.game$.value.isGameRunning) {
+
+    if (!this.pokerService.game$.value.isGameRunning) {
       backCards!.classList.add('visible');
       backCards!.classList.remove('hidden');
       frontCards!.classList.add('hidden');
@@ -65,17 +66,11 @@ export class DesktopEstimationComponent implements OnInit {
       frontCards!.classList.remove('hidden');
     }
 
-    if (firstTime) {
-      backCards!.classList.add('visible');
-      backCards!.classList.remove('hidden');
-      frontCards!.classList.add('hidden');
-      frontCards!.classList.remove('visible');
-    }
-
   }
 
   public refresh() {
     this.isGameRunning = this.pokerService.game$.value.isGameRunning;
+    this.turnCards();
   }
 
   private addCards(svgFilename: string = 'card_front.svg') {

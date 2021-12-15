@@ -42,6 +42,14 @@ export class PokerGameService {
     private readonly router: Router,
     private readonly messenger: BackendMessengerService
   ) {
+      this.messenger.subscribe((message) => {
+          if (message.includes('gameStart')) {
+              this.game$.value.isGameRunning = true;
+          }
+          if (message.includes('gameOver')) {
+              this.game$.value.isGameRunning = false;
+          }
+      });
   }
 
   setAsTableMaster() {
