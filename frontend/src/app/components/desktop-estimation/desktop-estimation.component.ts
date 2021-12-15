@@ -60,6 +60,7 @@ export class DesktopEstimationComponent implements OnInit {
       frontCards!.classList.add('hidden');
       frontCards!.classList.remove('visible');
     } else {
+      this.resetCards();
       backCards!.classList.add('hidden');
       backCards!.classList.remove('visible');
       frontCards!.classList.add('visible');
