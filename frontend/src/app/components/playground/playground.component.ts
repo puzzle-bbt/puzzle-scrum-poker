@@ -14,7 +14,8 @@ export class PlaygroundComponent {
     map(game => game.iAmTableMaster)
   );
 
-  constructor(private pokerGameService: PokerGameService) { }
+  constructor(private pokerGameService: PokerGameService) {
+  }
 
   public changeGameState() {
     this.pokerGameService.toggleGameRunning().subscribe();

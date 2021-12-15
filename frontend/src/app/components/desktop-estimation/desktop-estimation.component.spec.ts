@@ -8,9 +8,9 @@ describe('DesktopEstinationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DesktopEstimationComponent ]
+      declarations: [DesktopEstimationComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -8,9 +8,9 @@ describe('MobileEstinationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MobileEstimationComponent ]
+      declarations: [MobileEstimationComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

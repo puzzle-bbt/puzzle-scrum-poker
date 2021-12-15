@@ -4,9 +4,11 @@
   </div>
 
   <div class="gameInformation">
-    <div *ngIf="(isNotFirstTime); else isFirstTime">
+    <div *ngIf="isNotFirstTime; else isFirstTime">
       <div *ngIf="!isGameRunning; else gameIsNotRunning">Spieler sind am abstimmen...</div>
-      <ng-template #gameIsNotRunning><div>Runde ist fertig.</div></ng-template>
+      <ng-template #gameIsNotRunning>
+        <div>Runde ist fertig.</div>
+      </ng-template>
     </div>
     <ng-template #isFirstTime>Spiel noch nicht gestartet</ng-template>
   </div>
@@ -15,17 +17,17 @@
     <h3>Deine Schätzung in Storypoints</h3>
   </div>
 
-  <div #cardContainerFront id="cardContainerFront" class="cardContainer-desktop"></div>
+  <div #cardContainerFront class="cardContainer-desktop" id="cardContainerFront"></div>
 
-  <div #cardContainerBack id="cardContainerBack" class="cardContainerBack-desktop">
-    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
-    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
-    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
-    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
-    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
-    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
-    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
-    <img class='backSide' src='assets/images/card_back.svg' height="200vh" width="120vh">
+  <div #cardContainerBack class="cardContainerBack-desktop" id="cardContainerBack">
+    <img class='backSide' height="200vh" src='assets/images/card_back.svg' width="120vh">
+    <img class='backSide' height="200vh" src='assets/images/card_back.svg' width="120vh">
+    <img class='backSide' height="200vh" src='assets/images/card_back.svg' width="120vh">
+    <img class='backSide' height="200vh" src='assets/images/card_back.svg' width="120vh">
+    <img class='backSide' height="200vh" src='assets/images/card_back.svg' width="120vh">
+    <img class='backSide' height="200vh" src='assets/images/card_back.svg' width="120vh">
+    <img class='backSide' height="200vh" src='assets/images/card_back.svg' width="120vh">
+    <img class='backSide' height="200vh" src='assets/images/card_back.svg' width="120vh">
   </div>
 
 </div>
