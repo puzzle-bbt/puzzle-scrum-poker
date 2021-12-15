@@ -33,6 +33,7 @@
         <div class="list-item usernameDiv">{{ player.name + " (Ich)" }}</div>
       </ng-template>
 
+      <div>{{(game$ |async)?.isGameRunning}}</div>
       <div *ngIf="player.playing; else spectator">
         <div *ngIf="!(game$ |async)?.isGameRunning && player.selectedCard != null; else gameIsNotRunning">
           <div class="list-item lastItem choosenValue">{{ player.selectedCard }}</div>
