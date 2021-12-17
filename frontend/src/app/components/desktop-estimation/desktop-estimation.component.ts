@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PokerGameService } from '../../services/poker-game.service';
 import { BackendMessengerService } from '../../services/backend-messenger.service';
+import {Observable} from "rxjs";
+import {Game} from "../../models/model";
 
 @Component({
   selector: 'app-desktop-estimation',
@@ -16,6 +18,8 @@ export class DesktopEstimationComponent implements OnInit {
   public roundName?: string;
   public isGameRunning?: boolean;
   public isNotFirstTime?: boolean;
+
+  game$: Observable<Game> = this.pokerService.game$.asObservable();
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -47,7 +51,6 @@ export class DesktopEstimationComponent implements OnInit {
     let cardCollection = this.cardFrontContainerDiv!.nativeElement.querySelectorAll('.card');
     cardCollection.forEach(card => card.classList.remove('selectedcard'));
   }
-
 
 
   public turnCards() {
