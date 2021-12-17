@@ -28,7 +28,8 @@ export class PokerGameService {
     me: undefined,
     iAmTableMaster: false,
     roundInfo: undefined,
-    roundInfoLink: undefined
+    roundInfoLink: undefined,
+    average: undefined
   });
 
   // current error data
@@ -70,6 +71,10 @@ export class PokerGameService {
 
   setCardValue(value: string) {
     this.game$.next({...this.game$.value, me: {...this.game$.value.me!, selectedCard: value}});
+  }
+
+  setAverage(average: number) {
+    this.game$.next({...this.game$.value, average: average});
   }
 
   public createTablemaster(tablemasterName: string): Observable<boolean> {
@@ -148,10 +153,13 @@ export class PokerGameService {
       );
   }
 
-  public getAverage(gamekey: string): Observable<number> {
+  public getAverage(gamekey: string): Observable<any> {
     return this.httpClient.get<number>(`${BASE_URL}/average/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
         tap(value => console.log('-------->', value)),
+        tap(value => {
+          this.setAverage(value);
+        }),
         catchError(error => {
           console.error('Can not get average: ', error);
           this.handleError(error);
@@ -279,7 +287,8 @@ export class PokerGameService {
       me: player,
       iAmTableMaster: iAmTableMaster,
       roundInfo: undefined,
-      roundInfoLink: undefined
+      roundInfoLink: undefined,
+      average: undefined
     }
 
     this.game$.next(game);

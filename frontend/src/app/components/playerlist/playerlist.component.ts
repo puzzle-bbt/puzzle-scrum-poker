@@ -64,4 +64,13 @@ export class PlayerListComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(selBox);
   }
+
+  public isOnDesktop() {
+    if (window.innerWidth > 768) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

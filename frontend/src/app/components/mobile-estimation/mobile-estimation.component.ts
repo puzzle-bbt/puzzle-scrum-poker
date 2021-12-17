@@ -17,7 +17,7 @@ export class MobileEstimationComponent implements OnInit {
   cardSelected?: boolean;
 
   constructor(
-    private readonly pokerService: PokerGameService,
+    public pokerService: PokerGameService,
     private readonly messenger: BackendMessengerService
   ) {
   }
@@ -28,6 +28,7 @@ export class MobileEstimationComponent implements OnInit {
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
         this.refresh();
+        this.getAverage();
       }
     });
 
@@ -43,5 +44,9 @@ export class MobileEstimationComponent implements OnInit {
   public refresh() {
     this.cardSelected = false;
     this.pokerService.getRoundName(this.pokerService.game$.value.gameKey).subscribe();
+  }
+
+  public getAverage() {
+    this.pokerService.getAverage(this.pokerService.game$.value.gameKey).subscribe();
   }
 }

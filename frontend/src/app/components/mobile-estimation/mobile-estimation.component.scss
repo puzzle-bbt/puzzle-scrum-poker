@@ -6,7 +6,6 @@
   border-radius: 8px;
 }
 
-
 .roundInformation {
   width: 100%;
   display: grid;
@@ -41,4 +40,9 @@
 
 .storyname {
   align-items: center;
+}
+
+.averageGrid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
 }

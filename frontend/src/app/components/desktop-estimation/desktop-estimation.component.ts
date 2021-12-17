@@ -33,6 +33,7 @@ export class DesktopEstimationComponent implements OnInit {
     return ele.firstElementChild as SVGElement;
   }
 
+
   ngOnInit(): void {
     let frontCards = document.getElementById('cardContainerFront');
     frontCards!.classList.add("hidden");
@@ -129,6 +130,10 @@ export class DesktopEstimationComponent implements OnInit {
 
     this.cardFrontContainerDiv!.nativeElement.append(svg);
     this.changeDetectorRef.markForCheck();
+  }
+
+  public getAverage() {
+    this.pokerService.getAverage(this.pokerService.game$.value.gameKey).subscribe();
   }
 
 }

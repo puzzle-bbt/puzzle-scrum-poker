@@ -11,8 +11,13 @@
     </ng-template>
   </div>
 
-  <div>
-    <h3>Deine Schätzung in Storypoints</h3>
+  <div class="average">
+    <div *ngIf="(game$ | async)?.isGameRunning; else notRunning">
+      <h3>Deine Schätzung in Storypoints</h3>
+    </div>
+    <ng-template #notRunning>
+      <h3>Team Durchschnitt {{ this.pokerService.game$.value.average }}</h3>
+    </ng-template>
   </div>
 
   <div #cardContainerFront class="cardContainer-desktop" id="cardContainerFront"></div>
