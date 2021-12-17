@@ -57,6 +57,10 @@ public class RestInterface {
     public String setSelectedCard(@PathVariable(value= "gamekey") String gamekey, @PathVariable(value="playerid") int playerid, @PathVariable(value="selectedCard") String selectedCard){
         LOG.info("setSelectedCard is called: /players/setselectedcard/{}/{}/{}", gamekey, playerid, selectedCard);
         try {
+            if("question-mark".equals(selectedCard)) {
+                pokerService.setSelectedCard(gamekey, playerid, "?");
+                return "";
+            }
             pokerService.setSelectedCard(gamekey, playerid, selectedCard);
 
             return pokerService.getSelectedCard(gamekey, playerid);
