@@ -153,7 +153,7 @@ export class PokerGameService {
       );
   }
 
-  public getAverage(gamekey: string): Observable<number> {
+  public getAverage(gamekey: string): Observable<any> {
     return this.httpClient.get<number>(`${BASE_URL}/average/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
         tap(value => console.log('-------->', value)),

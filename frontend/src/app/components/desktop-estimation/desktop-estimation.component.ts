@@ -80,23 +80,8 @@ export class DesktopEstimationComponent implements OnInit {
   }
 
   public refresh() {
-    let frontCards = document.getElementById('cardContainerFront');
-    let backCards = document.getElementById('cardContainerBack');
-
-    if (!this.game$.value.me?.playing) {
-      frontCards!.classList.add('hidden');
-      frontCards!.classList.remove('visible');
-      backCards!.classList.add('hidden');
-      backCards!.classList.remove('visible');
-    } else {
-      if (this.game$.value.isGameRunning) {
-        frontCards!.classList.add('visible');
-        frontCards!.classList.remove('hidden');
-      } else {
-        backCards!.classList.add('visible');
-        backCards!.classList.remove('hidden');
-      }
-    }
+    this.isGameRunning = this.pokerService.game$.value.isGameRunning;
+    this.turnCards();
   }
 
   private addCards(svgFilename: string = 'card_front.svg') {
