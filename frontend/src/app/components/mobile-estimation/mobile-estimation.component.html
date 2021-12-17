@@ -26,4 +26,19 @@
       <div>Runde ist fertig.</div>
     </ng-template>
   </div>
+
+  <div class="average">
+    <div *ngIf="(game$ | async)?.isGameRunning; else notRunning">
+      <div class="averageGrid">
+        <h3 class="averageTitle">Durchschnitt: </h3>
+        <h3 class="average">{{ pokerService.game$.value.average }}</h3>
+      </div>
+    </div>
+    <ng-template #notRunning>
+      <div class="averageGrid">
+        <h3 class="averageTitle">Durchschnitt: </h3>
+        <h3 class="average">{{ pokerService.game$.value.average }}</h3>
+      </div>
+    </ng-template>
+  </div>
 </div>
