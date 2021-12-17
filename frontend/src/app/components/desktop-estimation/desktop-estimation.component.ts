@@ -33,6 +33,7 @@ export class DesktopEstimationComponent implements OnInit {
     return ele.firstElementChild as SVGElement;
   }
 
+
   ngOnInit(): void {
     let frontCards = document.getElementById('cardContainerFront');
     frontCards!.classList.add("hidden");
@@ -42,7 +43,6 @@ export class DesktopEstimationComponent implements OnInit {
         this.isGameRunning = this.pokerService.game$.value.isGameRunning;
         this.turnCards();
         this.refresh();
-        this.getAverage();
       }
     });
     this.messenger.subscribe((message) => {
@@ -80,8 +80,23 @@ export class DesktopEstimationComponent implements OnInit {
   }
 
   public refresh() {
-    this.isGameRunning = this.pokerService.game$.value.isGameRunning;
-    this.turnCards();
+    let frontCards = document.getElementById('cardContainerFront');
+    let backCards = document.getElementById('cardContainerBack');
+
+    if (!this.game$.value.me?.playing) {
+      frontCards!.classList.add('hidden');
+      frontCards!.classList.remove('visible');
+      backCards!.classList.add('hidden');
+      backCards!.classList.remove('visible');
+    } else {
+      if (this.game$.value.isGameRunning) {
+        frontCards!.classList.add('visible');
+        frontCards!.classList.remove('hidden');
+      } else {
+        backCards!.classList.add('visible');
+        backCards!.classList.remove('hidden');
+      }
+    }
   }
 
   private addCards(svgFilename: string = 'card_front.svg') {
