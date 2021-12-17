@@ -42,6 +42,7 @@ export class DesktopEstimationComponent implements OnInit {
         this.isGameRunning = this.pokerService.game$.value.isGameRunning;
         this.turnCards();
         this.refresh();
+        this.getAverage();
       }
     });
     this.messenger.subscribe((message) => {
@@ -129,6 +130,10 @@ export class DesktopEstimationComponent implements OnInit {
 
     this.cardFrontContainerDiv!.nativeElement.append(svg);
     this.changeDetectorRef.markForCheck();
+  }
+
+  public getAverage() {
+    this.pokerService.getAverage(this.pokerService.game$.value.gameKey).subscribe();
   }
 
 }

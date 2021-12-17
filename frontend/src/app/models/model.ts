@@ -16,6 +16,7 @@ export interface Game {
   iAmTableMaster: boolean;
   roundInfo: string | undefined;
   roundInfoLink: string | undefined;
+  average: number | undefined;
 }
 
 export interface UserError {
