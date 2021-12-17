@@ -14,6 +14,8 @@ export class MobileEstimationComponent implements OnInit {
 
   game$: Observable<Game> = this.pokerService.game$.asObservable();
 
+  cardSelected?: boolean;
+
   constructor(
     private readonly pokerService: PokerGameService,
     private readonly messenger: BackendMessengerService
@@ -21,6 +23,8 @@ export class MobileEstimationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cardSelected = false;
+
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
         this.refresh();
@@ -31,11 +35,13 @@ export class MobileEstimationComponent implements OnInit {
   }
 
   public setSelectedCard(selectedValue: string) {
+    this.cardSelected = true;
     this.pokerService.setSelectedCard(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, selectedValue).subscribe();
   }
 
 
   public refresh() {
+    this.cardSelected = false;
     this.pokerService.getRoundName(this.pokerService.game$.value.gameKey).subscribe();
   }
 }

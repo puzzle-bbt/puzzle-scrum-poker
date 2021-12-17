@@ -5,8 +5,10 @@
   </div>
   <div class="cardContainer-mobile">
     <p>Deine Schätzung in Story Points</p>
-    <select class="dropdown">
-      <option class="cardSelect" selected="selected">-</option>
+    <select class="dropdown" [disabled]="(game$ | async)?.isGameRunning ? null : 'disabled'">
+      <ng-container *ngIf="!cardSelected">
+        <option class="noCardSelected" [selected]="(game$ | async)?.isGameRunning ? null : 'selected'">-</option>
+      </ng-container>
       <option (click)="setSelectedCard('1')" value="1">1</option>
       <option (click)="setSelectedCard('2')" value="2">2</option>
       <option (click)="setSelectedCard('3')" value="3">3</option>
