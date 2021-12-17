@@ -10,33 +10,34 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OnboardingComponent implements OnInit {
 
-    constructor(
-      private readonly route: ActivatedRoute,
-      private readonly pokerService: PokerGameService
-    ) { }
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly pokerService: PokerGameService
+  ) {
+  }
 
-    ngOnInit(): void {
-      const gameKey = this.route.snapshot.paramMap.get('gamekey');
-      if (gameKey == null) {
-        this.pokerService.setAsTableMaster();
-      } else {
-        this.pokerService.setGameKey(gameKey);
-      }
+  ngOnInit(): void {
+    const gameKey = this.route.snapshot.paramMap.get('gamekey');
+    if (gameKey == null) {
+      this.pokerService.setAsTableMaster();
+    } else {
+      this.pokerService.setGameKey(gameKey);
     }
+  }
 
-    public create(username: string) {
-        if(this.pokerService.game$.value.iAmTableMaster) {
-            this.createTablemaster(username);
-        } else {
-            this.createPlayer(username);
-        }
+  public create(username: string) {
+    if (this.pokerService.game$.value.iAmTableMaster) {
+      this.createTablemaster(username);
+    } else {
+      this.createPlayer(username);
     }
+  }
 
-    public createTablemaster(tablemasterName: string) {
-        this.pokerService.createTablemaster(tablemasterName).subscribe();
-    }
+  public createTablemaster(tablemasterName: string) {
+    this.pokerService.createTablemaster(tablemasterName).subscribe();
+  }
 
-    public createPlayer(playerName: string) {
-        this.pokerService.createPlayer(playerName).subscribe();
-    }
+  public createPlayer(playerName: string) {
+    this.pokerService.createPlayer(playerName).subscribe();
+  }
 }

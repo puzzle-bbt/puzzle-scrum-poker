@@ -1,79 +1,79 @@
 .list-item {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .player-list {
-    display: grid;
-    margin-top: 1%;
-    margin-right: 5%;
-    margin-left: 3%;
-    width: 380px;
-    height: 100%;
-    overflow: auto;
-    flex-direction: column;
-    border-right: 4px solid black;
+  display: grid;
+  margin-top: 1%;
+  margin-right: 5%;
+  margin-left: 3%;
+  width: 380px;
+  height: 100%;
+  overflow: auto;
+  flex-direction: column;
+  border-right: 4px solid black;
 }
 
 .player-row {
-    display: grid;
-    grid-template-columns: [first] 48px [username] 120px [kickplayer] 24px [selectedCard] 30px [end];
-    justify-content: space-between;
-    padding: 3px;
-    align-items: center;
-    margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: [first] 48px [username] 120px [kickplayer] 24px [selectedCard] 30px [end];
+  justify-content: space-between;
+  padding: 3px;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .accountCircle {
-    grid-column-start: span first;
-    grid-column-end: span username;
+  grid-column-start: span first;
+  grid-column-end: span username;
 }
 
 .usernameDiv {
-    grid-column-start: span username;
-    grid-column-end: span kickplayer;
-    text-align: center;
+  grid-column-start: span username;
+  grid-column-end: span kickplayer;
+  text-align: center;
 }
 
 .choosenValue {
-    grid-column-start: span selectedCard;
-    grid-column-end: span end;
+  grid-column-start: span selectedCard;
+  grid-column-end: span end;
 }
 
 .lastItem {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .blankDiv {
-    height: 24px;
-    width: 24px;
+  height: 24px;
+  width: 24px;
 }
 
 .selfPlayer {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .username {
-    margin-left: 0;
-    margin-right: auto;
-    grid-column: 2;
+  margin-left: 0;
+  margin-right: auto;
+  grid-column: 2;
 }
 
 .estimate {
-    margin-left: auto;
-    margin-right: 10px;
-    grid-column: 4;
+  margin-left: auto;
+  margin-right: 10px;
+  grid-column: 4;
 }
 
 .copyButton {
-    height: auto;
-    width: 20vh;
+  height: auto;
+  width: 20vh;
 }
 
 .heading {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin-top: 20px;
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .copyButton {

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
 import { Game, Player, UserError } from '../models/model';
-import { RoundInfoModel } from '../models/RoundInfoModel';
 import { Router } from '@angular/router';
 import { BackendMessengerService } from './backend-messenger.service';
 
@@ -11,18 +10,6 @@ const BASE_GET_REQUEST_OPTIONS = {
   headers: {
     'responseType': 'json'
   }
-}
-
-const BASE_POST_REQUEST_OPTIONS = {
-  headers: {
-    'content-type': 'application/json'
-  }
-}
-
-interface OnboardingModel {
-  id: string;
-  gameKey: string;
-  selectedCard: string;
 }
 
 @Injectable({
@@ -55,38 +42,26 @@ export class PokerGameService {
     private readonly router: Router,
     private readonly messenger: BackendMessengerService
   ) {
+      this.messenger.subscribe((message) => {
+          if (message.includes('gameStart')) {
+              this.game$.value.isGameRunning = true;
+          }
+          if (message.includes('gameOver')) {
+              this.game$.value.isGameRunning = false;
+          }
+      });
   }
 
   setAsTableMaster() {
-    this.game$.next({ ...this.game$.value, iAmTableMaster: true });
+    this.game$.next({...this.game$.value, iAmTableMaster: true});
   }
 
   setGameKey(gameKey: string) {
-    this.game$.next({ ...this.game$.value, gameKey: gameKey });
+    this.game$.next({...this.game$.value, gameKey: gameKey});
   }
 
   setGameRunning(isRunning: boolean) {
-    this.game$.next({ ...this.game$.value, isGameRunning: isRunning });
-  }
-  private initializeModel( onboardingModel: OnboardingModel, iAmTableMaster: boolean = false) {
-    const player: Player = {
-      // TODO: backend should get a number
-      id: Number(onboardingModel.id),
-      name: '',
-      playing: true,
-      selectedCard: undefined
-    };
-    const game: Game = {
-      gameKey: onboardingModel.gameKey,
-      isGameRunning: false,
-      me: player,
-      iAmTableMaster: iAmTableMaster,
-      roundInfo: undefined,
-      roundInfoLink:undefined
-    }
-
-    this.game$.next(game);
-    console.log('game --> ', this.game$.value);
+    this.game$.next({...this.game$.value, isGameRunning: isRunning});
   }
 
   public createTablemaster(tablemasterName: string): Observable<boolean> {
@@ -97,18 +72,13 @@ export class PokerGameService {
           this.initializeModel(createModel, true)
 
           this.messenger.sendMessage(`table=${this.game$.value.gameKey},playerid=${this.game$.value.me!.id}`);
-          this.router.navigateByUrl("/playground");
+          this.router.navigateByUrl('/playground');
           return true;
         }),
         catchError(error => {
           console.error('Can not create a table master: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
-            return of(false);
+          this.handleError(error);
+          return of(false);
         })
       )
   }
@@ -121,18 +91,13 @@ export class PokerGameService {
           this.initializeModel(createModel)
 
           this.messenger.sendMessage(`table=${this.game$.value.gameKey},playerid=${this.game$.value.me!.id}`);
-          this.router.navigateByUrl("/playground");
+          this.router.navigateByUrl('/playground');
           return true;
         }),
         catchError(error => {
           console.error('Can not create a player: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
-            return of(false);
+          this.handleError(error);
+          return of(false);
         })
       )
   }
@@ -143,12 +108,7 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not select card: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
+          this.handleError(error);
           return EMPTY;
         })
       )
@@ -160,12 +120,7 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not set playermode: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
+          this.handleError(error);
           return EMPTY;
         })
       );
@@ -177,12 +132,7 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not get playermode: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
+          this.handleError(error);
           return EMPTY;
         })
       );
@@ -194,12 +144,7 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not get average: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
+          this.handleError(error);
           return EMPTY;
         })
       );
@@ -211,12 +156,7 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not offboard player: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
+          this.handleError(error);
           return EMPTY;
         })
       );
@@ -228,12 +168,7 @@ export class PokerGameService {
         tap(value => console.log('-------->', value)),
         catchError(error => {
           console.error('Can not kick player: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
+          this.handleError(error);
           return EMPTY;
         })
       );
@@ -241,7 +176,7 @@ export class PokerGameService {
 
   // TODO: Backend should have a toggleGameRunning method and response the new running state.
   public toggleGameRunning(): Observable<any> {
-    if(this.game$.value.isGameRunning) {
+    if (this.game$.value.isGameRunning) {
       return this.httpClient.get(`${BASE_URL}/tables/gameover/${this.game$.value.gameKey}`, BASE_GET_REQUEST_OPTIONS).pipe(
         tap(value => console.log('-------->', value)),
         map(() => {
@@ -249,12 +184,7 @@ export class PokerGameService {
         }),
         catchError(error => {
           console.error('Can not end game: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
+          this.handleError(error);
           return EMPTY;
         })
       );
@@ -266,12 +196,7 @@ export class PokerGameService {
         }),
         catchError(error => {
           console.error('Can not start game: ', error);
-            const usererror: UserError = {
-                httpCode: 500,
-                message: error.message,
-            }
-            this.error$.next(usererror);
-            this.router.navigateByUrl("/error");
+          this.handleError(error);
           return EMPTY;
         })
       );
@@ -286,50 +211,31 @@ export class PokerGameService {
       }),
       catchError(error => {
         console.error('Can not get players: ', error);
-          const usererror: UserError = {
-              httpCode: 500,
-              message: error.message,
-          }
-          this.error$.next(usererror);
-          this.router.navigateByUrl("/error");
+        this.handleError(error);
         return EMPTY;
       })
     );
   }
 
-  public getRoundName(gamekey: string) {
+  public getRoundName(gamekey: string): Observable<any> {
     return this.httpClient.get<RoundInfoModel>(`${BASE_URL}/tables/getroundname/${gamekey}`, BASE_GET_REQUEST_OPTIONS).pipe(
       tap(value => console.log('-------->', value)),
       map(data => {
-        return {
-          roundInfo: data.roundInfo,
-          roundInfoLink: data.roundInfoLink
-        } as RoundInfoModel;
+        this.game$.next({...this.game$.value, roundInfo: data.roundInfo, roundInfoLink: data.roundInfoLink});
       }),
       catchError(error => {
         console.error('Can not get roundname: ', error);
-          const usererror: UserError = {
-              httpCode: 500,
-              message: error.message,
-          }
-          this.error$.next(usererror);
-          this.router.navigateByUrl("/error");
+        this.handleError(error);
         return EMPTY;
       })
     );
   }
 
-  public setRoundName(gamekey: string, roundname: string): Observable<RoundInfoModel> {
-    return this.httpClient.get<RoundInfoModel>(`${BASE_URL}/tables/setroundname/${gamekey}/${roundname}`, BASE_GET_REQUEST_OPTIONS).pipe(
-      tap(value => console.log('-------->', value)),
+  public setRoundName(gamekey: string, roundname: string): Observable<void> {
+    return this.httpClient.get<void>(`${BASE_URL}/tables/setroundname/${gamekey}/${roundname}`, BASE_GET_REQUEST_OPTIONS).pipe(
       catchError(error => {
         console.error('Can not set roundname: ', error);
-          const usererror: UserError = {
-              httpCode: 500,
-              message: error.message,
-          }
-          this.error$.next(usererror);
-          this.router.navigateByUrl("/error");
+        this.handleError(error);
         return EMPTY;
       })
     );
@@ -340,5 +246,46 @@ export class PokerGameService {
     return this.httpClient.get(`../assets/images/${cardName}`, {responseType: 'text'});
   }
 
+  public handleError(error: HttpErrorResponse) {
+    const usererror: UserError = {
+      httpCode: error.status,
+      message: error.message,
+    }
+    this.error$.next(usererror);
+    this.router.navigateByUrl('/error');
+  }
 
+  private initializeModel(onboardingModel: OnboardingModel, iAmTableMaster: boolean = false) {
+    const player: Player = {
+      // TODO: backend should get a number
+      id: Number(onboardingModel.id),
+      name: '',
+      playing: true,
+      selectedCard: undefined
+    };
+    const game: Game = {
+      gameKey: onboardingModel.gameKey,
+      isGameRunning: false,
+      me: player,
+      iAmTableMaster: iAmTableMaster,
+      roundInfo: undefined,
+      roundInfoLink: undefined
+    }
+
+    this.game$.next(game);
+    console.log('game --> ', this.game$.value);
+  }
+
+
+}
+
+interface OnboardingModel {
+  id: string;
+  gameKey: string;
+  selectedCard: string;
+}
+
+interface RoundInfoModel {
+  roundInfo: string | undefined;
+  roundInfoLink: string;
 }

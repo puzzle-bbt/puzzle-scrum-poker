@@ -12,7 +12,7 @@ export class AppComponent {
 
   constructor(
     private pokerService: PokerGameService
-    ) {
+  ) {
   }
 
   public changeSpectator() {
