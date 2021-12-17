@@ -117,6 +117,9 @@ export class PokerGameService {
 
   public setSelectedCard(gamekey: string, playerid: number, selectedCard: string): Observable<string> {
     this.setCardValue(selectedCard);
+    if(selectedCard == '?') {
+      selectedCard = 'question-mark';
+    }
     return this.httpClient.get<string>(`${BASE_URL}/players/setselectedcard/${gamekey}/${playerid}/${selectedCard}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
         tap(value => console.log('-------->', value)),
