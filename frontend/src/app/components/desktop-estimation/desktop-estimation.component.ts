@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PokerGameService } from '../../services/poker-game.service';
 import { BackendMessengerService } from '../../services/backend-messenger.service';
+import {BehaviorSubject} from "rxjs";
+import {Game} from "../../models/model";
 
 @Component({
   selector: 'app-desktop-estimation',
@@ -15,7 +17,8 @@ export class DesktopEstimationComponent implements OnInit {
 
   public roundName?: string;
   public isGameRunning?: boolean;
-  public isNotFirstTime?: boolean;
+
+  game$: BehaviorSubject<Game> = this.pokerService.game$;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -35,10 +38,15 @@ export class DesktopEstimationComponent implements OnInit {
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
         this.refresh();
-        this.isNotFirstTime = true;
+        this.turnCards();
       }
     });
-    this.isNotFirstTime = false;
+    this.messenger.subscribe((message) => {
+      if (message.includes('RefreshPlayer')) {
+        this.refresh();
+      }
+    });
+
     this.refresh();
     this.addCards();
   }
@@ -47,7 +55,6 @@ export class DesktopEstimationComponent implements OnInit {
     let cardCollection = this.cardFrontContainerDiv!.nativeElement.querySelectorAll('.card');
     cardCollection.forEach(card => card.classList.remove('selectedcard'));
   }
-
 
 
   public turnCards() {
@@ -66,12 +73,25 @@ export class DesktopEstimationComponent implements OnInit {
       frontCards!.classList.add('visible');
       frontCards!.classList.remove('hidden');
     }
-
   }
 
   public refresh() {
     this.isGameRunning = this.pokerService.game$.value.isGameRunning;
-    this.turnCards();
+
+    let frontCards = document.getElementById('cardContainerFront');
+    let backCards = document.getElementById('cardContainerBack');
+
+    if (!this.game$.value.me?.playing) {
+      frontCards!.classList.remove('visible');
+      backCards!.classList.remove('visible');
+      frontCards!.classList.add('hidden');
+      backCards!.classList.add('hidden');
+    } else {
+      frontCards!.classList.remove('hidden');
+      backCards!.classList.remove('hidden');
+      frontCards!.classList.add('visible');
+      backCards!.classList.add('visible');
+    }
   }
 
   private addCards(svgFilename: string = 'card_front.svg') {
