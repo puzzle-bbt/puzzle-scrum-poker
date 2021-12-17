@@ -48,9 +48,7 @@
     </div>
     <br>
   </div>
-  <button (click)="copyLink()" class="copyButton"><img class="copySvg" src="assets/content_copy_black_24dp.svg">Einladungslink
-    kopieren
-  </button>
+  <button *ngIf="(game$ | async)?.iAmTableMaster" (click)="copyLink()" class="copyButton"><img class="copySvg" src="assets/content_copy_black_24dp.svg">Einladungslink kopieren</button>
 
 </div>
 
