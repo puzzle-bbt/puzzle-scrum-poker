@@ -35,7 +35,7 @@ public class Player {
         return selectedCard;
     }
 
-    public void setPlaying(boolean plisPlayingayer){
+    public void setPlaying(boolean playing){
         this.playing = playing;
     }
 
