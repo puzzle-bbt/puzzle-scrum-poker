@@ -34,11 +34,14 @@ export class DesktopEstimationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let frontCards = document.getElementById('cardContainerFront');
+    frontCards!.classList.add("hidden");
 
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
-        this.refresh();
+        this.isGameRunning = this.pokerService.game$.value.isGameRunning;
         this.turnCards();
+        this.refresh();
       }
     });
     this.messenger.subscribe((message) => {
@@ -76,21 +79,22 @@ export class DesktopEstimationComponent implements OnInit {
   }
 
   public refresh() {
-    this.isGameRunning = this.pokerService.game$.value.isGameRunning;
-
     let frontCards = document.getElementById('cardContainerFront');
     let backCards = document.getElementById('cardContainerBack');
 
     if (!this.game$.value.me?.playing) {
-      frontCards!.classList.remove('visible');
-      backCards!.classList.remove('visible');
       frontCards!.classList.add('hidden');
+      frontCards!.classList.remove('visible');
       backCards!.classList.add('hidden');
+      backCards!.classList.remove('visible');
     } else {
-      frontCards!.classList.remove('hidden');
-      backCards!.classList.remove('hidden');
-      frontCards!.classList.add('visible');
-      backCards!.classList.add('visible');
+      if (this.game$.value.isGameRunning) {
+        frontCards!.classList.add('visible');
+        frontCards!.classList.remove('hidden');
+      } else {
+        backCards!.classList.add('visible');
+        backCards!.classList.remove('hidden');
+      }
     }
   }
 
