@@ -64,6 +64,14 @@ export class PokerGameService {
     this.game$.next({...this.game$.value, isGameRunning: isRunning});
   }
 
+  changePlayerMode(isPlaying: boolean) {
+    this.game$.next({...this.game$.value, me: {...this.game$.value.me!, playing: isPlaying}});
+  }
+
+  setCardValue(value: string) {
+    this.game$.next({...this.game$.value, me: {...this.game$.value.me!, selectedCard: value}});
+  }
+
   public createTablemaster(tablemasterName: string): Observable<boolean> {
     return this.httpClient.get<OnboardingModel>(`${BASE_URL}/createTablemaster/${tablemasterName}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
@@ -103,6 +111,7 @@ export class PokerGameService {
   }
 
   public setSelectedCard(gamekey: string, playerid: number, selectedCard: string): Observable<string> {
+    this.setCardValue(selectedCard);
     return this.httpClient.get<string>(`${BASE_URL}/players/setselectedcard/${gamekey}/${playerid}/${selectedCard}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
         tap(value => console.log('-------->', value)),
@@ -115,6 +124,7 @@ export class PokerGameService {
   }
 
   public setPlayerMode(gamekey: string, playerid: number, isPlaying: boolean): Observable<void> {
+    this.changePlayerMode(isPlaying);
     return this.httpClient.get<void>(`${BASE_URL}/players/setplayermode/${gamekey}/${playerid}/${isPlaying}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
         tap(value => console.log('-------->', value)),

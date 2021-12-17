@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PokerGameService } from '../../services/poker-game.service';
 import { BackendMessengerService } from '../../services/backend-messenger.service';
-import {Observable} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {Game} from "../../models/model";
 
 @Component({
@@ -17,9 +17,8 @@ export class DesktopEstimationComponent implements OnInit {
 
   public roundName?: string;
   public isGameRunning?: boolean;
-  public isNotFirstTime?: boolean;
 
-  game$: Observable<Game> = this.pokerService.game$.asObservable();
+  game$: BehaviorSubject<Game> = this.pokerService.game$;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -35,14 +34,22 @@ export class DesktopEstimationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let frontCards = document.getElementById('cardContainerFront');
+    frontCards!.classList.add("hidden");
 
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
+        this.isGameRunning = this.pokerService.game$.value.isGameRunning;
+        this.turnCards();
         this.refresh();
-        this.isNotFirstTime = true;
       }
     });
-    this.isNotFirstTime = false;
+    this.messenger.subscribe((message) => {
+      if (message.includes('RefreshPlayer')) {
+        this.refresh();
+      }
+    });
+
     this.refresh();
     this.addCards();
   }
@@ -69,12 +76,26 @@ export class DesktopEstimationComponent implements OnInit {
       frontCards!.classList.add('visible');
       frontCards!.classList.remove('hidden');
     }
-
   }
 
   public refresh() {
-    this.isGameRunning = this.pokerService.game$.value.isGameRunning;
-    this.turnCards();
+    let frontCards = document.getElementById('cardContainerFront');
+    let backCards = document.getElementById('cardContainerBack');
+
+    if (!this.game$.value.me?.playing) {
+      frontCards!.classList.add('hidden');
+      frontCards!.classList.remove('visible');
+      backCards!.classList.add('hidden');
+      backCards!.classList.remove('visible');
+    } else {
+      if (this.game$.value.isGameRunning) {
+        frontCards!.classList.add('visible');
+        frontCards!.classList.remove('hidden');
+      } else {
+        backCards!.classList.add('visible');
+        backCards!.classList.remove('hidden');
+      }
+    }
   }
 
   private addCards(svgFilename: string = 'card_front.svg') {
