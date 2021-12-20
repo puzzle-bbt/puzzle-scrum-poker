@@ -16,6 +16,10 @@
   width: 120vh;
 }
 
+.cardContainer-desktop, .cardContainerBack-desktop {
+  flex-wrap: wrap;
+}
+
 .gameInformation {
   background-color: rgba(70, 188, 192, 0.5);
   width: fit-content;
@@ -23,4 +27,3 @@
   padding: 10px;
   border-radius: 8px;
 }
-
