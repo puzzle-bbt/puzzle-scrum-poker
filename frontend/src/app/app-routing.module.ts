@@ -4,6 +4,7 @@ import { OnboardingComponent } from './components/onboarding/onboarding.componen
 import { ErrorComponent } from './components/error/error.component';
 import { PlaygroundComponent } from './components/playground/playground.component';
 import { InfoComponent } from './components/info/info.component';
+import {KickplayerComponent} from "./components/kickplayer/kickplayer.component";
 
 const routes: Routes = [
   {
@@ -26,6 +27,9 @@ const routes: Routes = [
       {
         path: 'info',
         component: InfoComponent
+      }, {
+        path: 'kickplayer',
+        component: KickplayerComponent
       }
     ]
   },
