@@ -54,9 +54,9 @@ public class PokerService {
         return getTableById(gamekey).getPlayerById(playerid).getSelectedCard();
     }
 
-    public void setPlayerMode(String gamekey, long playerid, boolean playerMode) throws Exception {
-        getTableById(gamekey).getPlayerById(playerid).setPlaying(playerMode);
-        if (playerMode) {
+    public void setPlayerMode(String gamekey, long playerid, boolean isPlaying) throws Exception {
+        getTableById(gamekey).getPlayerById(playerid).setPlaying(isPlaying);
+        if (!isPlaying) {
             setSelectedCard(gamekey, playerid, null);
         }
         sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer"+","+playerid);

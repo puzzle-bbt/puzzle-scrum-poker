@@ -71,11 +71,10 @@ public class RestInterface {
     }
 
     @GetMapping("/players/setplayermode/{gamekey}/{playerid}/{isPlaying}")
-    public void setPlayerMode(@PathVariable(value= "gamekey") String gamekey, @PathVariable(value="playerid") long playerid, @PathVariable(value="isPlaying") boolean playerMode){
-        LOG.info("setPlayerMode is called: /players/setplayermode/{}/{}/{}", gamekey, playerid, playerMode);
+    public void setPlayerMode(@PathVariable(value= "gamekey") String gamekey, @PathVariable(value="playerid") long playerid, @PathVariable(value="isPlaying") boolean isPlaying){
+        LOG.info("setPlayerMode is called: /players/setplayermode/{}/{}/{}", gamekey, playerid, isPlaying);
         try {
-            pokerService.setPlayerMode(gamekey, playerid, playerMode);
-
+            pokerService.setPlayerMode(gamekey, playerid, isPlaying);
         } catch (Exception e) {
             LOG.error("setPlayerMode has failed: ", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
