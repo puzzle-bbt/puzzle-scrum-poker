@@ -14,7 +14,7 @@ export class PlaygroundComponent {
     map(game => game.iAmTableMaster)
   );
 
-  constructor(private pokerGameService: PokerGameService) {
+  constructor(public readonly pokerGameService: PokerGameService) {
   }
 
   public changeGameState() {
