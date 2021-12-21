@@ -301,7 +301,7 @@ export class PokerGameService {
 
 }
 
-interface OnboardingModel {
+export interface OnboardingModel {
   id: string;
   gameKey: string;
   selectedCard: string;

@@ -51,7 +51,7 @@ export class BackendMessengerService implements OnDestroy {
     );
   }
 
-  public sendMessage(message: string) {
+  public sendMessage(message: string): void {
     this.wsSubject.next(message);
   }
 }
