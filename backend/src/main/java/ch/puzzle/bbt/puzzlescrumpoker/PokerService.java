@@ -216,7 +216,7 @@ public class PokerService {
         try {
             sendWebsocketMessageSpecial("YouGotKicked", playerid, gamekey, true);
             getTableById(gamekey).getPlayerMap().remove(playerid);
-            getTableById(gamekey).getWebsocketsession().remove(playerid);
+            //getTableById(gamekey).getWebsocketsession().remove(playerid);
             sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer" + "," + playerid);
         }
         catch (IOException e) {

@@ -40,6 +40,7 @@ export class BackendMessengerService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log("NgOnDestory");
     if (this.wsSubscriptions.length > 0) {
       this.wsSubject.complete();
     }

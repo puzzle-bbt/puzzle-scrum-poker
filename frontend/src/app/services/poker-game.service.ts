@@ -50,6 +50,9 @@ export class PokerGameService {
           if (message.includes('gameOver')) {
               this.game$.value.isGameRunning = false;
           }
+          if (message.includes('YouGotKicked')) {
+              console.log("YouGotKicked");
+          }
       });
   }
 
