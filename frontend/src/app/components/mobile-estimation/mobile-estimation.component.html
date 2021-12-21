@@ -23,7 +23,7 @@
   <div class="gameInformation">
     <div *ngIf="(game$ | async)?.isGameRunning; else gameIsNotRunning">Spieler sind am abstimmen...</div>
     <ng-template #gameIsNotRunning>
-      <div>Runde ist fertig.</div>
+      <div>Runde hat noch nicht gestartet</div>
     </ng-template>
   </div>
 
