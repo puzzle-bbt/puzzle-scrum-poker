@@ -3,7 +3,7 @@
     <p class="round">Runde</p>
     <p class="storyname">{{(game$ | async)?.roundInfo}}</p>
   </div>
-  <div *ngIf="(game$ | async)?.isGameRunning" class="cardContainer-mobile">
+  <div *ngIf="((game$ | async)?.isGameRunning && (game$ | async)?.me?.playing)" class="cardContainer-mobile">
     <p>Deine Schätzung in Story Points</p>
     <select class="dropdown">
       <option class="noCardSelected">-</option>
