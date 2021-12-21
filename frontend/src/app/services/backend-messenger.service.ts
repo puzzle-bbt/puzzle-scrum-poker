@@ -1,18 +1,28 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { Inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { webSocket as rxjsWebsocket, WebSocketSubject } from 'rxjs/webSocket';
+
+// Create a InjectionToken for inject the WebSocketSubject into this service
+export const WEBSOCKET_CTOR = new InjectionToken<typeof rxjsWebsocket>(
+  'rxjs/webSocket.webSocket', // This is what you'll see in the error when it's missing
+  {
+    providedIn: 'root',
+    factory: () => rxjsWebsocket,
+  }
+);
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendMessengerService implements OnDestroy {
 
-  private wsSubject: WebSocketSubject<string>;
-  private wsSubscriptions: Subscription[] = [];
+  public wsSubject: WebSocketSubject<string>;
+  public wsSubscriptions: Subscription[] = [];
 
-  constructor() {
-
-    let wsProtocol = (window.location.protocol=="https:")?"wss://":"ws://";
+  constructor(
+    @Inject(WEBSOCKET_CTOR) private webSocket: typeof rxjsWebsocket
+  ) {
+    let wsProtocol = (window.location.protocol == 'https:') ? 'wss://' : 'ws://';
 
     this.wsSubject = webSocket({
       url: wsProtocol + window.location.host + '/api/ws',
