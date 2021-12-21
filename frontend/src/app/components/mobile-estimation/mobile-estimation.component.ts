@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { PokerGameService } from '../../services/poker-game.service';
 import { BackendMessengerService } from '../../services/backend-messenger.service';
-import {ignoreElements, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import { Game } from '../../models/model';
 
 @Component({
