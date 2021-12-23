@@ -26,6 +26,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   public create(username: string) {
+    console.log('-->', this.pokerService.game$.value);
     if (this.pokerService.game$.value.iAmTableMaster) {
       this.createTablemaster(username);
     } else {
