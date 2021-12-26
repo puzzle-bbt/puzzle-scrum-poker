@@ -1,5 +1,5 @@
 import { Inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import {retry, Subscription} from 'rxjs';
 import { webSocket as rxjsWebsocket, WebSocketSubject } from 'rxjs/webSocket';
 
 // Create a InjectionToken for inject the WebSocketSubject into this service
@@ -47,7 +47,10 @@ export class BackendMessengerService implements OnDestroy {
 
   public subscribe(onMessage: (message: string) => void): void {
     this.wsSubscriptions.push(
-      this.wsSubject.subscribe(onMessage)
+      this.wsSubject
+        .pipe(
+          retry()
+        ).subscribe(onMessage)
     );
   }
 
