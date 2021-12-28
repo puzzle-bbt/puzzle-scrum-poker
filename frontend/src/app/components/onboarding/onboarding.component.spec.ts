@@ -5,7 +5,7 @@ import { PokerGameService } from '../../services/poker-game.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Game, Player, UserError } from '../../models/model';
 import createSpyObj = jasmine.createSpyObj;
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 
 const GAME_INIT_VALUE: Game = {
   gameKey: '',
@@ -39,6 +39,7 @@ describe('OnboardingComponent', () => {
     pokerGameServiceSpy.setAsTableMaster.and.callThrough();
     pokerGameServiceSpy.createTablemaster.and.callThrough();
     pokerGameServiceSpy.createPlayer.and.callThrough();
+    pokerGameServiceSpy.createPlayer.and.returnValue(of(true));
 
     TestBed.configureTestingModule({
       declarations: [OnboardingComponent],
@@ -76,24 +77,19 @@ describe('OnboardingComponent', () => {
   it('call createTablemaster', () => {
     var activatedRoute = TestBed.inject(ActivatedRoute);
     activatedRoute.snapshot = {paramMap: convertToParamMap({})} as ActivatedRouteSnapshot;
+    pokerGameServiceSpy.setAsTableMaster;
     component.ngOnInit();
     component.create('Test');
     expect(component.createTablemaster).toHaveBeenCalledOnceWith('Test');
   });
 
   it('call createPlayer', () => {
+    var activatedRoute = TestBed.inject(ActivatedRoute);
+    activatedRoute.snapshot = {paramMap: convertToParamMap({})} as ActivatedRouteSnapshot;
     component.ngOnInit();
 
     component.create('Test');
     expect(component.createPlayer).toHaveBeenCalledOnceWith('Test');
-  });
-
-  it('call createTablemaster', () => {
-    var activatedRoute = TestBed.inject(ActivatedRoute);
-    activatedRoute.snapshot = {paramMap: convertToParamMap({})} as ActivatedRouteSnapshot;
-    component.ngOnInit();
-    component.create('Test');
-    expect(pokerGameServiceSpy.createTablemaster).toHaveBeenCalledOnceWith('Test');
   });
 
   it('createPlayer', () => {
