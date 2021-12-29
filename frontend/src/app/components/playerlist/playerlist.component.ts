@@ -44,7 +44,7 @@ export class PlayerListComponent implements OnInit {
     this.pokerService.getPlayers().subscribe();
   }
 
-  public kickplayer(playerId: number) {
+  public kickPlayer(playerId: number) {
     this.pokerService.kickplayer(this.pokerService.game$.value.gameKey, playerId).subscribe(
       () => {
       }
