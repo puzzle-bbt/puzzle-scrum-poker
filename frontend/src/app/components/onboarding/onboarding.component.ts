@@ -27,8 +27,6 @@ export class OnboardingComponent implements OnInit {
 
   public create(username: string) {
     if (this.checkUsername(username)) {
-
-
       console.log('-->', this.pokerService.game$.value);
       if (this.pokerService.game$.value.iAmTableMaster) {
         this.createTablemaster(username);
@@ -37,7 +35,8 @@ export class OnboardingComponent implements OnInit {
       }
     }
     else {
-      alert("Verwende keinen leeren Namen oder auch keine Sonderzeichen.")
+      alert("Verwende keinen leeren Namen oder auch keine Sonderzeichen.");
+      window.location.reload();
     }
   }
 
