@@ -50,7 +50,7 @@ export class OnboardingComponent implements OnInit {
 
   public checkUsername(username: string): boolean {
     var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-    if (username == null || " " || format.test(username)) {
+    if (!username || format.test(username) || username.trim().length == 0) {
       return false;
     } else {
       return true;
