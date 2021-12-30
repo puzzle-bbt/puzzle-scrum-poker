@@ -39,7 +39,7 @@ describe('PlayerListComponent', () => {
     messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe']);
 
     pokerGameServiceSpy.getPlayers.and.returnValue(of(PLAYER_INIT_VALUE));
-    pokerGameServiceSpy.kickplayer.and.callThrough();
+    pokerGameServiceSpy.kickplayer.and.returnValue(of());
 
   TestBed.configureTestingModule({
     declarations: [PlayerListComponent],
