@@ -5,7 +5,7 @@ import {PokerGameService} from "../../services/poker-game.service";
 import createSpyObj = jasmine.createSpyObj;
 import {BackendMessengerService} from "../../services/backend-messenger.service";
 import {BehaviorSubject, of} from "rxjs";
-import {Game} from "../../models/model";
+import {Game, Player} from "../../models/model";
 
 describe('MobileEstinationComponent', () => {
   let component: MobileEstimationComponent;
@@ -13,15 +13,29 @@ describe('MobileEstinationComponent', () => {
   let pokerGameServiceSpy: jasmine.SpyObj<PokerGameService>;
   let messengerServiceSpy: jasmine.SpyObj<BackendMessengerService>;
   let subjectMock: BehaviorSubject<Game>;
+  let playerMock: BehaviorSubject<Player>;
 
   beforeEach(async () => {
+    playerMock = new BehaviorSubject<Player>({
+      id: 1,
+      name: "Player",
+      playing: false,
+      selectedCard: undefined,
+    }as Player)
     subjectMock = new BehaviorSubject<Game>({
       gameKey: "0",
-      iAmTableMaster: false,
       isGameRunning: false,
+      me: playerMock.value,
+      iAmTableMaster: false,
+      roundInfo: undefined,
+      roundInfoLink: undefined,
+      average: 2
     }as Game)
     pokerGameServiceSpy = createSpyObj('PokerGameService', ['setSelectedCard', 'getRoundName', 'getAverage'], {'game$' : subjectMock});
     pokerGameServiceSpy.getRoundName.and.returnValue(of("Some round name"));
+    pokerGameServiceSpy.getAverage.and.returnValue(of(pokerGameServiceSpy.game$.value.average))
+    pokerGameServiceSpy.setSelectedCard.and.returnValue(of())
+    pokerGameServiceSpy.getRoundName.and.returnValue(of(pokerGameServiceSpy.game$.value.roundInfo))
     messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe']);
 
     await TestBed.configureTestingModule({
@@ -42,5 +56,23 @@ describe('MobileEstinationComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should refresh', () => {
+    expect(pokerGameServiceSpy.getRoundName).toHaveBeenCalledTimes(1);
+    component.refresh();
+    expect(component.cardSelected == false);
+    expect(pokerGameServiceSpy.getRoundName).toHaveBeenCalledTimes(2);
+  });
+
+  it('should getAverage', () => {
+    component.getAverage();
+    expect(pokerGameServiceSpy.getAverage).toHaveBeenCalledTimes(1);
+  });
+
+  it('should select card', () => {
+    component.setSelectedCard("2");
+    expect(component.cardSelected == true)
+    expect(pokerGameServiceSpy.setSelectedCard).toHaveBeenCalledTimes(1);
   });
 });
