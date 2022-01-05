@@ -26,11 +26,17 @@ export class OnboardingComponent implements OnInit {
   }
 
   public create(username: string) {
-    console.log('-->', this.pokerService.game$.value);
-    if (this.pokerService.game$.value.iAmTableMaster) {
-      this.createTablemaster(username);
-    } else {
-      this.createPlayer(username);
+    if (this.checkUsername(username)) {
+      console.log('-->', this.pokerService.game$.value);
+      if (this.pokerService.game$.value.iAmTableMaster) {
+        this.createTablemaster(username);
+      } else {
+        this.createPlayer(username);
+      }
+    }
+    else {
+      alert("Verwende keinen leeren Namen oder auch keine Sonderzeichen.");
+      window.location.reload();
     }
   }
 
@@ -40,5 +46,14 @@ export class OnboardingComponent implements OnInit {
 
   public createPlayer(playerName: string) {
     this.pokerService.createPlayer(playerName).subscribe();
+  }
+
+  public checkUsername(username: string): boolean {
+    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (!username || format.test(username) || username.trim().length == 0 || username.length > 25) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
