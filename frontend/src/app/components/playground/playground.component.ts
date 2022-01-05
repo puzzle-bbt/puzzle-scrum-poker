@@ -21,8 +21,8 @@ export class PlaygroundComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.game$.value.me == undefined && !this.game$.value.gameKey) {
-      window.location.href = "http://" + window.location.host + "/onboarding";
+    if (!this.game$.value.gameKey) {
+      window.location.href = window.location.protocol + "//" + window.location.host + "/onboarding";
     }
   }
 
