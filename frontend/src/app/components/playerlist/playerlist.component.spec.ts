@@ -1,53 +1,83 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import createSpyObj = jasmine.createSpyObj;
-
-import { PlayerListComponent } from './playerlist.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {PlayerListComponent} from './playerlist.component';
 import {PokerGameService} from "../../services/poker-game.service";
-import {BehaviorSubject, of} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {Game, Player} from "../../models/model";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
+import createSpyObj = jasmine.createSpyObj;
+
+const GAME_INIT_VALUE: Game = {
+  gameKey: '0',
+  isGameRunning: false,
+  me: undefined,
+  iAmTableMaster: false,
+  roundInfo: undefined,
+  roundInfoLink: undefined,
+  average: undefined
+};
+
+const PLAYER_INIT_VALUE: Player = {
+  id: 1,
+  name: "Player",
+  playing: true,
+  selectedCard: undefined
+};
 
 describe('PlayerListComponent', () => {
   let component: PlayerListComponent;
   let fixture: ComponentFixture<PlayerListComponent>;
   let pokerGameServiceSpy: jasmine.SpyObj<PokerGameService>;
   let messengerServiceSpy: jasmine.SpyObj<BackendMessengerService>;
-  let gameSubjectMock: BehaviorSubject<Game>;
-  let playersSubjectMock: BehaviorSubject<Player[]>;
 
-  beforeEach(async () => {
-    gameSubjectMock = new BehaviorSubject<Game>({
-      gameKey: "0",
-      iAmTableMaster: false,
-      isGameRunning: false,
-    }as Game)
-    playersSubjectMock = new BehaviorSubject<Player[]>([{
-      id: 1,
-      name: "Player",
-      playing: true
-    }]as Player[])
-    pokerGameServiceSpy = createSpyObj('PokerGameService', ['getPlayers', 'kickPlayer'], {'game$' : gameSubjectMock, 'players$' : playersSubjectMock});
-    pokerGameServiceSpy.getPlayers.and.returnValue(of(playersSubjectMock));
+  beforeEach( () => {
+     pokerGameServiceSpy = createSpyObj('PokerGameService',
+       ['getPlayers', 'kickplayer'],
+       {
+         game$: new BehaviorSubject<Game>(GAME_INIT_VALUE),
+         players$: new BehaviorSubject<Player>(PLAYER_INIT_VALUE)
+       });
     messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe']);
 
+    pokerGameServiceSpy.getPlayers.and.returnValue(of(PLAYER_INIT_VALUE));
+    pokerGameServiceSpy.kickplayer.and.returnValue(of());
 
-    await TestBed.configureTestingModule({
-      declarations: [PlayerListComponent],
-      providers: [
-        {provide: PokerGameService, useValue: pokerGameServiceSpy},
-        {provide: BackendMessengerService, useValue: messengerServiceSpy}
-      ]
-    })
-      .compileComponents();
-  });
+  TestBed.configureTestingModule({
+    declarations: [PlayerListComponent],
+    providers: [
+      {provide: PokerGameService, useValue: pokerGameServiceSpy},
+      {provide: BackendMessengerService, useValue: messengerServiceSpy}
+    ]
+  })
+    .compileComponents();
+});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PlayerListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+beforeEach(() => {
+  fixture = TestBed.createComponent(PlayerListComponent);
+  component = fixture.componentInstance;
+});
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('call getplayers', () => {
+    component.refresh();
+    expect(pokerGameServiceSpy.getPlayers).toHaveBeenCalled();
+  });
+
+  it('call kickPlayer', () => {
+    component.kickPlayer(1);
+    expect(pokerGameServiceSpy.kickplayer).toHaveBeenCalledWith("0", 1);
+  });
+
+  it('isOnDesktop', () => {
+    var isOnDesktop = component.isOnDesktop();
+    if (window.innerWidth > 768) {
+      expect(isOnDesktop).toBeTrue();
+    } else {
+      expect(isOnDesktop).toBeFalse();
+    }
+  });
+
+
 });

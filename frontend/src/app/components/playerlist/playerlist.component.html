@@ -22,7 +22,7 @@
 
       <div *ngIf="(game$ | async)?.me?.id != player.id; else thisPlayer">
         <div *ngIf="(game$ | async)?.iAmTableMaster; else isNotTablemaster">
-          <div class="list-item usernameDiv">{{ player.name }}<img (click)="kickplayer(player.id)" src="assets/cancel_black_24dp.svg">
+          <div class="list-item usernameDiv">{{ player.name }}<img (click)="kickPlayer(player.id)" src="assets/cancel_black_24dp.svg">
           </div>
         </div>
         <ng-template #isNotTablemaster>
