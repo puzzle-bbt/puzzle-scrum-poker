@@ -74,7 +74,7 @@ export class PokerGameService {
   }
 
   setAverage(average: number) {
-    this.game$.next({...this.game$.value, average: Math.round(average * 100) / 100.00});
+    this.game$.next({...this.game$.value, average: average});
   }
 
   public createTablemaster(tablemasterName: string): Observable<boolean> {

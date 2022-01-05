@@ -29,13 +29,13 @@
     <div *ngIf="(game$ | async)?.isGameRunning; else notRunning">
       <div class="averageGrid">
         <h3 class="averageTitle">Durchschnitt: </h3>
-        <h3 class="average">{{ pokerService.game$.value.average }}</h3>
+        <h3 class="average">{{ pokerService.game$.value.average | number:'1.0-2' }}</h3>
       </div>
     </div>
     <ng-template #notRunning>
       <div class="averageGrid">
         <h3 class="averageTitle">Durchschnitt: </h3>
-        <h3 class="average">{{ pokerService.game$.value.average }}</h3>
+        <h3 class="average">{{ pokerService.game$.value.average | number:'1.0-2' }}</h3>
       </div>
     </ng-template>
   </div>

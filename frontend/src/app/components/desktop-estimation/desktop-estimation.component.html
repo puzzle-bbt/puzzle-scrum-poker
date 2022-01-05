@@ -16,7 +16,7 @@
       <h3>Deine Schätzung in Storypoints</h3>
     </div>
     <ng-template #notRunning>
-      <h3>Team Durchschnitt {{ this.pokerService.game$.value.average }}</h3>
+      <h3>Team Durchschnitt {{ this.pokerService.game$.value.average | number:'1.0-2' }}</h3>
     </ng-template>
   </div>
 
