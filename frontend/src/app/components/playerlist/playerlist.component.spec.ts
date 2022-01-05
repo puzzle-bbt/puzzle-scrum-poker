@@ -72,7 +72,11 @@ beforeEach(() => {
 
   it('isOnDesktop', () => {
     var isOnDesktop = component.isOnDesktop();
-    expect(isOnDesktop).toBeTrue();
+    if (window.innerWidth > 768) {
+      expect(isOnDesktop).toBeTrue();
+    } else {
+      expect(isOnDesktop).toBeFalse();
+    }
   });
 
 
