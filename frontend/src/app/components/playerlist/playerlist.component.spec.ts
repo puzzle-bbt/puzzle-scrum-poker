@@ -13,7 +13,7 @@ describe('PlayerListComponent', () => {
   let pokerGameServiceSpy: jasmine.SpyObj<PokerGameService>;
   let messengerServiceSpy: jasmine.SpyObj<BackendMessengerService>;
   let gameSubjectMock: BehaviorSubject<Game>;
-  let playerSubjectMock: BehaviorSubject<Player>;
+  let playersSubjectMock: BehaviorSubject<Player[]>;
 
   beforeEach(async () => {
     gameSubjectMock = new BehaviorSubject<Game>({
@@ -21,13 +21,13 @@ describe('PlayerListComponent', () => {
       iAmTableMaster: false,
       isGameRunning: false,
     }as Game)
-    playerSubjectMock = new BehaviorSubject<Player>({
+    playersSubjectMock = new BehaviorSubject<Player[]>([{
       id: 1,
       name: "Player",
       playing: true
-    }as Player)
-    pokerGameServiceSpy = createSpyObj('PokerGameService', ['getPlayers', 'kickPlayer'], [{'game$' : gameSubjectMock}, {'players$' : playerSubjectMock}]);
-    pokerGameServiceSpy.getPlayers.and.returnValue(of(playerSubjectMock));
+    }]as Player[])
+    pokerGameServiceSpy = createSpyObj('PokerGameService', ['getPlayers', 'kickPlayer'], {'game$' : gameSubjectMock, 'players$' : playersSubjectMock});
+    pokerGameServiceSpy.getPlayers.and.returnValue(of(playersSubjectMock));
     messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe']);
 
 

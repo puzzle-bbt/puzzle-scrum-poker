@@ -4,7 +4,7 @@ import { MobileEstimationComponent } from './mobile-estimation.component';
 import {PokerGameService} from "../../services/poker-game.service";
 import createSpyObj = jasmine.createSpyObj;
 import {BackendMessengerService} from "../../services/backend-messenger.service";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, of} from "rxjs";
 import {Game} from "../../models/model";
 
 describe('MobileEstinationComponent', () => {
@@ -21,6 +21,7 @@ describe('MobileEstinationComponent', () => {
       isGameRunning: false,
     }as Game)
     pokerGameServiceSpy = createSpyObj('PokerGameService', ['setSelectedCard', 'getRoundName', 'getAverage'], {'game$' : subjectMock});
+    pokerGameServiceSpy.getRoundName.and.returnValue(of("Some round name"));
     messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe']);
 
     await TestBed.configureTestingModule({
@@ -36,6 +37,7 @@ describe('MobileEstinationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MobileEstimationComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
