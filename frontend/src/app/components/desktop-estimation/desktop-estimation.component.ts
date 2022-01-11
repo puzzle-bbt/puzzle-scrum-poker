@@ -99,7 +99,7 @@ export class DesktopEstimationComponent implements OnInit {
     }
   }
 
-  private addCards(svgFilename: string = 'card_front.svg') {
+  public addCards(svgFilename: string = 'card_front.svg') {
     this.pokerService.getCardSvg(svgFilename).subscribe(
       (data: string) => {
         this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-1', '1')
@@ -113,7 +113,7 @@ export class DesktopEstimationComponent implements OnInit {
       });
   }
 
-  private addSvgToContainer(svg: SVGElement, cardId: string, storyPoints: string): void {
+  public addSvgToContainer(svg: SVGElement, cardId: string, storyPoints: string): void {
     svg.setAttribute('id', cardId);
     svg.setAttribute('storyPoint', storyPoints);
     svg.querySelector('#cardText')!.innerHTML = storyPoints;
