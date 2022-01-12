@@ -33,9 +33,7 @@ describe('PlayerListComponent', () => {
      pokerGameServiceSpy = createSpyObj('PokerGameService',
        ['getPlayers', 'kickplayer'],
        {
-         game$: new BehaviorSubject<Game>(GAME_INIT_VALUE),
-         players$: new BehaviorSubject<Player>(PLAYER_INIT_VALUE)
-       });
+         game$: new BehaviorSubject<Game>(GAME_INIT_VALUE), players$: new BehaviorSubject<Player>(PLAYER_INIT_VALUE)});
     messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe']);
 
     pokerGameServiceSpy.getPlayers.and.returnValue(of(PLAYER_INIT_VALUE));
