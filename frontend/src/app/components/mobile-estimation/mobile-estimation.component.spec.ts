@@ -31,7 +31,7 @@ describe('MobileEstinationComponent', () => {
       roundInfoLink: undefined,
       average: 2
     }as Game)
-    pokerGameServiceSpy = createSpyObj('PokerGameService', ['setSelectedCard', 'getRoundName', 'getAverage'], {'game$' : subjectMock});
+    pokerGameServiceSpy = createSpyObj('PokerGameService', ['setSelectedCard', 'getRoundName', 'getAverage'], {game$ : subjectMock});
     messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe', 'sendMessage']);
     pokerGameServiceSpy.getAverage.and.returnValue(of(pokerGameServiceSpy.game$.value.average))
     pokerGameServiceSpy.setSelectedCard.and.returnValue(of())

@@ -33,7 +33,7 @@ describe('DesktopEstinationComponent', () => {
       roundInfoLink: undefined,
       average: 2
     }as Game)
-    pokerGameServiceSpy = createSpyObj('PokerGameService', ['setSelectedCard', 'getAverage', 'getCardSvg'], {'game$' : subjectMock});
+    pokerGameServiceSpy = createSpyObj('PokerGameService', ['setSelectedCard', 'getAverage', 'getCardSvg'], {game$ : subjectMock});
     pokerGameServiceSpy.getCardSvg.and.returnValue(of());
     pokerGameServiceSpy.getAverage.and.returnValue(of(pokerGameServiceSpy.game$.value.average))
     messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe']);
