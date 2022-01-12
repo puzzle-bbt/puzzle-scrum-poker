@@ -51,6 +51,7 @@ describe('MobileEstinationComponent', () => {
     fixture = TestBed.createComponent(MobileEstimationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    pokerGameServiceSpy.getRoundName.calls.reset();
   });
 
   it('should create', () => {
