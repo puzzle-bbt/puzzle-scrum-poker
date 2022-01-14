@@ -12,6 +12,21 @@ const BASE_GET_REQUEST_OPTIONS = {
   }
 }
 
+const GAME_INIT_VALUE: Game = {
+  gameKey: '',
+  isGameRunning: false,
+  me: undefined,
+  iAmTableMaster: false,
+  roundInfo: undefined,
+  roundInfoLink: undefined,
+  average: undefined
+}
+
+const ERROR_INIT_VALUE: UserError = {
+  httpCode: undefined,
+  message: ''
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,22 +36,10 @@ export class PokerGameService {
   players$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>([]);
 
   // current game data
-  game$: BehaviorSubject<Game> = new BehaviorSubject<Game>({
-    // TODO: backend should get a number
-    gameKey: '',
-    isGameRunning: false,
-    me: undefined,
-    iAmTableMaster: false,
-    roundInfo: undefined,
-    roundInfoLink: undefined,
-    average: undefined
-  });
+  game$: BehaviorSubject<Game> = new BehaviorSubject<Game>(GAME_INIT_VALUE);
 
   // current error data
-  error$: BehaviorSubject<UserError> = new BehaviorSubject<UserError>({
-    httpCode: undefined,
-    message: ''
-  });
+  error$: BehaviorSubject<UserError> = new BehaviorSubject<UserError>(ERROR_INIT_VALUE);
 
   constructor(
     private readonly httpClient: HttpClient,
@@ -52,7 +55,7 @@ export class PokerGameService {
           }
           if (message.includes('YouGotKicked')) {
             this.router.navigate(['/playground/kickplayer']);
-            this.game$.value.me = undefined;
+            this.resetModel();
           }
       });
   }
@@ -302,6 +305,11 @@ export class PokerGameService {
     console.log('game --> ', this.game$.value);
   }
 
+  public resetModel() {
+    this.players$.next([]);
+    this.game$.next(GAME_INIT_VALUE);
+    this.error$.next(ERROR_INIT_VALUE);
+  }
 
 }
 
