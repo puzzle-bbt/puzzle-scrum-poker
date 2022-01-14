@@ -216,7 +216,7 @@ public class PokerService {
         try {
             sendWebsocketMessageSpecial("YouGotKicked", playerid, gamekey, true);
             getTableById(gamekey).getPlayerMap().remove(playerid);
-            //getTableById(gamekey).getWebsocketsession().remove(playerid);
+            getTableById(gamekey).getWebsocketsession().remove(playerid);
             sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer" + "," + playerid);
         }
         catch (IOException e) {
@@ -248,13 +248,13 @@ public class PokerService {
 
     public void sendWebsocketMessageSpecial(String message, Long playerID, String gamekey, boolean onlyOnePlayer) throws Exception {
         if (onlyOnePlayer) {
-            getTableById(gamekey).getWebsocketsession().get(playerID).sendMessage(new TextMessage(message));
+            getTableById(gamekey).getWebsocketsession().get(playerID).sendMessage(new TextMessage("\"" + message + "\""));
         } else {
             Table table = getTableById(gamekey);
             for (WebSocketSession webSocketSession : table.getWebsocketsession().values()) {
                 try {
                     if (webSocketSession != getTableById(gamekey).getWebsocketsession().get(playerID)) {
-                        webSocketSession.sendMessage(new TextMessage(message));
+                        webSocketSession.sendMessage(new TextMessage("\"" + message + "\""));
                     }
                 } catch (IOException e) {
                     checkWebsocketConnection(table, webSocketSession, e.getMessage());

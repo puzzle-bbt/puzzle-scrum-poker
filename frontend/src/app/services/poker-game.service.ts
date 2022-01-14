@@ -51,7 +51,8 @@ export class PokerGameService {
               this.game$.value.isGameRunning = false;
           }
           if (message.includes('YouGotKicked')) {
-              console.log("YouGotKicked");
+            this.router.navigate(['/playground/kickplayer']);
+            this.game$.value.me = undefined;
           }
       });
   }

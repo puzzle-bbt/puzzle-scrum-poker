@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {BackendMessengerService} from "../../services/backend-messenger.service";
+import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
@@ -7,22 +6,13 @@ import {Router} from "@angular/router";
   templateUrl: './kickplayer.component.html',
   styleUrls: ['./kickplayer.component.scss']
 })
-export class KickplayerComponent implements OnInit {
+export class KickplayerComponent {
 
-  constructor(private messenger: BackendMessengerService,
-              private router: Router) {
+  constructor(private router: Router) {
   }
 
-  ngOnInit() {
-    this.messenger.subscribe((message) => {
-      if (message.includes('YouGotKicked')) {
-        console.log("You got kicked");
-        this.router.navigate(['/kickplayer']);
-      }
-    });
-  }
   public navigateToHome() {
-    window.location.href = window.location.host + '/onboarding/';
+    this.router.navigate(['/onboarding/']);
   }
 
 }
