@@ -49,6 +49,7 @@ describe('PlayerListComponent', () => {
       {provide: PokerGameService, useValue: pokerGameServiceSpy},
       {provide: BackendMessengerService, useValue: messengerServiceSpy}
     ]
+
   })
     .compileComponents();
 });
@@ -56,11 +57,6 @@ describe('PlayerListComponent', () => {
 beforeEach(() => {
   fixture = TestBed.createComponent(PlayerListComponent);
   component = fixture.componentInstance;
-
-  var buttonElement: DebugElement = fixture.debugElement.query(By.css('button.copyButton'));
-  buttonElement.triggerEventHandler('click', null);
-
-
 });
 
   it('should create', () => {
@@ -86,7 +82,15 @@ beforeEach(() => {
   });
 
   it('should copy link', () => {
-    expect(component.copyLink).toHaveBeenCalledTimes(1);
+    component.game$.next({
+      ...GAME_INIT_VALUE,
+      iAmTableMaster: true
+    });
+    const playerListComponent: DebugElement = fixture.debugElement;
+    const copyButton = playerListComponent.query(By.css('button'));
+    const copyButtonHtml: HTMLElement = copyButton.nativeElement;
+    expect(copyButtonHtml.textContent).toEqual('Einladungslink kopieren');
+
   });
 
   it('isOnDesktop', () => {
