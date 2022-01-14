@@ -1,10 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, tick} from '@angular/core/testing';
 import {PlayerListComponent} from './playerlist.component';
 import {PokerGameService} from "../../services/poker-game.service";
 import {BehaviorSubject, Observable, of} from "rxjs";
 import {Game, Player} from "../../models/model";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
 import createSpyObj = jasmine.createSpyObj;
+import {DebugElement} from "@angular/core";
+import {By} from "@angular/platform-browser";
 
 const GAME_INIT_VALUE: Game = {
   gameKey: '0',
@@ -54,20 +56,37 @@ describe('PlayerListComponent', () => {
 beforeEach(() => {
   fixture = TestBed.createComponent(PlayerListComponent);
   component = fixture.componentInstance;
+
+  var buttonElement: DebugElement = fixture.debugElement.query(By.css('button.copyButton'));
+  buttonElement.triggerEventHandler('click', null);
+
+
 });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('call getplayers', () => {
+  it("should ngOnit", () => {
+    let spyRefresh = spyOn(component, "refresh");
+
+    component.ngOnInit();
+    expect(spyRefresh).toHaveBeenCalledTimes(1);
+  });
+
+  it('should refresh', () => {
     component.refresh();
-    expect(pokerGameServiceSpy.getPlayers).toHaveBeenCalled();
+
+    expect(pokerGameServiceSpy.getPlayers).toHaveBeenCalledTimes(1);
   });
 
   it('call kickPlayer', () => {
     component.kickPlayer(1);
     expect(pokerGameServiceSpy.kickplayer).toHaveBeenCalledWith("0", 1);
+  });
+
+  it('should copy link', () => {
+    expect(component.copyLink).toHaveBeenCalledTimes(1);
   });
 
   it('isOnDesktop', () => {
