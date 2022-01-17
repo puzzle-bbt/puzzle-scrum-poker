@@ -23,7 +23,7 @@ describe('MobileEstinationComponent', () => {
       selectedCard: undefined,
     }as Player)
     subjectMock = new BehaviorSubject<Game>({
-      gameKey: "0",
+      gameKey: '',
       isGameRunning: false,
       me: playerMock.value,
       iAmTableMaster: false,
@@ -31,12 +31,11 @@ describe('MobileEstinationComponent', () => {
       roundInfoLink: undefined,
       average: 2
     }as Game)
-    pokerGameServiceSpy = createSpyObj('PokerGameService', ['setSelectedCard', 'getRoundName', 'getAverage'], {'game$' : subjectMock});
-    pokerGameServiceSpy.getRoundName.and.returnValue(of("Some round name"));
+    pokerGameServiceSpy = createSpyObj('PokerGameService', ['setSelectedCard', 'getRoundName', 'getAverage'], {game$ : subjectMock});
+    messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe', 'sendMessage']);
     pokerGameServiceSpy.getAverage.and.returnValue(of(pokerGameServiceSpy.game$.value.average))
     pokerGameServiceSpy.setSelectedCard.and.returnValue(of())
     pokerGameServiceSpy.getRoundName.and.returnValue(of(pokerGameServiceSpy.game$.value.roundInfo))
-    messengerServiceSpy = createSpyObj('BackendMessengerService', ['subscribe']);
 
     await TestBed.configureTestingModule({
       declarations: [MobileEstimationComponent],
@@ -52,6 +51,7 @@ describe('MobileEstinationComponent', () => {
     fixture = TestBed.createComponent(MobileEstimationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    pokerGameServiceSpy.getRoundName.calls.reset();
   });
 
   it('should create', () => {
@@ -59,10 +59,9 @@ describe('MobileEstinationComponent', () => {
   });
 
   it('should refresh', () => {
-    expect(pokerGameServiceSpy.getRoundName).toHaveBeenCalledTimes(1);
     component.refresh();
     expect(component.cardSelected == false);
-    expect(pokerGameServiceSpy.getRoundName).toHaveBeenCalledTimes(2);
+    expect(pokerGameServiceSpy.getRoundName).toHaveBeenCalledTimes(1);
   });
 
   it('should getAverage', () => {

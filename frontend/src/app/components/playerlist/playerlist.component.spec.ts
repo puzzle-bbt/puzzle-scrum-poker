@@ -30,6 +30,7 @@ describe('PlayerListComponent', () => {
   let messengerServiceSpy: jasmine.SpyObj<BackendMessengerService>;
   let copyButton: HTMLElement;
 
+
   beforeEach(() => {
     pokerGameServiceSpy = createSpyObj('PokerGameService',
       ['getPlayers', 'kickplayer'],

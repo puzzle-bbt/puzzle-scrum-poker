@@ -1,24 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { PokerGameService } from './services/poker-game.service';
-import { of } from 'rxjs';
+import {BehaviorSubject  } from 'rxjs';
+import {Game} from "./models/model";
 
 describe('AppComponent', () => {
-  let pokerGameService;
-  let cacheService;
+  let pokerGameServiceSpy : jasmine.SpyObj<PokerGameService>;
+  let subjectMock: BehaviorSubject<Game>;
 
   beforeEach(async () => {
-    pokerGameService = jasmine.createSpyObj('PokerGameService', ['setPlayerMode']);
-    pokerGameService.setPlayerMode.and.returnvalue(of(''));
-
-    cacheService = jasmine.createSpyObj('CacheService', [], {id: 5, gamekey: 'ZZ456'});
+    pokerGameServiceSpy = jasmine.createSpyObj('PokerGameService', ['setPlayerMode'], {
+      game$: subjectMock
+    });
 
     await TestBed.configureTestingModule({
-      imports: [],
       declarations: [AppComponent],
       providers: [
-        {provider: PokerGameService, useValue: pokerGameService},
-        {provider: PokerGameService, useValue: pokerGameService}
+        {provide: PokerGameService, useValue: pokerGameServiceSpy},
       ]
     }).compileComponents();
   });
