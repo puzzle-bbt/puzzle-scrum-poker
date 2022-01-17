@@ -13,6 +13,7 @@ import { PlaygroundComponent } from './components/playground/playground.componen
 import { InfoComponent } from './components/info/info.component';
 import { DesktopEstimationComponent } from './components/desktop-estimation/desktop-estimation.component';
 import { MobileEstimationComponent } from './components/mobile-estimation/mobile-estimation.component';
+import { KickplayerComponent } from './components/kickplayer/kickplayer.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MobileEstimationComponent } from './components/mobile-estimation/mobile
     PlaygroundComponent,
     InfoComponent,
     DesktopEstimationComponent,
-    MobileEstimationComponent
+    MobileEstimationComponent,
+    KickplayerComponent
   ],
   imports: [
     CommonModule,

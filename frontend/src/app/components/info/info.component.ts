@@ -17,7 +17,6 @@ export class InfoComponent implements OnInit {
 
   public navigateBack() {
     this._location.back();
-
   }
 
 }
