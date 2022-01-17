@@ -60,3 +60,10 @@ After the Docker Image has been built successfully you can run the docker image 
 `docker run -p 8080:8080 <docker-image-name>` \
 To start the Docker in the docker console \
 `docker run -i <docker-image-name>`
+
+## How to run locally the e2e tests (Cypress) 
+
+First start the Puzzle ScrumPoker backend.
+Second open a console and execute from the frontend directory:
+
+    npm run e2e
