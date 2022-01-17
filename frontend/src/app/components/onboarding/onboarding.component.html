@@ -1,18 +1,18 @@
-<h1>Puzzle ScrumPoker</h1>
+<h1 data-cy="titel">Puzzle ScrumPoker</h1>
 
 <p>Das Puzzle Scrum Poker Tool ist dazu da um im Team Stories zu schätzen.</p>
 
 <p>Username erstellen</p>
 <div>
   <label for="fname">Username: </label>
-  <input #un id="fname" name="fname" placeholder="Username" type="text">
+  <input #un id="fname" name="fname" placeholder="Username" type="text" data-cy="username">
 </div>
 <div>
   <p>Dies ist dein Benutzername, welcher von allen anderen Spieler zu sehen sein wird. Verwende keine Sonderzeichen.</p>
 </div>
 <br>
 <div>
-  <button (click)="create(un.value)">Erstellen</button>
+  <button (click)="create(un.value)" data-cy="onboarding-button">Erstellen</button>
 </div>
 <br>
 <br>

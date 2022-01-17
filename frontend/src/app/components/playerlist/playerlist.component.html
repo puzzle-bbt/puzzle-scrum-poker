@@ -13,11 +13,11 @@
 
       <div *ngIf="(game$ |async)?.isGameRunning; else canNotChoose">
         <div *ngIf="player.selectedCard; else canNotChoose">
-          <div class="list-item accountCircle"><img src="assets/account_circle_blue-green_48dp.svg" alt="member"></div>
+          <div class="list-item accountCircle"><img src="assets/account_circle_blue-green_48dp.svg" alt="member" data-cy="account-logo-green"></div>
         </div>
       </div>
       <ng-template #canNotChoose>
-        <div class="list-item accountCircle"><img src="assets/account_circle_black_48dp.svg" alt="member"></div>
+        <div class="list-item accountCircle"><img src="assets/account_circle_black_48dp.svg" alt="member" data-cy="account-logo-black"></div>
       </ng-template>
 
       <div *ngIf="(game$ | async)?.me?.id !== player.id; else thisPlayer">
