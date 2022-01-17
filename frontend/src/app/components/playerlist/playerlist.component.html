@@ -1,5 +1,4 @@
 <div class="player-list" [class.desktopLine]="isOnDesktop()">
-
   <h2>Team</h2>
   <div class="player-row">
     <div class="list-item accountCircle"></div>
@@ -48,7 +47,7 @@
     </div>
     <br>
   </div>
-  <button *ngIf="(game$ | async)?.iAmTableMaster" (click)="copyLink()" class="copyButton"><img class="copySvg" src="assets/content_copy_black_24dp.svg">Einladungslink kopieren</button>
+  <button id="copyButton" *ngIf="(game$ | async)?.iAmTableMaster" (click)="copyLink()" class="copyButton"><img class="copySvg" src="assets/content_copy_black_24dp.svg">Einladungslink kopieren</button>
 
 </div>
 
