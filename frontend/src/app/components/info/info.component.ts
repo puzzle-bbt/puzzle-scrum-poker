@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
@@ -7,12 +7,9 @@ import { Location } from '@angular/common';
   styleUrls: ['./info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfoComponent implements OnInit {
+export class InfoComponent {
 
   constructor(private _location: Location) {
-  }
-
-  ngOnInit(): void {
   }
 
   public navigateBack() {

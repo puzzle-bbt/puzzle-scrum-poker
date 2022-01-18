@@ -1,4 +1,5 @@
 <div class="player-list" [class.desktopLine]="isOnDesktop()">
+
   <h2>Team</h2>
   <div class="player-row">
     <div class="list-item accountCircle"></div>
@@ -8,20 +9,20 @@
 
   <div *ngFor="let player of (players$ | async) ">
 
-    <div [class.selfPlayer]="(game$ | async)?.me?.id == player.id" class="player-row">
+    <div [class.selfPlayer]="(game$ | async)?.me?.id === player.id" class="player-row">
 
       <div *ngIf="(game$ |async)?.isGameRunning; else canNotChoose">
         <div *ngIf="player.selectedCard; else canNotChoose">
-          <div class="list-item accountCircle"><img src="assets/account_circle_blue-green_48dp.svg"></div>
+          <div class="list-item accountCircle"><img src="assets/account_circle_blue-green_48dp.svg" alt="member" data-cy="account-logo-green"></div>
         </div>
       </div>
       <ng-template #canNotChoose>
-        <div class="list-item accountCircle"><img src="assets/account_circle_black_48dp.svg"></div>
+        <div class="list-item accountCircle"><img src="assets/account_circle_black_48dp.svg" alt="member" data-cy="account-logo-black"></div>
       </ng-template>
 
-      <div *ngIf="(game$ | async)?.me?.id != player.id; else thisPlayer">
+      <div *ngIf="(game$ | async)?.me?.id !== player.id; else thisPlayer">
         <div *ngIf="(game$ | async)?.iAmTableMaster; else isNotTablemaster">
-          <div class="list-item usernameDiv">{{ player.name }}<img (click)="kickPlayer(player.id)" src="assets/cancel_black_24dp.svg">
+          <div class="list-item usernameDiv">{{ player.name }}<img (click)="kickPlayer(player.id)" src="assets/cancel_black_24dp.svg" alt="cancel">
           </div>
         </div>
         <ng-template #isNotTablemaster>
@@ -33,7 +34,7 @@
       </ng-template>
 
       <div *ngIf="player.playing; else spectator">
-        <div *ngIf="!(game$ |async)?.isGameRunning && player.selectedCard != null; else gameIsNotRunning">
+        <div *ngIf="!(game$ |async)?.isGameRunning && player.selectedCard !== null; else gameIsNotRunning">
           <div class="list-item lastItem choosenValue">{{ player.selectedCard }}</div>
         </div>
         <ng-template #gameIsNotRunning>
@@ -41,13 +42,13 @@
         </ng-template>
       </div>
       <ng-template #spectator>
-        <div class="list-item lastItem choosenValue"><img height="32" src="assets/visibility_black_48dp.svg" width="32">
+        <div class="list-item lastItem choosenValue"><img height="32" src="assets/visibility_black_48dp.svg" width="32" alt="visible">
         </div>
       </ng-template>
     </div>
     <br>
   </div>
-  <button id="copyButton" *ngIf="(game$ | async)?.iAmTableMaster" (click)="copyLink()" class="copyButton"><img class="copySvg" src="assets/content_copy_black_24dp.svg">Einladungslink kopieren</button>
+  <button *ngIf="(game$ | async)?.iAmTableMaster" (click)="copyLink()" class="copyButton"><img class="copySvg" src="assets/content_copy_black_24dp.svg" alt="copy">Einladungslink kopieren</button>
 
 </div>
 
