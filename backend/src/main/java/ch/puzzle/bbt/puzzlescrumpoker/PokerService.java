@@ -123,6 +123,10 @@ public class PokerService {
         sendWebsocketMessage(getTableById(gamekey), "gameStart");
     }
 
+    public boolean isGameRunning(String gamekey) throws Exception {
+        return getTableById(gamekey).isGamerunning();
+    }
+
     public double getAverage(String gamekey) throws Exception {
         int sum = 0;
         int count = 0;

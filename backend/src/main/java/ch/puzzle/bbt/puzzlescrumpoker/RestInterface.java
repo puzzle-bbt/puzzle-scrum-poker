@@ -33,7 +33,7 @@ public class RestInterface {
         LOG.info("createTablemaster is called: /tablemaster/{}", name);
         try {
             List<Object> ids = pokerService.addNewTable(name);
-            return new PlayerModel(ids.get(0).toString(), ids.get(1).toString(), null);
+            return new PlayerModel(ids.get(0).toString(), ids.get(1).toString(), null, pokerService.isGameRunning(ids.get(0).toString()));
         } catch (Exception e) {
             LOG.error("createTablemaster has failed: ", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -45,7 +45,7 @@ public class RestInterface {
         LOG.info("createPlayer is called: /createPlayer/{}/{}", name, gamekey);
         try {
             String playerid = Long.toString(pokerService.addNewPlayer(name, gamekey));
-            return new PlayerModel(gamekey, playerid, null);
+            return new PlayerModel(gamekey, playerid, null, pokerService.isGameRunning(gamekey));
         } catch (Exception e) {
             LOG.error("createPlayer has failed: ", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
