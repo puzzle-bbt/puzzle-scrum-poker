@@ -102,7 +102,7 @@ export class BackendMessengerService {
     });
   }
 
-  public addCallback(onMessage: (message: string) => void): void {
+  public subscribe(onMessage: (message: string) => void): void {
     this.connSubject.subscribe((connected: boolean) => {
       this.callbacks.push(
         {
