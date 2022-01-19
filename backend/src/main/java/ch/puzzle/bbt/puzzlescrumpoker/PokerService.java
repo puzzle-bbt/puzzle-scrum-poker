@@ -172,6 +172,11 @@ public class PokerService {
             else {
                 sendWebsocketMessageSpecial("CantBeNewTablemaster", playerID, gamekey, true);
             }
+        } else if (message.startsWith("reconnect")) {
+            String[] messageSplit = message.split(",");
+            String gameKey = messageSplit[1];
+            Long playerID = Long.parseLong(messageSplit[2]);
+            getTableById(gameKey).getWebsocketsession().put(playerID, session); // does an insert or an update
         } else {
             LOG.warn("Unknown message: {}", message);
         }
