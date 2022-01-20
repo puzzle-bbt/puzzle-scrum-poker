@@ -54,6 +54,7 @@ describe('DesktopEstinationComponent', () => {
     fixture = TestBed.createComponent(DesktopEstimationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    pokerGameServiceSpy.getCardSvg.calls.reset();
   });
 
   it('should create', () => {
@@ -76,7 +77,7 @@ describe('DesktopEstinationComponent', () => {
 
   it('should addCards', () => {
     component.addCards();
-    expect(pokerGameServiceSpy.getCardSvg).toHaveBeenCalledTimes(2);
+    expect(pokerGameServiceSpy.getCardSvg).toHaveBeenCalledTimes(1);
   });
 
   it('should turnCards', () => {
@@ -102,6 +103,7 @@ describe('DesktopEstinationComponent', () => {
     let frontCards = document.getElementById('cardContainerFront');
     let backCards = document.getElementById('cardContainerBack');
 
+    pokerGameServiceSpy.game$.value.isGameRunning = true;
     playerMock.value.playing = false;
     component.refresh();
     frontCards!.classList.contains('hidden');
