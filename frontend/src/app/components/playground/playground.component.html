@@ -5,7 +5,7 @@
 </div>
 
 <div class="playgroud-button">
-  <button (click)="changeGameState()" *ngIf="(displayButton$ |async)" class="middleButton">Runde start/stopp</button>
+  <button [disabled]="notClickable" (click)="changeGameState()" *ngIf="(displayButton$ |async)" class="middleButton">Runde start/stopp</button>
 </div>
 
 <router-outlet></router-outlet>
