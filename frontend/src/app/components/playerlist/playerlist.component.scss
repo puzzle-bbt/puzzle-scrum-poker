@@ -23,7 +23,7 @@
   justify-content: space-between;
   padding: 3px;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .accountCircle {
@@ -67,12 +67,6 @@
   grid-column: 4;
 }
 
-.copyButton {
-  height: auto;
-  width: 20vh;
-  cursor: pointer;
-}
-
 .heading {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -87,6 +81,7 @@
   background-color: #E5E5E5;
   border: none;
   text-align: center;
+  cursor: pointer;
 }
 
 .copySvg {
