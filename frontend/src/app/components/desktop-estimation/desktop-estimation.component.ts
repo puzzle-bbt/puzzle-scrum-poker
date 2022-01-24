@@ -36,7 +36,19 @@ export class DesktopEstimationComponent implements OnInit {
 
   ngOnInit(): void {
     let frontCards = document.getElementById('cardContainerFront');
-    frontCards!.classList.add("hidden");
+    let backCards = document.getElementById('cardContainerBack');
+    if(this.pokerService.game$.value.isGameRunning) {
+      frontCards!.classList.add("visible");
+      frontCards!.classList.remove("hidden");
+      backCards!.classList.add("hidden");
+      backCards!.classList.remove("visible");
+    }
+    else {
+      frontCards!.classList.add("hidden");
+      frontCards!.classList.remove("visible");
+      backCards!.classList.add("visible");
+      backCards!.classList.remove("hidden");
+    }
 
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {

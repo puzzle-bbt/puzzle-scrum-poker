@@ -521,9 +521,7 @@ class PokerServiceTest {
                 String.format("RefreshPlayer"));
     }
 
-    // TODO: Enable this test!
     @Test
-    @Disabled("for frontend build")
     void setUpNewTablemaster() throws Exception {
         //given
         WebSocketSession webSocketSessionMock1 = mock(WebSocketSession.class);
@@ -538,7 +536,9 @@ class PokerServiceTest {
         assertEquals(Tablemaster.class, pokerService.getTableById(GAME_KEY_1).getPlayerById(3L).getClass());
         assertEquals(2, pokerService.getTableById(GAME_KEY_1).getPlayerMap().size());
 
-        verify(pokerService, times(1)).sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster", 3L, GAME_KEY_1, true);
+        boolean isGameRunning = pokerService.isGameRunning(GAME_KEY_1);
+
+        verify(pokerService, times(1)).sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster," + isGameRunning, 3L, GAME_KEY_1, true);
         verify(pokerService, times(1)).sendWebsocketMessageSpecial("NewTablemaster," + PLAYER_NAME_2, 3L, GAME_KEY_1, false);
 
         assertFalse(pokerService.getTableById(GAME_KEY_1).isNewTablemasterNeeded());
@@ -571,5 +571,37 @@ class PokerServiceTest {
         //then
         verify(pokerService, times(0)).sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster", 3L, GAME_KEY_1, true);
         verify(pokerService, times(0)).sendWebsocketMessage(any(Table.class), anyString());
+    }
+
+    @Test
+    void isGameRunningFalse() throws Exception {
+        //given
+        pokerService.tableMap.put(GAME_KEY_1, TABLE_WITH_TABLEMASTER);
+        //when
+        //then
+        assertFalse(pokerService.isGameRunning(GAME_KEY_1));
+    }
+
+    @Test
+    void isGameRunningTrue() throws Exception {
+        //given
+        pokerService.tableMap.put(GAME_KEY_1, TABLE_WITH_TABLEMASTER);
+        //when
+        pokerService.gameStart(GAME_KEY_1);
+        //then
+        assertTrue(pokerService.isGameRunning(GAME_KEY_1));
+    }
+
+    @Test
+    void isGameRunningNonExistingTable() throws Exception {
+        //given
+        Exception exception = assertThrows(Exception.class, () -> {
+            pokerService.isGameRunning(GAME_KEY_1);
+        });
+        String actualMessage = exception.getMessage();
+        //when
+        //then
+        assertTrue(actualMessage.contains("isn't existing"));
+
     }
 }

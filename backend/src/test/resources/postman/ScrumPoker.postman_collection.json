@@ -18,11 +18,15 @@
 							"});",
 							"",
 							"pm.test(\"create Tablemaster\", function () {",
+							"    let messageString = pm.response.text();",
 							"",
-							"    let messageString = pm.response.text()",
-							"    pm.environment.set(\"gamekey\", messageString.split(',')[0])",
-							"    pm.environment.set(\"tablemasterid\", messageString.split(',')[1])",
+							"    let tablemasteridText = messageString.split(',')[0];",
+							"    let tablemasterid = tablemasteridText.split(':');",
+							"    pm.environment.set(\"tablemasterid\", tablemasterid[1].replace(/[\"]+/g, ''));",
 							"",
+							"    let gamekeyText = messageString.split(',')[1];",
+							"    let gamekey = gamekeyText.split(':')",
+							"    pm.environment.set(\"gamekey\", gamekey[1].replace(/[\"]+/g, ''));",
 							"",
 							"});",
 							""
@@ -35,14 +39,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/createTablemaster/test/test",
+					"raw": "{{base_url}}/createTablemaster/{{tablemastername}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"createTablemaster",
-						"test",
-						"test"
+						"{{tablemastername}}"
 					]
 				}
 			},
@@ -64,8 +67,9 @@
 							"pm.test(\"getAllPlayers\", function() {",
 							"    var player1 = pm.response.json()[0];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
+							"    pm.expect(player1.name).to.eql(pm.environment.get(\"tablemastername\"));",
 							"",
 							"});",
 							"",
@@ -118,10 +122,15 @@
 							"});",
 							"    ",
 							"pm.test(\"create player\", function () {",
+							"    let messageString = pm.response.text();",
 							"",
-							"    pm.environment.set(\"playerid\", pm.response.text())",
+							"    let playeridText = messageString.split(',')[0];",
+							"    let playerid = playeridText.split(':');",
+							"    pm.environment.set(\"playerid\", playerid[1].replace(/[\"]+/g, ''));",
 							"",
-							"});"
+							"",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -131,13 +140,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/createPlayer/Lias/{{gamekey}}",
+					"raw": "{{base_url}}/createPlayer/{{playername}}/{{gamekey}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"createPlayer",
-						"Lias",
+						"{{playername}}",
 						"{{gamekey}}"
 					]
 				}
@@ -161,14 +170,13 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
+							"    pm.expect(player1.name).to.eql(pm.environment.get(\"tablemastername\"));",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
-							"",
-							"",
 							"",
 							""
 						],
@@ -240,22 +248,17 @@
 			"response": []
 		},
 		{
-			"name": "get player mode player",
+			"name": "average Copy",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
+							"pm.test(\"Response from setCurrentValue\", function() {",
 							"    pm.response.to.have.status(200);",
 							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
+							"    pm.response.to.have.body('0.0');",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -265,55 +268,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
+					"raw": "{{base_url}}/average/{{gamekey}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode tm",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"TablemasterPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
+						"average",
+						"{{gamekey}}"
 					]
 				}
 			},
@@ -333,13 +294,13 @@
 							"});",
 							"",
 							"pm.test(\"getAllPlayers\", function() {",
-							"    var player1 = pm.response.json()[0];",
+							"       var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
@@ -523,87 +484,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode player Copy",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"    ",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode tm Copy",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"    ",
-							"",
-							"pm.test(\"TablemasterPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy",
 			"event": [
 				{
@@ -620,11 +500,13 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.eql(\"8\");",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.eql(\"5\");",
+							"",
+							"",
 							"});",
 							"",
 							"",
@@ -732,86 +614,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 2",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"TablemasterPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 2",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 7",
 			"event": [
 				{
@@ -825,18 +627,15 @@
 							"});",
 							"",
 							"pm.test(\"getAllPlayers\", function() {",
-							"    var player1 = pm.response.json()[0];",
+							"       var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
-							"",
-							"",
-							"",
 							""
 						],
 						"type": "text/javascript"
@@ -867,6 +666,39 @@
 					"path": [
 						"tables",
 						"getplayers",
+						"{{gamekey}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "average Copy 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response from setCurrentValue\", function() {",
+							"    pm.response.to.have.status(200);",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.have.body('0.0');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/average/{{gamekey}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"average",
 						"{{gamekey}}"
 					]
 				}
@@ -943,86 +775,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode player Copy 3",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode tm Copy 3",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 3",
 			"event": [
 				{
@@ -1039,12 +791,17 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.eql(\"13\");",
+							"",
+							"",
 							"});",
+							"",
+							"",
+							"",
 							"",
 							"",
 							"",
@@ -1153,86 +910,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 6",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 6",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 5",
 			"event": [
 				{
@@ -1249,13 +926,12 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(false);",
+							"    pm.expect(player1.playing).to.eql(false);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.eql(\"13\");",
 							"});",
-							"",
 							"",
 							"",
 							""
@@ -1328,86 +1004,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 4",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 4",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 8",
 			"event": [
 				{
@@ -1424,10 +1020,10 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(false);",
+							"    pm.expect(player1.playing).to.eql(false);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
@@ -1539,86 +1135,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode player Copy 5",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode tm Copy 5",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 17",
 			"event": [
 				{
@@ -1635,10 +1151,10 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(false);",
+							"    pm.expect(player1.playing).to.eql(false);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.eql(\"8\");",
 							"});",
 							"",
@@ -1749,86 +1265,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 7",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 7",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 9",
 			"event": [
 				{
@@ -1845,11 +1281,11 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(false);",
+							"    pm.expect(player1.playing).to.eql(false);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(false);",
-							"    pm.expect(player2.selectedCard).to.eql(\"8\");",
+							"    pm.expect(player2.playing).to.eql(false);",
+							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
 							"",
@@ -1924,86 +1360,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 8",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 8",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 10",
 			"event": [
 				{
@@ -2020,10 +1376,10 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(false);",
+							"    pm.expect(player1.playing).to.eql(false);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(false);",
+							"    pm.expect(player2.playing).to.eql(false);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
@@ -2099,86 +1455,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 9",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 9",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 11",
 			"event": [
 				{
@@ -2195,10 +1471,10 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(false);",
+							"    pm.expect(player1.playing).to.eql(false);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(false);",
+							"    pm.expect(player2.playing).to.eql(false);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
@@ -2309,86 +1585,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 10",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 10",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(false);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 12",
 			"event": [
 				{
@@ -2405,10 +1601,10 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(false);",
+							"    pm.expect(player2.playing).to.eql(false);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
@@ -2486,86 +1682,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode player Copy 11",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode tm Copy 11",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 13",
 			"event": [
 				{
@@ -2582,10 +1698,10 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
@@ -2661,86 +1777,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 12",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 12",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 15",
 			"event": [
 				{
@@ -2757,10 +1793,10 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
@@ -2836,86 +1872,6 @@
 			"response": []
 		},
 		{
-			"name": "get player mode tm Copy 13",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{tablemasterid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{tablemasterid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get player mode player Copy 13",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.ok;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PlayerPlayerMode\", function () {",
-							"    pm.expect(pm.response.json()).to.eql(true);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/players/getplayermode/{{gamekey}}/{{playerid}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"players",
-						"getplayermode",
-						"{{gamekey}}",
-						"{{playerid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "getPlayers Copy 14",
 			"event": [
 				{
@@ -2932,10 +1888,10 @@
 							"    var player1 = pm.response.json()[0];",
 							"    var player2 = pm.response.json()[1];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
-							"    pm.expect(player2.playerMode).to.eql(true);",
+							"    pm.expect(player2.playing).to.eql(true);",
 							"    pm.expect(player2.selectedCard).to.be.null;",
 							"});",
 							"",
@@ -3043,7 +1999,7 @@
 							"pm.test(\"getAllPlayers\", function() {",
 							"    var player1 = pm.response.json()[0];",
 							"",
-							"    pm.expect(player1.playerMode).to.eql(true);",
+							"    pm.expect(player1.playing).to.eql(true);",
 							"    pm.expect(player1.selectedCard).to.be.null;",
 							"",
 							"});",
@@ -3081,6 +2037,56 @@
 						"tables",
 						"getplayers",
 						"{{gamekey}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offboarding tablemaster",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.response.to.be.ok;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "getPlayers",
+						"value": "3loxk3uyJwxxMpOnSKJAMRjX4mKErY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 2,\n        \"name\": \"dsafasdf\",\n        \"currentValue\": null,\n        \"playerMode\": true\n    }\n]"
+				},
+				"url": {
+					"raw": "{{base_url}}/tables/offboarding/{{gamekey}}/{{tablemasterid}}/true",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tables",
+						"offboarding",
+						"{{gamekey}}",
+						"{{tablemasterid}}",
+						"true"
 					]
 				}
 			},

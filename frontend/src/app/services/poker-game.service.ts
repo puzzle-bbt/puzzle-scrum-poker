@@ -293,7 +293,7 @@ export class PokerGameService {
     };
     const game: Game = {
       gameKey: onboardingModel.gameKey,
-      isGameRunning: false,
+      isGameRunning: onboardingModel.isGameRunning,
       me: player,
       iAmTableMaster: iAmTableMaster,
       roundInfo: undefined,
@@ -317,6 +317,7 @@ export interface OnboardingModel {
   id: string;
   gameKey: string;
   selectedCard: string;
+  isGameRunning: boolean;
 }
 
 interface RoundInfoModel {
