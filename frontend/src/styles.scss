@@ -1,7 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: lightblue;
 }
 
 app-desktop-estimation {
@@ -12,19 +11,17 @@ app-mobile-estimation {
   display: block;
 }
 
-/* For desktops: */
-@media only screen and (min-width: 768px) {
-  body {
-    background-color: tan;
-  }
+.card {
+  border: 4px solid white;
+  margin-right: 20px;
+  height: 200px;
+  width: 139px;
 }
 
 .selectedcard {
-  border: 4px solid #1c8def;
+  border-color: #1c8def;
 }
 
-.card {
-  margin-right: 20px;
-  width: auto;
-  height: 180px;
+.backSide {
+  border: 4px solid white;
 }

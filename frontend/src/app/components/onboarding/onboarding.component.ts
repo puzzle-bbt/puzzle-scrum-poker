@@ -10,6 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OnboardingComponent implements OnInit {
 
+  clicked : boolean | undefined;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly pokerService: PokerGameService
@@ -17,6 +19,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.clicked = false;
     const gameKey = this.route.snapshot.paramMap.get('gamekey');
     if (gameKey == null) {
       this.pokerService.setAsTableMaster();
@@ -26,6 +29,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   public create(username: string) {
+    this.clicked = true;
     if (this.checkUsername(username)) {
       console.log('-->', this.pokerService.game$.value);
       if (this.pokerService.game$.value.iAmTableMaster) {

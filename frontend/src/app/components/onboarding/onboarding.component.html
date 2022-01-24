@@ -12,7 +12,7 @@
 </div>
 <br>
 <div>
-  <button (click)="create(un.value)" data-cy="onboarding-button">Erstellen</button>
+  <button [disabled]="clicked" (click)="create(un.value)" data-cy="onboarding-button">Erstellen</button>
 </div>
 <br>
 <br>
