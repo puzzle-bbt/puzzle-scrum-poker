@@ -46,18 +46,19 @@ export class PokerGameService {
     private readonly router: Router,
     private readonly messenger: BackendMessengerService
   ) {
-      this.messenger.subscribe((message) => {
-          if (message.includes('gameStart')) {
-              this.game$.value.isGameRunning = true;
-          }
-          if (message.includes('gameOver')) {
-              this.game$.value.isGameRunning = false;
-          }
-          if (message.includes('YouGotKicked')) {
-            this.router.navigate(['/playground/kickplayer']);
-            this.resetModel();
-          }
-      });
+    this.messenger.setGame(this.game$);
+    this.messenger.subscribe((message) => {
+        if (message.includes('gameStart')) {
+            this.game$.value.isGameRunning = true;
+        }
+        if (message.includes('gameOver')) {
+            this.game$.value.isGameRunning = false;
+        }
+        if (message.includes('YouGotKicked')) {
+          this.router.navigate(['/playground/kickplayer']);
+          this.resetModel();
+        }
+    });
   }
 
   setAsTableMaster() {
@@ -287,7 +288,7 @@ export class PokerGameService {
     const player: Player = {
       // TODO: backend should get a number
       id: Number(onboardingModel.id),
-      name: '',
+      name: onboardingModel.name,
       playing: true,
       selectedCard: undefined
     };
@@ -315,6 +316,7 @@ export class PokerGameService {
 
 export interface OnboardingModel {
   id: string;
+  name: string;
   gameKey: string;
   selectedCard: string;
   isGameRunning: boolean;

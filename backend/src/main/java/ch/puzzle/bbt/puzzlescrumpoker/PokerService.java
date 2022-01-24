@@ -160,6 +160,7 @@ public class PokerService {
 
             getTableById(gamekey).getWebsocketsession().put(playerid, session);
             LOG.debug("Connection established");
+
         } else if (message.startsWith("Iamtheoneandonlymaster=")) {
             String[] messageSplit = message.split("=");
             String gamekey = messageSplit[1];
@@ -172,6 +173,25 @@ public class PokerService {
             else {
                 sendWebsocketMessageSpecial("CantBeNewTablemaster", playerID, gamekey, true);
             }
+        } else if (message.startsWith("reconnect")) {
+            String[] messageSplit = message.split(",");
+            String gameKey = messageSplit[1];
+            long playerID = Long.parseLong(messageSplit[2]);
+            String playerName = messageSplit[3];
+            getTableById(gameKey).getWebsocketsession().put(playerID, session); // does an insert or an update
+            String selectedCard = null;
+            if(!"undefined".equals(messageSplit[4])) {
+                selectedCard = messageSplit[4];
+            }
+            boolean isTableMaster = Boolean.parseBoolean(messageSplit[5]);
+            if(isTableMaster) {
+                getTableById(gameKey).getPlayerMap().put(playerID,new Tablemaster(playerName,playerID));
+                setSelectedCard(gameKey,playerID,selectedCard);
+            } else {
+                getTableById(gameKey).getPlayerMap().put(playerID,new Player(playerName,playerID));
+                setSelectedCard(gameKey,playerID,selectedCard);
+            }
+            sendWebsocketMessage(getTableById(gameKey),"RefreshPlayer");
         } else {
             LOG.warn("Unknown message: {}", message);
         }
