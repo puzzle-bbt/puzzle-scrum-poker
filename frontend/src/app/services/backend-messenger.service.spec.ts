@@ -33,21 +33,4 @@ describe('BackendMessengerService', () => {
     expect(fakeSocket.next).toHaveBeenCalledOnceWith('Test Send Message');
   });
 
-  it('should subscribe and add this Subscrition to the wsSubscriptions Array', () => {
-    expect(service.wsSubscriptions.length).toBe(0);
-    service.subscribe(() => callback);
-    expect(fakeSocket.subscribe).toHaveBeenCalledTimes(1);
-    expect(service.wsSubscriptions.length).toBe(1);
-  });
-
-  it('should complete the subject when destroy the service', () => {
-    service.subscribe(() => callback);
-    service.ngOnDestroy();
-    expect(fakeSocket.complete).toHaveBeenCalledTimes(1);
-  });
-
-  it('should do nothing if zero Subscription exists', () => {
-    service.ngOnDestroy();
-    expect(fakeSocket.complete).not.toHaveBeenCalled();
-  });
 });
