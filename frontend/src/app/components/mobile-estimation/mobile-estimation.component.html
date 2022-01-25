@@ -5,16 +5,16 @@
   </div>
   <div *ngIf="((game$ | async)?.isGameRunning && (game$ | async)?.me?.playing)" class="cardContainer-mobile">
     <p>Deine Schätzung in Story Points</p>
-    <select class="dropdown">
+    <select class="dropdown" #cardSelect (change)="setSelectedCard(cardSelect.value)">
       <option class="noCardSelected">-</option>
-      <option (click)="setSelectedCard('1')" value="1">1</option>
-      <option (click)="setSelectedCard('2')" value="2">2</option>
-      <option (click)="setSelectedCard('3')" value="3">3</option>
-      <option (click)="setSelectedCard('5')" value="5">5</option>
-      <option (click)="setSelectedCard('8')" value="8">8</option>
-      <option (click)="setSelectedCard('13')" value="13">13</option>
-      <option (click)="setSelectedCard('21')" value="21">21</option>
-      <option (click)="setSelectedCard('?')" value="?">?</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="5">5</option>
+      <option value="8">8</option>
+      <option value="13">13</option>
+      <option value="21">21</option>
+      <option value="?">?</option>
     </select>
   </div>
 
