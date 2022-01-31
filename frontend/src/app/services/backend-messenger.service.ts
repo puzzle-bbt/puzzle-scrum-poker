@@ -66,7 +66,8 @@ export class BackendMessengerService {
           this.game$!.value.me!.id+","+
           this.game$!.value.me!.name+","+
           this.game$!.value.me!.selectedCard+","+
-          this.game$!.value.iAmTableMaster);
+          this.game$!.value.iAmTableMaster+","+
+          this.game$!.value.me!.playing);
       }
     });
   }

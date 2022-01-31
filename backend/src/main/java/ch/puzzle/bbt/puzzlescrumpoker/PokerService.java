@@ -184,14 +184,15 @@ public class PokerService {
                 selectedCard = messageSplit[4];
             }
             boolean isTableMaster = Boolean.parseBoolean(messageSplit[5]);
+            boolean isPlaying = Boolean.parseBoolean(messageSplit[6]);
             if(isTableMaster) {
                 getTableById(gameKey).getPlayerMap().put(playerID,new Tablemaster(playerName,playerID));
-                setSelectedCard(gameKey,playerID,selectedCard);
             } else {
                 getTableById(gameKey).getPlayerMap().put(playerID,new Player(playerName,playerID));
-                setSelectedCard(gameKey,playerID,selectedCard);
             }
-            sendWebsocketMessage(getTableById(gameKey),"RefreshPlayer");
+            setSelectedCard(gameKey,playerID,selectedCard);
+            setPlayerMode(gameKey,playerID,isPlaying);
+            LOG.debug("Reconnect: {}", message);
         } else {
             LOG.warn("Unknown message: {}", message);
         }
