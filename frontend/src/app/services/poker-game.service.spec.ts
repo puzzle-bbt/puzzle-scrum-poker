@@ -19,7 +19,7 @@ const GAME_INIT_VALUE: Game = {
 
 const PLAYER_INIT_VALUE: Player = {
   id: NaN,
-  name: '',
+  name: 'Foo Bar',
   playing: true,
   selectedCard: undefined
 }
@@ -37,9 +37,10 @@ describe('PokerGameService', () => {
     routerSpy.navigateByUrl.and.returnValue(Promise.resolve(true));
 
     backendMessengerServiceSpy = createSpyObj('BackendMessengerService',
-      ['subscribe', 'sendMessage']);
+      ['subscribe', 'sendMessage', 'setGame']);
     backendMessengerServiceSpy.subscribe.and.callThrough();
     backendMessengerServiceSpy.sendMessage.and.callThrough();
+    backendMessengerServiceSpy.setGame.and.callThrough();
 
     service = new PokerGameService(httpClientSpy, routerSpy, backendMessengerServiceSpy);
   });
@@ -66,7 +67,9 @@ describe('PokerGameService', () => {
     const name = 'Master';
     httpClientSpy.get.and.returnValue(of({
       id: '11',
+      name: 'Foo Bar',
       gameKey: '123456',
+      isGameRunning: false,
       selectedCard: ''
     } as OnboardingModel));
 
@@ -75,10 +78,11 @@ describe('PokerGameService', () => {
       expect(value).toBeTruthy();
       expect(httpClientSpy.get).toHaveBeenCalledOnceWith(`/api/createTablemaster/${name}`, GET_OPTIONS);
       expect(service.game$.value).toEqual({
-        ...GAME_INIT_VALUE,
-        iAmTableMaster: true,
-        gameKey: '123456',
-        me: {...PLAYER_INIT_VALUE, id: 11}
+      ...GAME_INIT_VALUE,
+          isGameRunning: false,
+          iAmTableMaster: true,
+          gameKey: '123456',
+          me: {...PLAYER_INIT_VALUE, id: 11, name: 'Foo Bar'}
       });
       done();
     });
