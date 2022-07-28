@@ -141,14 +141,13 @@ public class PokerService {
 
     // an example of average calculation with a java stream
     public double getAverageStream(String gamekey) throws Exception {
-        OptionalDouble average = getTableById(gamekey).getPlayerMap().values().parallelStream()
+        return getTableById(gamekey).getPlayerMap().values().parallelStream()
                 .filter(Player::isPlaying)
                 .map(Player::getSelectedCard)
                 .filter(Objects::nonNull)
                 .filter(value -> isNumeric.matcher(value).matches())
                 .mapToInt(Integer::parseInt)
-                .average();
-        return average.isPresent() ? average.getAsDouble() : 0;
+                .average().orElse(0);
     }
 
     public void handleIncomingTextMessage(WebSocketSession session, String message) throws Exception {

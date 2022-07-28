@@ -45,10 +45,7 @@ export class PlayerListComponent implements OnInit {
   }
 
   public kickPlayer(playerId: number) {
-    this.pokerService.kickplayer(this.pokerService.game$.value.gameKey, playerId).subscribe(
-      () => {
-      }
-    );
+    this.pokerService.kickplayer(this.pokerService.game$.value.gameKey, playerId).subscribe();
   }
 
   public copyLink() {
@@ -66,11 +63,7 @@ export class PlayerListComponent implements OnInit {
   }
 
   public isOnDesktop() {
-    if (window.innerWidth > 768) {
-      return true;
-    } else {
-      return false;
-    }
+    return window.innerWidth > 768;
   }
 
 }

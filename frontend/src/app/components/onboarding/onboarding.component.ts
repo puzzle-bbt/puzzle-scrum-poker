@@ -53,11 +53,8 @@ export class OnboardingComponent implements OnInit {
   }
 
   public checkUsername(username: string): boolean {
-    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-    if (!username || format.test(username) || username.trim().length == 0 || username.length > 25) {
-      return false;
-    } else {
-      return true;
-    }
+    let format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    return !(!username || format.test(username) || username.trim().length == 0 || username.length > 25);
   }
 }
+
