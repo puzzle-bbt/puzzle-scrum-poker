@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { PokerGameService } from '../../services/poker-game.service';
-import { BackendMessengerService } from '../../services/backend-messenger.service';
-import { BehaviorSubject } from 'rxjs';
-import { Game, Player } from '../../models/model';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {PokerGameService} from '../../services/poker-game.service';
+import {BackendMessengerService} from '../../services/backend-messenger.service';
+import {BehaviorSubject} from 'rxjs';
+import {Game, Player} from '../../models/model';
 
 @Component({
   selector: 'app-playerlist',
@@ -22,22 +22,11 @@ export class PlayerListComponent implements OnInit {
 
   ngOnInit(): void {
     this.messenger.subscribe((message) => {
-      if (message.includes('RefreshPlayer')) {
-        this.refresh();
-      }
-    });
-    this.messenger.subscribe((message) => {
-      if (message.includes('gameOver')) {
-        this.refresh();
-      }
-    });
-    this.messenger.subscribe((message) => {
-      if (message.includes('gameStart')) {
+      if (message.includes('RefreshPlayer') || message.includes('gameOver') || message.includes('gameStart')) {
         this.refresh();
       }
     });
     this.refresh();
-
   }
 
   public refresh() {
