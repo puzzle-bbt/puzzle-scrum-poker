@@ -18,8 +18,8 @@ export class PlaygroundComponent implements OnInit {
   game$: BehaviorSubject<Game> = this.pokerGameService.game$;
   players$: BehaviorSubject<Player[]> = this.pokerGameService.players$;
 
-  constructor(public readonly pokerGameService: PokerGameService, public readonly messenger: BackendMessengerService,
-              public screenSizeService:ScreenSizeService) {
+
+  constructor(public readonly pokerGameService: PokerGameService, public readonly messenger: BackendMessengerService, public screenSizeService: ScreenSizeService) {
   }
 
   ngOnInit(): void {
