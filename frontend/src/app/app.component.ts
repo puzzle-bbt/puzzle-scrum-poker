@@ -1,19 +1,25 @@
-import { Component } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { PokerGameService } from './services/poker-game.service';
+import {ScreenSizeService} from "./services/screen-size.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'frontend';
   isPlaying?: boolean = true;
 
   constructor(
-    private pokerService: PokerGameService
+    private pokerService: PokerGameService, private _screenSizeService:ScreenSizeService
   ) {
+    this._screenSizeService.setSize(window.innerWidth);
   }
+
+  ngOnInit(): void {
+    this._screenSizeService.setSize(window.innerWidth);
+    }
 
   public changeSpectator() {
     if (this.isPlaying) {
@@ -28,5 +34,9 @@ export class AppComponent {
   public isCurrentlyOnPlayground() {
     let url = window.location.toString();
     return url.includes('playground');
+  }
+
+  @HostListener('window:resize', ['$event']) onResize() {
+    this._screenSizeService.setSize(window.innerWidth);
   }
 }

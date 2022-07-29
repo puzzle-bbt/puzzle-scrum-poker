@@ -1,28 +1,27 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
 import {PokerGameService} from '../../services/poker-game.service';
 import {BehaviorSubject, map, Observable} from 'rxjs';
 import {Game, Player} from "../../models/model";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
+import {ScreenSizeService} from "../../services/screen-size.service";
 
 @Component({
   selector: 'app-playground',
   templateUrl: './playground.component.html',
-  styleUrls: ['./playground.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./playground.component.scss']
 })
 export class PlaygroundComponent implements OnInit {
   notClickable: boolean | undefined;
-  displayButton$: Observable<boolean> = this.pokerGameService.game$.pipe(
-    map(game => game.iAmTableMaster)
-  );
-
+  displayButton$: Observable<boolean> = this.pokerGameService.game$.pipe(map(game => game.iAmTableMaster));
+  innerWidth = 0;
   game$: BehaviorSubject<Game> = this.pokerGameService.game$;
-
   players$: BehaviorSubject<Player[]> = this.pokerGameService.players$;
 
-  constructor(public readonly pokerGameService: PokerGameService,
-              public readonly messenger: BackendMessengerService
-  ) {
+  constructor(public readonly pokerGameService: PokerGameService, public readonly messenger: BackendMessengerService,
+              public screenSizeService:ScreenSizeService) {
+    this.screenSizeService.getSize().subscribe(((size)=>{
+      this.innerWidth = size;
+    }));
   }
 
   ngOnInit(): void {

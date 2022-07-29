@@ -29,14 +29,6 @@
     row-gap: $default-spacing;
     column-gap: $default-double-spacing;
   }
-
-  app-desktop-estimation {
-    display: block;
-  }
-
-  app-mobile-estimation {
-    display: none;
-  }
 }
 .middleButton {
   height: 50px;

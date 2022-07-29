@@ -3,18 +3,18 @@ import { PokerGameService } from '../../services/poker-game.service';
 import { BackendMessengerService } from '../../services/backend-messenger.service';
 import {BehaviorSubject} from "rxjs";
 import {Game} from "../../models/model";
+import {ScreenSizeService} from "../../services/screen-size.service";
 
 @Component({
   selector: 'app-desktop-estimation',
   templateUrl: './desktop-estimation.component.html',
-  styleUrls: ['./desktop-estimation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./desktop-estimation.component.scss']
 })
 export class DesktopEstimationComponent implements OnInit {
 
   @ViewChild('cardContainerFront')
   cardFrontContainerDiv?: ElementRef<HTMLDivElement>;
-
+  private values:Array<number> =[1,2,3,5,8,13,21]
   public roundName?: string;
   public isGameRunning?: boolean;
 
@@ -23,8 +23,21 @@ export class DesktopEstimationComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     public pokerService: PokerGameService,
-    private messenger: BackendMessengerService
+    private messenger: BackendMessengerService,
+    private _cardValueService:ScreenSizeService
   ) {
+    this._cardValueService.getSize().subscribe((width) => {
+      if (this._cardValueService.isDesktopSize(width)) {
+        let selectionValue = _cardValueService.currentCardValue;
+        let id="card-";
+        if(selectionValue == "?"){
+          id += this.values.length
+        }else{
+          id+= this.values.indexOf(Number(selectionValue))+1
+        }
+        console.log(document.getElementById(id));
+      }
+    })
   }
 
   private static stringToSvgElement(str: string): SVGElement {
@@ -114,14 +127,15 @@ export class DesktopEstimationComponent implements OnInit {
   public addCards(svgFilename: string = 'card_front.svg') {
     this.pokerService.getCardSvg(svgFilename).subscribe(
       (data: string) => {
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-1', '1')
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-2', '2')
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-3', '3')
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-4', '5')
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-5', '8')
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-6', '13')
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-7', '21')
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-8', '?')
+        for (let i in this.values) {
+          let id = Number(i)+1;
+          let prefix = 'card-';
+          let fullId = prefix+id;
+          console.log(fullId)
+          this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, this.values[i].toString())
+        }
+
+        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-'+this.values.length+1, '?')
       });
   }
 
@@ -137,6 +151,7 @@ export class DesktopEstimationComponent implements OnInit {
       if (!svg.classList.contains('selectedcard')) {
         svg.classList.add('selectedcard');
         this.pokerService.setSelectedCard(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, storyPoints).subscribe();
+        this._cardValueService.currentCardValue = storyPoints;
       }
     })
 
