@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import { PokerGameService } from '../../services/poker-game.service';
+import {PokerGameService} from '../../services/poker-game.service';
 import {BehaviorSubject, map, Observable} from 'rxjs';
-import {Game} from "../../models/model";
+import {Game, Player} from "../../models/model";
 import {BackendMessengerService} from "../../services/backend-messenger.service";
 
 @Component({
@@ -11,27 +11,32 @@ import {BackendMessengerService} from "../../services/backend-messenger.service"
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlaygroundComponent implements OnInit {
-
   notClickable: boolean | undefined;
-
   displayButton$: Observable<boolean> = this.pokerGameService.game$.pipe(
     map(game => game.iAmTableMaster)
   );
 
   game$: BehaviorSubject<Game> = this.pokerGameService.game$;
 
+  players$: BehaviorSubject<Player[]> = this.pokerGameService.players$;
+
   constructor(public readonly pokerGameService: PokerGameService,
               public readonly messenger: BackendMessengerService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.notClickable = false;
     this.messenger.subscribe((message) => {
-      if (message.includes('gameStart')) {
+      if (message.includes('gameStart') || message.includes('gameOver')) {
         this.notClickable = false;
       }
-      if (message.includes('gameOver')) {
-        this.notClickable = false;
+
+      if (message.includes('RefreshPlayer')) {
+        this.pokerGameService.getPlayers().subscribe(() => {
+          let playingPlayersCount = this.players$.getValue().filter(e => e.playing).length;
+          this.notClickable = playingPlayersCount == 0;
+        });
       }
     });
 
@@ -40,9 +45,8 @@ export class PlaygroundComponent implements OnInit {
     }
   }
 
-  public changeGameState() {
+  changeGameState() {
     this.notClickable = true;
     this.pokerGameService.toggleGameRunning().subscribe();
   }
-
 }
