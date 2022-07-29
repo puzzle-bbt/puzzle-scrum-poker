@@ -5,14 +5,18 @@
 <p>Username erstellen</p>
 <div>
   <label for="fname">Username: </label>
-  <input #un id="fname" name="fname" placeholder="Username" type="text" data-cy="username">
+  <input [(ngModel)]="username" id="fname" name="fname" placeholder="Username" type="text" data-cy="username">
 </div>
 <div>
   <p>Dies ist dein Benutzername, welcher von allen anderen Spieler zu sehen sein wird. Verwende keine Sonderzeichen.</p>
 </div>
-<br>
 <div>
-  <button [disabled]="clicked" (click)="create(un.value)" data-cy="onboarding-button">Erstellen</button>
+  <button [disabled]="this.checkUsernameExists(username) || this.checkUsernameSpecialChars(username)" (click)="create(username)" [class.border-red]="this.checkUsernameExists(username) || this.checkUsernameSpecialChars(username)" data-cy="onboarding-button">Erstellen</button>
+  <div>
+    <p *ngIf="username != '' && this.checkUsernameSpecialChars(username)"> Verwende keinen leeren Namen oder auch keine Sonderzeichen.</p>
+    <p *ngIf="username != '' && this.checkUsernameExists(username)">Benutzername wird bereits verwendet</p>
+  </div>
 </div>
+<br>
 <br>
 <br>

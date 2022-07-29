@@ -13,8 +13,8 @@ import {Player} from "../../models/model";
 })
 export class OnboardingComponent implements OnInit {
 
-  clicked: boolean | undefined;
   players$: BehaviorSubject<Player[]> = this.pokerService.players$;
+  username: string = "";
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -24,7 +24,6 @@ export class OnboardingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.clicked = false;
     const gameKey = this.route.snapshot.paramMap.get('gamekey');
     if (gameKey == null) {
       this.pokerService.setAsTableMaster();
@@ -41,18 +40,6 @@ export class OnboardingComponent implements OnInit {
   }
 
   public create(username: string) {
-    this.clicked = true;
-    if (this.checkUsernameSpecialChars(username)) {
-      alert("Verwende keinen leeren Namen oder auch keine Sonderzeichen.");
-      window.location.reload();
-      return;
-    }
-    if (this.checkUsernameExists(username)) {
-      alert("Benutzername wird bereits verwendet");
-      window.location.reload();
-      return;
-    }
-
     console.log('-->', this.pokerService.game$.value);
     if (this.pokerService.game$.value.iAmTableMaster) {
       this.createTablemaster(username);

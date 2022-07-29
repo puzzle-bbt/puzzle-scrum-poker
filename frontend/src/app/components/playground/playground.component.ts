@@ -44,5 +44,4 @@ export class PlaygroundComponent implements OnInit {
     this.notClickable = true;
     this.pokerGameService.toggleGameRunning().subscribe();
   }
-
 }

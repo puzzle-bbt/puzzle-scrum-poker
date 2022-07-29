@@ -62,7 +62,6 @@ public class RestInterface {
                 return "";
             }
             pokerService.setSelectedCard(gamekey, playerid, selectedCard);
-
             return pokerService.getSelectedCard(gamekey, playerid);
         } catch (Exception e) {
             LOG.error("setSelectedCard has failed: ", e);
