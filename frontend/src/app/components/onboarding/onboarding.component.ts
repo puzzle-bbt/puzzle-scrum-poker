@@ -13,7 +13,9 @@ import {Player} from "../../models/model";
 })
 export class OnboardingComponent implements OnInit {
 
-  players$: BehaviorSubject<Player[]> = this.pokerService.players$;
+  clicked : boolean = false;
+  // players$: BehaviorSubject<Player[]> = this.pokerService.players$;
+  players:Player[]=[]
   username: string = "";
 
   constructor(
@@ -29,17 +31,22 @@ export class OnboardingComponent implements OnInit {
       this.pokerService.setAsTableMaster();
     } else {
       this.pokerService.setGameKey(gameKey);
-      this.pokerService.getPlayers().subscribe();
+      this.pokerService.getPlayersAsync().subscribe((data)=>{
+        this.players = data
+      });
     }
 
     this.messenger.subscribe((message) => {
       if (message.includes('RefreshPlayer')) {
-        this.pokerService.getPlayers().subscribe()
+        this.pokerService.getPlayersAsync().subscribe((data)=>{
+          this.players = data
+        });
       }
     });
   }
 
   public create(username: string) {
+    this.clicked = true;
     console.log('-->', this.pokerService.game$.value);
     if (this.pokerService.game$.value.iAmTableMaster) {
       this.createTablemaster(username);
@@ -62,7 +69,20 @@ export class OnboardingComponent implements OnInit {
   }
 
   public checkUsernameExists(username: string) {
-    return this.players$.getValue().map(e => e.name).includes(username);
+    return this.players.map(e => e.name).includes(username);
+  }
+
+  checkUsername(username: string) {
+    if(this.clicked){
+      return true;
+    }
+    if (username != '' && this.checkUsernameSpecialChars(username)) {
+      return "Verwende keinen leeren Namen oder auch keine Sonderzeichen.";
+    }
+    if (username != '' && this.checkUsernameExists(username)) {
+      return "Benutzername wird bereits verwendet";
+    }
+    return null;
   }
 }
 

@@ -14,6 +14,7 @@ import { InfoComponent } from './components/info/info.component';
 import { DesktopEstimationComponent } from './components/desktop-estimation/desktop-estimation.component';
 import { MobileEstimationComponent } from './components/mobile-estimation/mobile-estimation.component';
 import { KickplayerComponent } from './components/kickplayer/kickplayer.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -28,12 +29,13 @@ import { KickplayerComponent } from './components/kickplayer/kickplayer.componen
     MobileEstimationComponent,
     KickplayerComponent
   ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule
-  ],
+    imports: [
+        CommonModule,
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule
+    ],
   providers: [],
   exports: [CommonModule],
   bootstrap: [AppComponent],

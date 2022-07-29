@@ -164,6 +164,7 @@ export class PokerGameService {
       );
   }
 
+
   public getAverage(gamekey: string): Observable<any> {
     return this.httpClient.get<number>(`${BASE_URL}/average/${gamekey}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
@@ -238,6 +239,16 @@ export class PokerGameService {
       map(players => {
         this.players$.next(players);
       }),
+      catchError(error => {
+        console.error('Can not get players: ', error);
+        this.handleError(error);
+        return EMPTY;
+      })
+    );
+  }
+
+  public getPlayersAsync(): Observable<Player[]> {
+    return this.httpClient.get<Player[]>(`${BASE_URL}/tables/getplayers/${this.game$.getValue().gameKey}`, BASE_GET_REQUEST_OPTIONS).pipe(
       catchError(error => {
         console.error('Can not get players: ', error);
         this.handleError(error);
