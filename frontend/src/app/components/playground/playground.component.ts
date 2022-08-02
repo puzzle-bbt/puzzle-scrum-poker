@@ -8,7 +8,8 @@ import {ScreenSizeService} from "../../services/screen-size.service";
 @Component({
   selector: 'app-playground',
   templateUrl: './playground.component.html',
-  styleUrls: ['./playground.component.scss']
+  styleUrls: ['./playground.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlaygroundComponent implements OnInit {
   notClickable: boolean | undefined;
@@ -25,6 +26,7 @@ export class PlaygroundComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.screenSizeService.setSize(window.innerWidth);
     this.notClickable = false;
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
@@ -47,5 +49,9 @@ export class PlaygroundComponent implements OnInit {
   changeGameState() {
     this.notClickable = true;
     this.pokerGameService.toggleGameRunning().subscribe();
+  }
+
+  @HostListener('window:resize', ['$event']) onResize() {
+    this.screenSizeService.setSize(window.innerWidth);
   }
 }
