@@ -23,11 +23,8 @@ export class MobileEstimationComponent implements OnInit {
     private readonly messenger: BackendMessengerService,
     private _cardValueService: ScreenSizeService
   ) {
-    this._cardValueService.getSize().subscribe((width) => {
-      if (!this._cardValueService.isDesktopSize(width)) {
-        this.selectionValue = this._cardValueService.currentCardValue;
-      }
-    })
+    this.selectionValue = this._cardValueService.currentCardValue;
+    console.log("Init mobile")
   }
 
   ngOnInit(): void {

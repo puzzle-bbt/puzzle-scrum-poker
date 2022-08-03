@@ -25,22 +25,7 @@ export class DesktopEstimationComponent implements OnInit {
     private messenger: BackendMessengerService,
     private _screenSizeService: ScreenSizeService
   ) {
-    this._screenSizeService.getSize().subscribe((width) => {
-      if (this._screenSizeService.isDesktopSize(width)) {
-        let selectionValue = _screenSizeService.currentCardValue;
-        let id = "card-";
-        if (selectionValue == "?") {
-          id += this.pokerService.selectableValues.length
-        } else {
-          id += this.pokerService.selectableValues.indexOf(Number(selectionValue)) + 1
-        }
-        let targetCard = document.getElementById(id) as unknown as SVGElement;
-        this.resetCards();
-        if (!targetCard.classList.contains('selectedcard')) {
-          targetCard.classList.add('selectedcard');
-        }
-      }
-    })
+
   }
 
   private static stringToSvgElement(str: string): SVGElement {
@@ -51,6 +36,7 @@ export class DesktopEstimationComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log("tasdfasdfa ")
     let frontCards = document.getElementById('cardContainerFront');
     let backCards = document.getElementById('cardContainerBack');
     if (this.pokerService.game$.value.isGameRunning) {
@@ -136,6 +122,7 @@ export class DesktopEstimationComponent implements OnInit {
           this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, this.pokerService.selectableValues[i].toString())
         }
         this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-' + this.pokerService.selectableValues.length + 1, '?')
+        this.selectCardByValue(this._screenSizeService.currentCardValue);
       });
   }
 
@@ -156,6 +143,23 @@ export class DesktopEstimationComponent implements OnInit {
 
   public getAverage() {
     this.pokerService.getAverage(this.pokerService.game$.value.gameKey).subscribe();
+  }
+
+  private selectCardByValue(selectionValue: string) {
+    if (selectionValue != "") {
+      let id = "card-";
+      if (selectionValue == "?") {
+        id += this.pokerService.selectableValues.length
+      } else {
+        id += this.pokerService.selectableValues.indexOf(Number(selectionValue)) + 1
+      }
+      let targetCard = document.getElementById(id) as unknown as SVGElement;
+      console.log("id: \"" + id + "\"")
+      this.resetCards();
+      if (!targetCard.classList.contains('selectedcard')) {
+        targetCard.classList.add('selectedcard');
+      }
+    }
   }
 
   private selectCard(svg: SVGElement, storyPoints: string) {

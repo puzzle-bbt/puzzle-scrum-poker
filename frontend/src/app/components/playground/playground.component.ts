@@ -20,13 +20,10 @@ export class PlaygroundComponent implements OnInit {
 
   constructor(public readonly pokerGameService: PokerGameService, public readonly messenger: BackendMessengerService,
               public screenSizeService:ScreenSizeService) {
-    this.screenSizeService.getSize().subscribe(((size)=>{
-      this.innerWidth = size;
-    }));
   }
 
   ngOnInit(): void {
-    this.screenSizeService.setSize(window.innerWidth);
+    this.innerWidth = window.innerWidth;
     this.notClickable = false;
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
@@ -52,6 +49,6 @@ export class PlaygroundComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event']) onResize() {
-    this.screenSizeService.setSize(window.innerWidth);
+    this.innerWidth = window.innerWidth;
   }
 }
