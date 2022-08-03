@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { OnboardingComponent } from './components/onboarding/onboarding.component';
-import { ErrorComponent } from './components/error/error.component';
-import { PlaygroundComponent } from './components/playground/playground.component';
-import { InfoComponent } from './components/info/info.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {OnboardingComponent} from './components/onboarding/onboarding.component';
+import {ErrorComponent} from './components/error/error.component';
+import {PlaygroundComponent} from './components/playground/playground.component';
+import {InfoComponent} from './components/info/info.component';
 import {KickplayerComponent} from "./components/kickplayer/kickplayer.component";
 
 const routes: Routes = [

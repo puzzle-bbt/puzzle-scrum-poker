@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { PokerGameService } from './services/poker-game.service';
+import {Component, HostListener} from '@angular/core';
+import {PokerGameService} from './services/poker-game.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +10,16 @@ export class AppComponent {
   title = 'frontend';
   isPlaying?: boolean = true;
 
-  constructor(
-    private pokerService: PokerGameService
-  ) {
+
+  constructor(private pokerService: PokerGameService) {
+  }
+
+  @HostListener("window:beforeunload")
+  public offboard() {
+    this.pokerService
+      .offboarding(this.pokerService.game$.value.gameKey,
+        this.pokerService.game$.value.me!.id,
+        this.pokerService.game$.value.iAmTableMaster).subscribe();
   }
 
   public changeSpectator() {

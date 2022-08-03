@@ -9,7 +9,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
-    private  PokerService pokerService;
+    private final PokerService pokerService;
 
     public SocketHandler(PokerService pokerService) {
         this.pokerService = pokerService;
@@ -17,16 +17,11 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
-        if (message == null) {
-            throw new Exception("Textmessage is null");
-        }
         pokerService.handleIncomingTextMessage(session, message.getPayload());
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-
         pokerService.handleClosedConnection(session);
     }
 }
