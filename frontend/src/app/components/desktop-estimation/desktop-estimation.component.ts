@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { PokerGameService } from '../../services/poker-game.service';
-import { BackendMessengerService } from '../../services/backend-messenger.service';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {PokerGameService} from '../../services/poker-game.service';
+import {BackendMessengerService} from '../../services/backend-messenger.service';
 import {BehaviorSubject} from "rxjs";
 import {Game} from "../../models/model";
 import {ScreenSizeService} from "../../services/screen-size.service";
@@ -14,28 +14,33 @@ export class DesktopEstimationComponent implements OnInit {
 
   @ViewChild('cardContainerFront')
   cardFrontContainerDiv?: ElementRef<HTMLDivElement>;
-  private values:Array<number> =[1,2,3,5,8,13,21]
   public roundName?: string;
   public isGameRunning?: boolean;
-
   game$: BehaviorSubject<Game> = this.pokerService.game$;
+  private values: Array<number> = [1, 2, 3, 5, 8, 13, 21]
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     public pokerService: PokerGameService,
     private messenger: BackendMessengerService,
-    private _cardValueService:ScreenSizeService
+    private _screenSizeService: ScreenSizeService
   ) {
-    this._cardValueService.getSize().subscribe((width) => {
-      if (this._cardValueService.isDesktopSize(width)) {
-        let selectionValue = _cardValueService.currentCardValue;
-        let id="card-";
-        if(selectionValue == "?"){
+    this._screenSizeService.getSize().subscribe((width) => {
+      if (this._screenSizeService.isDesktopSize(width)) {
+        let selectionValue = _screenSizeService.currentCardValue;
+        let id = "card-";
+        if (selectionValue == "?") {
           id += this.values.length
-        }else{
-          id+= this.values.indexOf(Number(selectionValue))+1
+        } else {
+          id += this.values.indexOf(Number(selectionValue)) + 1
         }
-        console.log(document.getElementById(id));
+        let targetCard = document.getElementById(id) as unknown as SVGElement;
+        console.log(targetCard)
+
+        this.resetCards();
+        if (!targetCard.classList.contains('selectedcard')) {
+          targetCard.classList.add('selectedcard');
+        }
       }
     })
   }
@@ -50,13 +55,12 @@ export class DesktopEstimationComponent implements OnInit {
   ngOnInit(): void {
     let frontCards = document.getElementById('cardContainerFront');
     let backCards = document.getElementById('cardContainerBack');
-    if(this.pokerService.game$.value.isGameRunning) {
+    if (this.pokerService.game$.value.isGameRunning) {
       frontCards!.classList.add("visible");
       frontCards!.classList.remove("hidden");
       backCards!.classList.add("hidden");
       backCards!.classList.remove("visible");
-    }
-    else {
+    } else {
       frontCards!.classList.add("hidden");
       frontCards!.classList.remove("visible");
       backCards!.classList.add("visible");
@@ -128,14 +132,13 @@ export class DesktopEstimationComponent implements OnInit {
     this.pokerService.getCardSvg(svgFilename).subscribe(
       (data: string) => {
         for (let i in this.values) {
-          let id = Number(i)+1;
+          let id = Number(i) + 1;
           let prefix = 'card-';
-          let fullId = prefix+id;
-          console.log(fullId)
+          let fullId = prefix + id;
           this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, this.values[i].toString())
         }
 
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-'+this.values.length+1, '?')
+        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-' + this.values.length + 1, '?')
       });
   }
 
@@ -147,12 +150,7 @@ export class DesktopEstimationComponent implements OnInit {
     svg.classList.add('card');
 
     svg.addEventListener('click', () => {
-      this.resetCards();
-      if (!svg.classList.contains('selectedcard')) {
-        svg.classList.add('selectedcard');
-        this.pokerService.setSelectedCard(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, storyPoints).subscribe();
-        this._cardValueService.currentCardValue = storyPoints;
-      }
+      this.selectCard(svg, storyPoints)
     })
 
     this.cardFrontContainerDiv!.nativeElement.append(svg);
@@ -163,4 +161,12 @@ export class DesktopEstimationComponent implements OnInit {
     this.pokerService.getAverage(this.pokerService.game$.value.gameKey).subscribe();
   }
 
+  private selectCard(svg: SVGElement, storyPoints: string) {
+    this.resetCards();
+    if (!svg.classList.contains('selectedcard')) {
+      svg.classList.add('selectedcard');
+      this.pokerService.setSelectedCard(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, storyPoints).subscribe();
+      this._screenSizeService.currentCardValue = storyPoints;
+    }
+  }
 }

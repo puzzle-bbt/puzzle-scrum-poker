@@ -311,7 +311,6 @@ export class PokerGameService {
     this.game$.next(GAME_INIT_VALUE);
     this.error$.next(ERROR_INIT_VALUE);
   }
-
 }
 
 export interface OnboardingModel {

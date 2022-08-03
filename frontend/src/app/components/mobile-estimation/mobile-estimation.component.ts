@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {Game} from '../../models/model';
 import {ScreenSizeService} from "../../services/screen-size.service";
 
+
 @Component({
   selector: 'app-mobile-estimation',
   templateUrl: './mobile-estimation.component.html',
@@ -15,7 +16,7 @@ export class MobileEstimationComponent implements OnInit {
   game$: Observable<Game> = this.pokerService.game$.asObservable();
 
   cardSelected?: boolean;
-  selectionValue: string = "5";
+  selectionValue: string = "";
 
   constructor(
     public pokerService: PokerGameService,
@@ -24,14 +25,13 @@ export class MobileEstimationComponent implements OnInit {
   ) {
     this._cardValueService.getSize().subscribe((width) => {
       if (!this._cardValueService.isDesktopSize(width)) {
-        this.selectionValue = _cardValueService.currentCardValue;
+        this.selectionValue = this._cardValueService.currentCardValue;
       }
     })
   }
 
   ngOnInit(): void {
     this.cardSelected = false;
-
     this.messenger.subscribe((message) => {
       if (message.includes('gameStart') || message.includes('gameOver')) {
         this.refresh();
@@ -46,8 +46,8 @@ export class MobileEstimationComponent implements OnInit {
     this.cardSelected = true;
     this.pokerService.setSelectedCard(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, this.selectionValue).subscribe();
     this._cardValueService.currentCardValue = this.selectionValue;
+    console.log(this._cardValueService.currentCardValue)
   }
-
 
   public refresh() {
     this.cardSelected = false;
