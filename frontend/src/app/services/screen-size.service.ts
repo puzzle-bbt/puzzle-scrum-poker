@@ -5,11 +5,12 @@ import {Subject} from "rxjs";
   providedIn: 'root'
 })
 export class ScreenSizeService {
-  currentCardValue: string = "0";
+  public currentCardValue: string = "0";
+  private readonly MIN_SCREEN_WIDTH: number = 768;
   private sizeSubject: Subject<number> = new Subject<number>();
 
-  public isDesktopSize(width:number) {
-    return width > 768;
+  public isDesktopSize(width: number) {
+    return width > this.MIN_SCREEN_WIDTH;
   }
 
   public getSize() {
@@ -17,7 +18,6 @@ export class ScreenSizeService {
   }
 
   public setSize(value: number) {
-    console.log(value)
     this.sizeSubject.next(value);
   }
 }

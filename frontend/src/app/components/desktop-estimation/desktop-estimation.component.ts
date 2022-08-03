@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PokerGameService} from '../../services/poker-game.service';
 import {BackendMessengerService} from '../../services/backend-messenger.service';
 import {BehaviorSubject} from "rxjs";
@@ -8,7 +8,8 @@ import {ScreenSizeService} from "../../services/screen-size.service";
 @Component({
   selector: 'app-desktop-estimation',
   templateUrl: './desktop-estimation.component.html',
-  styleUrls: ['./desktop-estimation.component.scss']
+  styleUrls: ['./desktop-estimation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DesktopEstimationComponent implements OnInit {
 
@@ -17,7 +18,6 @@ export class DesktopEstimationComponent implements OnInit {
   public roundName?: string;
   public isGameRunning?: boolean;
   game$: BehaviorSubject<Game> = this.pokerService.game$;
-  private values: Array<number> = [1, 2, 3, 5, 8, 13, 21]
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -30,13 +30,11 @@ export class DesktopEstimationComponent implements OnInit {
         let selectionValue = _screenSizeService.currentCardValue;
         let id = "card-";
         if (selectionValue == "?") {
-          id += this.values.length
+          id += this.pokerService.selectableValues.length
         } else {
-          id += this.values.indexOf(Number(selectionValue)) + 1
+          id += this.pokerService.selectableValues.indexOf(Number(selectionValue)) + 1
         }
         let targetCard = document.getElementById(id) as unknown as SVGElement;
-        console.log(targetCard)
-
         this.resetCards();
         if (!targetCard.classList.contains('selectedcard')) {
           targetCard.classList.add('selectedcard');
@@ -131,14 +129,13 @@ export class DesktopEstimationComponent implements OnInit {
   public addCards(svgFilename: string = 'card_front.svg') {
     this.pokerService.getCardSvg(svgFilename).subscribe(
       (data: string) => {
-        for (let i in this.values) {
+        for (let i in this.pokerService.selectableValues) {
           let id = Number(i) + 1;
           let prefix = 'card-';
           let fullId = prefix + id;
-          this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, this.values[i].toString())
+          this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, this.pokerService.selectableValues[i].toString())
         }
-
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-' + this.values.length + 1, '?')
+        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-' + this.pokerService.selectableValues.length + 1, '?')
       });
   }
 

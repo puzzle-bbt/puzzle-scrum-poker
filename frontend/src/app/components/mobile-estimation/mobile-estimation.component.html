@@ -5,15 +5,9 @@
   </div>
   <div *ngIf="((game$ | async)?.isGameRunning && (game$ | async)?.me?.playing)" class="cardContainer-mobile">
     <p>Deine Schätzung in Story Points</p>
-    <select class="dropdown"  (change)="setSelectedCard()" [(ngModel)]="selectionValue">
-      <option class="noCardSelected" value="" disabled selected>-</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="5">5</option>
-      <option value="8">8</option>
-      <option value="13">13</option>
-      <option value="21">21</option>
+    <select (change)="setSelectedCard()" [(ngModel)]="selectionValue" class="dropdown">
+      <option class="noCardSelected" disabled selected value="">-</option>
+      <option *ngFor="let i of this.pokerService.selectableValues" value="{{i}}">{{i}}</option>
       <option value="?">?</option>
     </select>
   </div>
@@ -26,17 +20,9 @@
   </div>
 
   <div class="average">
-    <div *ngIf="(game$ | async)?.isGameRunning; else notRunning">
-      <div class="averageGrid">
-        <h3 class="averageTitle">Durchschnitt: </h3>
-        <h3 class="average">{{ pokerService.game$.value.average | number:'1.0-2' }}</h3>
-      </div>
+    <div class="averageGrid">
+      <h3 class="averageTitle">Durchschnitt: </h3>
+      <h3 class="average">{{ pokerService.game$.value.average | number:'1.0-2' }}</h3>
     </div>
-    <ng-template #notRunning>
-      <div class="averageGrid">
-        <h3 class="averageTitle">Durchschnitt: </h3>
-        <h3 class="average">{{ pokerService.game$.value.average | number:'1.0-2' }}</h3>
-      </div>
-    </ng-template>
   </div>
 </div>

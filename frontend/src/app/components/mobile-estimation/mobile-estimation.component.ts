@@ -38,7 +38,6 @@ export class MobileEstimationComponent implements OnInit {
         this.getAverage();
       }
     });
-
     this.refresh();
   }
 
@@ -46,7 +45,6 @@ export class MobileEstimationComponent implements OnInit {
     this.cardSelected = true;
     this.pokerService.setSelectedCard(this.pokerService.game$.value.gameKey, this.pokerService.game$.value.me!.id, this.selectionValue).subscribe();
     this._cardValueService.currentCardValue = this.selectionValue;
-    console.log(this._cardValueService.currentCardValue)
   }
 
   public refresh() {
