@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @Scope("application")
@@ -36,18 +37,14 @@ public class PokerService {
 
     public long addNewPlayer(String playername, String gamekey) throws Exception {
         long playerid = playerCount.incrementAndGet();
-
         getTableById(gamekey).getPlayerMap().put(playerid, new Player(playername, playerid));
-
         sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer"+playername+","+playerid);
-
         return playerid;
     }
 
     public void setSelectedCard(String gamekey, long playerid, String selectedCard) throws Exception {
         getTableById(gamekey).getPlayerById(playerid).setSelectedCard(selectedCard);
         sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer"+","+playerid);
-
     }
 
     public String getSelectedCard(String gamekey, long playerid) throws Exception {
@@ -116,10 +113,8 @@ public class PokerService {
         if (getTableById(gamekey).isGamerunning()) {
             throw new Exception("Game is already running");
         }
-
         resetGame(gamekey);
         setRunning(gamekey, true);
-
         sendWebsocketMessage(getTableById(gamekey), "gameStart");
     }
 
@@ -148,7 +143,7 @@ public class PokerService {
                 .filter(value -> isNumeric.matcher(value).matches())
                 .mapToInt(Integer::parseInt)
                 .average();
-        return average.isPresent() ? average.getAsDouble() : 0;
+        return average.orElse(0);
     }
 
     public void handleIncomingTextMessage(WebSocketSession session, String message) throws Exception {
@@ -204,14 +199,12 @@ public class PokerService {
         } else if (getTableById(gamekey).getTablemaster().getId() == playerID) {
             LOG.warn("Player with id: {} is already tablemaster at the table with the gamekey {}", playerID, gamekey);
         } else {
-
             Tablemaster tablemaster = new Tablemaster(getTableById(gamekey).getPlayerById(playerID).getName(), playerID);
             getTableById(gamekey).setTablemaster(tablemaster);
             getTableById(gamekey).getPlayerMap().replace(playerID, tablemaster);
 
             sendWebsocketMessageSpecial("IAmNowTheOneAndOnlyTablemaster" + "," + getTableById(gamekey).isGamerunning(), playerID, gamekey, true);
             sendWebsocketMessageSpecial("NewTablemaster" + "," + getTableById(gamekey).getTablemaster().getName(), playerID, gamekey, false);
-
             getTableById(gamekey).setNewTablemasterNeeded(false);
             setRunning(gamekey, false);
         }
@@ -223,9 +216,8 @@ public class PokerService {
             getTableById(gamekey).getWebsocketsession().remove(playerid);
             if (isTablemaster) {
                 getTableById(gamekey).setNewTablemasterNeeded(true);
-                sendWebsocketMessageSpecial("AskForNewTablemaster", playerid, gamekey, false);
-            }
-            else {
+                tableMasterChange(gamekey, this.getPlayersFromTable(gamekey).get(0).getId());
+            } else {
                 sendWebsocketMessage(getTableById(gamekey), "RefreshPlayer" + "," + playerid);
             }
         }
@@ -288,10 +280,16 @@ public class PokerService {
         }
     }
 
+    public void tableMasterChange(String gamekey, Long playerID) throws Exception {
+        this.getTableById(gamekey).getWebsocketsession().get(playerID).sendMessage(new TextMessage("\"YouAreTableMaster\""));
+        this.sendWebsocketMessage(this.getTableById(gamekey), "RefreshPlayer");
+    }
+
     public void checkWebsocketConnection(Table table, WebSocketSession webSocketSession, String message) {
         LOG.warn("No message could be sent to to the session with the id: {}, URI: {} and is open = {}. The session has the local address: {} and the remote address: {}. The thrown message is: {}", webSocketSession.getId(), webSocketSession.getUri(), webSocketSession.isOpen(), webSocketSession.getLocalAddress(), webSocketSession.getRemoteAddress(), message);
         if (!webSocketSession.isOpen()) {
-            table.getWebsocketsession().remove(webSocketSession);
+            Map.Entry<Long, WebSocketSession> longWebSocketSessionEntry = table.getWebsocketsession().entrySet().stream().filter(e -> e.getValue().equals(webSocketSession)).collect(Collectors.toList()).get(0);
+            table.getWebsocketsession().remove(longWebSocketSessionEntry.getKey());
         }
     }
 

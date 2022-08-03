@@ -58,6 +58,9 @@ export class PokerGameService {
           this.router.navigate(['/playground/kickplayer']);
           this.resetModel();
         }
+        if(message.includes('YouAreTableMaster')) {
+          this.setAsTableMaster();
+        }
     });
   }
 
@@ -179,7 +182,7 @@ export class PokerGameService {
       );
   }
 
-  offboarding(gamekey: string, playerid: number, isTablemaster: object) {
+  offboarding(gamekey: string, playerid: number, isTablemaster: boolean) {
     return this.httpClient.get(`${BASE_URL}/tables/offboarding/${gamekey}/${playerid}/${isTablemaster}`, BASE_GET_REQUEST_OPTIONS)
       .pipe(
         tap(value => console.log('-------->', value)),
