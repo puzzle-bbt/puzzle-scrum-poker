@@ -8,7 +8,6 @@
     <select (change)="setSelectedCard()" [(ngModel)]="selectionValue" class="dropdown">
       <option class="noCardSelected" disabled selected value="">-</option>
       <option *ngFor="let i of this.pokerService.selectableValues" value="{{i}}">{{i}}</option>
-      <option value="?">?</option>
     </select>
   </div>
 

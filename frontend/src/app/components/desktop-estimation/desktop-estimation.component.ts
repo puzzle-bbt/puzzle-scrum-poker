@@ -115,14 +115,14 @@ export class DesktopEstimationComponent implements OnInit {
     this.pokerService.getCardSvg(svgFilename).subscribe(
       (data: string) => {
         let prefix = 'card-';
-        for (let i in this.pokerService.selectableValues) {
-          let id = Number(i) + 1;
-          let fullId = prefix + id;
-          this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, this.pokerService.selectableValues[i].toString())
+        for (let value of this.pokerService.selectableValues) {
+          let index = this.pokerService.selectableValues.indexOf(value);
+          let fullId = prefix + (index+1);
+          this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, value)
         }
-        let nextID = this.pokerService.selectableValues.length + 1;
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), prefix + nextID, '?')
-        this.selectCardByValue(this._screenSizeService.currentCardValue);
+        if(this._screenSizeService.currentCardValue != ""){
+          this.selectCardByValue(this._screenSizeService.currentCardValue);
+        }
       });
   }
 
@@ -146,13 +146,9 @@ export class DesktopEstimationComponent implements OnInit {
   }
 
   private selectCardByValue(selectionValue: string) {
-    let allCards = Array.from(document.querySelectorAll('#cardText'));
-    let childElement = allCards.filter(e => e.innerHTML === selectionValue)[0];
-    let targetCard = childElement.parentElement as unknown as SVGElement
+    let targetCard = document.querySelector(`svg[storyPoint="${selectionValue}"]`) as unknown as SVGElement;
     this.resetCards();
-    if (!targetCard.classList.contains('selectedcard')) {
-      targetCard.classList.add('selectedcard');
-    }
+    targetCard.classList.add('selectedcard');
   }
 
   private selectCard(svg: SVGElement, storyPoints: string) {
