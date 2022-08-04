@@ -120,7 +120,8 @@ export class DesktopEstimationComponent implements OnInit {
           let fullId = prefix + id;
           this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, this.pokerService.selectableValues[i].toString())
         }
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-' + this.pokerService.selectableValues.length + 1, '?')
+        let id = this.pokerService.selectableValues.length + 1;
+        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-' +id , '?')
         this.selectCardByValue(this._screenSizeService.currentCardValue);
       });
   }
@@ -148,7 +149,7 @@ export class DesktopEstimationComponent implements OnInit {
     if (selectionValue != "") {
       let id = "card-";
       if (selectionValue == "?") {
-        id += this.pokerService.selectableValues.length
+        id += this.pokerService.selectableValues.length+1
       } else {
         id += this.pokerService.selectableValues.indexOf(Number(selectionValue)) + 1
       }
