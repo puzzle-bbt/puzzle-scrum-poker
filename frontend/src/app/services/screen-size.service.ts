@@ -8,12 +8,10 @@ export class ScreenSizeService {
   private _currentCardValue: string = "";
 
   get currentCardValue(): string {
-    console.log("get: " + this._currentCardValue)
     return this._currentCardValue;
   }
 
   set currentCardValue(value: string) {
-    console.log("set: " + value)
     this._currentCardValue = value;
   }
 

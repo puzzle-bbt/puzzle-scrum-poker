@@ -36,7 +36,6 @@ export class DesktopEstimationComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("tasdfasdfa ")
     let frontCards = document.getElementById('cardContainerFront');
     let backCards = document.getElementById('cardContainerBack');
     if (this.pokerService.game$.value.isGameRunning) {
@@ -154,7 +153,6 @@ export class DesktopEstimationComponent implements OnInit {
         id += this.pokerService.selectableValues.indexOf(Number(selectionValue)) + 1
       }
       let targetCard = document.getElementById(id) as unknown as SVGElement;
-      console.log("id: \"" + id + "\"")
       this.resetCards();
       if (!targetCard.classList.contains('selectedcard')) {
         targetCard.classList.add('selectedcard');

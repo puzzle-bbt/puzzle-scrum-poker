@@ -24,7 +24,6 @@ export class MobileEstimationComponent implements OnInit {
     private _cardValueService: ScreenSizeService
   ) {
     this.selectionValue = this._cardValueService.currentCardValue;
-    console.log("Init mobile")
   }
 
   ngOnInit(): void {
