@@ -114,14 +114,14 @@ export class DesktopEstimationComponent implements OnInit {
   public addCards(svgFilename: string = 'card_front.svg') {
     this.pokerService.getCardSvg(svgFilename).subscribe(
       (data: string) => {
+        let prefix = 'card-';
         for (let i in this.pokerService.selectableValues) {
           let id = Number(i) + 1;
-          let prefix = 'card-';
           let fullId = prefix + id;
           this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), fullId, this.pokerService.selectableValues[i].toString())
         }
-        let id = this.pokerService.selectableValues.length + 1;
-        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), 'card-' +id , '?')
+        let nextID = this.pokerService.selectableValues.length + 1;
+        this.addSvgToContainer(DesktopEstimationComponent.stringToSvgElement(data), prefix + nextID, '?')
         this.selectCardByValue(this._screenSizeService.currentCardValue);
       });
   }
@@ -146,18 +146,12 @@ export class DesktopEstimationComponent implements OnInit {
   }
 
   private selectCardByValue(selectionValue: string) {
-    if (selectionValue != "") {
-      let id = "card-";
-      if (selectionValue == "?") {
-        id += this.pokerService.selectableValues.length+1
-      } else {
-        id += this.pokerService.selectableValues.indexOf(Number(selectionValue)) + 1
-      }
-      let targetCard = document.getElementById(id) as unknown as SVGElement;
-      this.resetCards();
-      if (!targetCard.classList.contains('selectedcard')) {
-        targetCard.classList.add('selectedcard');
-      }
+    let allCards = Array.from(document.querySelectorAll('#cardText'));
+    let childElement = allCards.filter(e => e.innerHTML === selectionValue)[0];
+    let targetCard = childElement.parentElement as unknown as SVGElement
+    this.resetCards();
+    if (!targetCard.classList.contains('selectedcard')) {
+      targetCard.classList.add('selectedcard');
     }
   }
 

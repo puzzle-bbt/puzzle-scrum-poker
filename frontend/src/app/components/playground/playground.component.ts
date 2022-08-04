@@ -33,7 +33,7 @@ export class PlaygroundComponent implements OnInit {
       if (message.includes('RefreshPlayer')) {
         this.pokerGameService.getPlayers().subscribe(() => {
           let playingPlayersCount = this.players$.getValue().filter(e => e.playing).length;
-          this.notClickable = playingPlayersCount == 0;
+          this.notClickable = playingPlayersCount === 0;
         });
       }
     });
