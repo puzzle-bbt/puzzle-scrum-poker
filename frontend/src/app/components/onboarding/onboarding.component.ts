@@ -2,7 +2,6 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {PokerGameService} from '../../services/poker-game.service';
 import {ActivatedRoute} from '@angular/router';
 import {BackendMessengerService} from "../../services/backend-messenger.service";
-import {BehaviorSubject} from "rxjs";
 import {Player} from "../../models/model";
 
 @Component({
@@ -13,9 +12,9 @@ import {Player} from "../../models/model";
 })
 export class OnboardingComponent implements OnInit {
 
-  clicked : boolean = false;
+  clicked: boolean = false;
   // players$: BehaviorSubject<Player[]> = this.pokerService.players$;
-  players:Player[]=[]
+  players: Player[] = []
   username: string = "";
 
   constructor(
@@ -31,23 +30,22 @@ export class OnboardingComponent implements OnInit {
       this.pokerService.setAsTableMaster();
     } else {
       this.pokerService.setGameKey(gameKey);
-      this.pokerService.getPlayersAsync().subscribe((data)=>{
+      this.pokerService.getPlayersAsync().subscribe((data) => {
         this.players = data
       });
     }
 
     this.messenger.subscribe((message) => {
       if (message.includes('RefreshPlayer')) {
-        this.pokerService.getPlayersAsync().subscribe((data)=>{
+        this.pokerService.getPlayersAsync().subscribe((data) => {
           this.players = data
         });
       }
     });
   }
 
-  public create(username: string) {
+  public create(username: string): void {
     this.clicked = true;
-    console.log('-->', this.pokerService.game$.value);
     if (this.pokerService.game$.value.iAmTableMaster) {
       this.createTablemaster(username);
     } else {
@@ -55,31 +53,38 @@ export class OnboardingComponent implements OnInit {
     }
   }
 
-  public createTablemaster(tablemasterName: string) {
+  public createTablemaster(tablemasterName: string): void {
     this.pokerService.createTablemaster(tablemasterName).subscribe();
   }
 
-  public createPlayer(playerName: string) {
+  public createPlayer(playerName: string): void {
     this.pokerService.createPlayer(playerName).subscribe();
   }
 
-  public checkUsernameSpecialChars(username: string): boolean {
+  public usernameContainsSpecialChars(username: string): boolean {
     let format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-    return !username || format.test(username) || username.trim().length == 0 || username.length > 25;
+    return !username || format.test(username);
   }
 
-  public checkUsernameExists(username: string) {
+  public checkUsernameExists(username: string): boolean {
     return this.players.map(e => e.name).includes(username);
   }
 
-  checkUsername(username: string) {
-    if(this.clicked){
-      return true;
+  checkUsername(username: string): null | string {
+    const MAX_CHARS = 25;
+    if (this.clicked) {
+      return "";
     }
-    if (username != '' && this.checkUsernameSpecialChars(username)) {
+    if(username.trim().length == 0){
+      return "Benutzername darf nicht leer sein"
+    }
+    if(username.length > MAX_CHARS){
+      return `Benutzername darf maximal ${MAX_CHARS} Zeichen enthalten`
+    }
+    if (this.usernameContainsSpecialChars(username)) {
       return "Verwende keinen leeren Namen oder auch keine Sonderzeichen.";
     }
-    if (username != '' && this.checkUsernameExists(username)) {
+    if (this.checkUsernameExists(username)) {
       return "Benutzername wird bereits verwendet";
     }
     return null;

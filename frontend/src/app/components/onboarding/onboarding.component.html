@@ -5,13 +5,13 @@
 <p>Username erstellen</p>
 <div>
   <label for="fname">Username: </label>
-  <input [(ngModel)]="username" id="fname" name="fname" placeholder="Username" type="text" data-cy="username">
+  <input [(ngModel)]="username" id="fname" name="fname" placeholder="Username" type="text" data-cy="username" [class.border-red]="this.checkUsername(username)">
 </div>
 <div>
   <p>Dies ist dein Benutzername, welcher von allen anderen Spieler zu sehen sein wird. Verwende keine Sonderzeichen.</p>
 </div>
 <div>
-  <button [disabled]="this.checkUsername(username)" (click)="create(username)" [class.border-red]="this.checkUsername(username)" data-cy="onboarding-button">Erstellen</button>
+  <button [disabled]="this.checkUsername(username)" (click)="create(username)"  data-cy="onboarding-button">Erstellen</button>
   <div *ngIf="checkUsername(username); let result">
     {{result}}
   </div>
