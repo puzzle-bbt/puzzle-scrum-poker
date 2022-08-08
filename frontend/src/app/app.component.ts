@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { PokerGameService } from './services/poker-game.service';
+import {Component} from '@angular/core';
+import {PokerGameService} from './services/poker-game.service';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +11,9 @@ export class AppComponent {
   isPlaying?: boolean = true;
 
   constructor(
-    private pokerService: PokerGameService
-  ) {
+    private pokerService: PokerGameService) {
   }
+
 
   public changeSpectator() {
     if (this.isPlaying) {
@@ -29,4 +29,6 @@ export class AppComponent {
     let url = window.location.toString();
     return url.includes('playground');
   }
+
+
 }
