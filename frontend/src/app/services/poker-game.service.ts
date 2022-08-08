@@ -32,6 +32,8 @@ const ERROR_INIT_VALUE: UserError = {
 })
 export class PokerGameService {
 
+  selectableValues:string[] = ["1", "2", "3", "5", "8", "13", "21", "?"];
+
   // current player list
   players$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>([]);
 
@@ -322,7 +324,6 @@ export class PokerGameService {
     this.game$.next(GAME_INIT_VALUE);
     this.error$.next(ERROR_INIT_VALUE);
   }
-
 }
 
 export interface OnboardingModel {

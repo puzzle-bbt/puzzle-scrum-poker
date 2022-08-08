@@ -1,19 +1,13 @@
 <div class="playground">
-  <app-mobile-estimation></app-mobile-estimation>
+  <app-mobile-estimation *ngIf="!screenSizeService.isDesktopSize(innerWidth)"></app-mobile-estimation>
   <app-playerlist></app-playerlist>
-  <app-desktop-estimation></app-desktop-estimation>
+  <app-desktop-estimation *ngIf="screenSizeService.isDesktopSize(innerWidth)"></app-desktop-estimation>
 </div>
 
 <div class="playgroud-button">
-  <button [disabled]="notClickable" (click)="changeGameState()" *ngIf="(displayButton$ |async)" class="middleButton">Runde start/stopp</button>
+  <button (click)="changeGameState()" *ngIf="(displayButton$ |async)" [disabled]="notClickable" class="middleButton">
+    Runde start/stopp
+  </button>
 </div>
 
 <router-outlet></router-outlet>
-
-<!--
-<div style="background-color:coral;padding:10px;font-family: monospace;">
-  <strong>game$:</strong> {{pokerGameService.game$ | async | json}}<br>
-  <strong>players$:</strong> {{pokerGameService.players$ | async | json}}<br>
-  <strong>error$:</strong> {{pokerGameService.error$ | async | json}}
-</div>
--->

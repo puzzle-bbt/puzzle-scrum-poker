@@ -25,6 +25,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.clicked = false;
     const gameKey = this.route.snapshot.paramMap.get('gamekey');
     if (gameKey == null) {
       this.pokerService.setAsTableMaster();
@@ -46,6 +47,17 @@ export class OnboardingComponent implements OnInit {
 
   public create(username: string): void {
     this.clicked = true;
+    if (this.usernameContainsSpecialChars(username)) {
+      alert("Verwende keinen leeren Namen oder auch keine Sonderzeichen.");
+      window.location.reload();
+      return;
+    }
+    if (this.checkUsernameExists(username)) {
+      alert("Benutzername wird bereits verwendet");
+      window.location.reload();
+      return;
+    }
+
     if (this.pokerService.game$.value.iAmTableMaster) {
       this.createTablemaster(username);
     } else {
