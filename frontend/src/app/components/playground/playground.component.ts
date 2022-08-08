@@ -43,7 +43,7 @@ export class PlaygroundComponent implements OnInit {
     }
   }
 
-  changeGameState() {
+  public changeGameState() {
     this.notClickable = true;
     this.pokerGameService.toggleGameRunning().subscribe();
   }
