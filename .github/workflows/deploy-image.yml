@@ -30,27 +30,27 @@ jobs:
         run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store-version.outputs.version}}-SNAPSHOT -DgenerateBackupPoms=false
 
       - name: Commit and Push Changes
-          shell: bash
-          env:
-            COMMITPREFIX: '[VU]'
-          run: |
-            git config --global user.email "actions@github.com"
-            git config --global user.name "GitHub Actions"
-            git add . || {
-              echo "No files were changed, so we did not commit anything"
-              exit 1
-            }
-            git commit -m "$COMMITPREFIX Automated version update" || {
-              echo "No changes to commit, skipping push"
-              exit 0
-            }
-            git push -f origin main
+        shell: bash
+        env:
+          COMMITPREFIX: '[VU]'
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add . || {
+            echo "No files were changed, so we did not commit anything"
+            exit 1
+          }
+          git commit -m "$COMMITPREFIX Automated version update" || {
+            echo "No changes to commit, skipping push"
+            exit 0
+          }
+          git push -f origin main
 
       - name: Set up node.js version lts/fermium
         uses: actions/setup-node@v2
         with:
           node-version: 'lts/fermium'
-      - run: npm --prefix frontend/ install
+      - run: npm --prefix frontend/ ci
 
       - name: Build with Maven
         run: mvn -B clean package --file pom.xml -P build-for-docker
@@ -76,18 +76,19 @@ jobs:
 
       - name: Change Yaml
         uses: mikefarah/yq@master
-          env:
-            FILEPATH: ${{ vars.FILEPATH }}
-            YAMLPATH: ${{ vars.YAML_PATH }}
-            VERSION: ${{ vars.QUAY_URL }}:${{ steps.store-version.outputs.version}}-PROD
-        cmd: yq -i "${YAMLPATH} = \"${VERSION}\"" ${FILEPATH}
+        env:
+          FILEPATH: ${{ vars.FILEPATH }}
+          YAMLPATH: ${{ vars.YAML_PATH }}
+          VERSION: ${{ vars.QUAY_URL }}:${{ steps.store-version.outputs.version}}-PROD
+        with:
+          cmd: yq -i "${YAMLPATH} = \"${VERSION}\"" ${FILEPATH}
 
 
       - name: Commit and Push Changes
         uses: fregante/setup-git-user@v2
         env:
           COMMITPREFIX: '[CTS]'
-        run: |
+      - run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git add ${{ vars.FILEPATH }} || {
