@@ -58,7 +58,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
-      - run: npm --prefix frontend/ ci
+      - run: npm --prefix frontend/ ci --legacy-peer-deps
 
       - name: Build with Maven
         run: mvn -B clean package --file pom.xml -P build-for-docker
