@@ -52,7 +52,7 @@ jobs:
             echo "No changes to commit, skipping push"
             exit 0
           }
-          git push origin production
+          git push -f origin production
 
       - name: Set up node.js version lts/fermium
         uses: actions/setup-node@v2
