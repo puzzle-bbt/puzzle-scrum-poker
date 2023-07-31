@@ -57,8 +57,8 @@ jobs:
       - name: Set up node.js version lts/fermium
         uses: actions/setup-node@v2
         with:
-          node-version: 'lts/fermium'
-      - run: npm --prefix frontend/ install
+          node-version: 16
+      - run: npm --prefix frontend/ ci
 
       - name: Build with Maven
         run: mvn -B clean package --file pom.xml -P build-for-docker
