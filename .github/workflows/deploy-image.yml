@@ -89,7 +89,7 @@ jobs:
           YAMLPATH: ${{ vars.YAML_PATH }}
           VERSION: ${{ vars.QUAY_URL }}:${{ steps.store-version.outputs.version}}-PROD
         with:
-          cmd: yq -i "${YAMLPATH} = \"${VERSION}\"" ${FILEPATH}
+          cmd: yq -i "${YAMLPATH} = \"${VERSION}\"" ${FILEPATH}"
 
 
       - name: Commit and Push Changes
