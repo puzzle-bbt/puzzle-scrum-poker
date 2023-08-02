@@ -110,5 +110,6 @@ jobs:
             exit 1
           } && \
           git commit -m "$COMMITPREFIX Automated changes to ${{ vars.FILEPATH }}" && \
-          git push origin
+          git push origin ${{ vars.TARGET_REFERENCE }}
+
 # add comment
