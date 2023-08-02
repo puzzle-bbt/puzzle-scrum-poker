@@ -17,7 +17,6 @@ jobs:
         with:
           token: ${{secrets.VERSION_TOKEN}}
 
-
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
@@ -78,6 +77,13 @@ jobs:
           push: true
           tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-PROD
 
+      - name: Trigger Deployment Workflow with latest Version
+        uses: actions/checkout@v3
+        with:
+          path: repo
+          token: ${{secrets.VERSION_TOKEN}}
+          ref: ${{ vars.TARGET_REFERENCE }}
+
       - name: Change Yaml
         shell: bash
         env:
@@ -89,7 +95,7 @@ jobs:
         run: |
             wget -q https://github.com/mikefarah/yq/releases/download/${JQ_VERSION}/${BINARY}.tar.gz -O - |\
             tar xz && mv ${BINARY} /usr/local/bin/yq
-            yq -i "${YAML_PATH} = \"${OKR_VERSION}\"" ${FILEPATH}
+            yq -i "${YAML_PATH} = \"${OKR_VERSION}\"" repo/${FILEPATH}
 
 
       - name: Commit and Push Changes
@@ -104,5 +110,5 @@ jobs:
             exit 1
           } && \
           git commit -m "$COMMITPREFIX Automated changes to ${{ vars.FILEPATH }}" && \
-          git push origin ${{ vars.TARGET_REFERENCE }}
+          git push origin
 # add comment
