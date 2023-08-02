@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: scrum-poker-application
+  name: psc-application
 spec:
   selector:
-    app: scrum-poker-application
+    app: psc-application
   ports:
     - name: http
       protocol: TCP
