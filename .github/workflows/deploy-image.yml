@@ -78,18 +78,18 @@ jobs:
           push: true
           tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-PROD
 
-
-      - name: Setup Git user
-        uses: fregante/setup-git-user@v2.0.1
-
       - name: Change Yaml
-        uses: mikefarah/yq@master
+        shell: bash
         env:
           FILEPATH: ${{ vars.FILEPATH }}
-          YAMLPATH: ${{ vars.YAML_PATH }}
-          VERSION: ${{ vars.QUAY_URL }}:${{ steps.store-version.outputs.version}}-PROD
-        with:
-          cmd: yq -i "${YAMLPATH} = \"${VERSION}\"" ${FILEPATH}
+          YAML_PATH: ${{ vars.YAML_PATH }}
+          OKR_VERSION: ${{ vars.QUAY_URL }}:${{ steps.store-version.outputs.version}}-PROD
+          JQ_VERSION: v4.25.2
+          BINARY: yq_linux_amd64
+        run: |
+            wget -q https://github.com/mikefarah/yq/releases/download/${JQ_VERSION}/${BINARY}.tar.gz -O - |\
+            tar xz && mv ${BINARY} /usr/local/bin/yq
+            yq -i "${YAML_PATH} = \"${OKR_VERSION}\"" ${FILEPATH}
 
 
       - name: Commit and Push Changes
