@@ -11,5 +11,6 @@ WORKDIR app-root
 
 COPY --chown=1001 . .
 
+ENV APP_JAR=$(find . -type f -name 'puzzle-scrum-poker-backend-*.jar' -print -quit)
 #RUN ./mvnw clean package -P build-for-docker
-ENTRYPOINT ["/bin/sh", "-c", "export APP_JAR=$(find . -type f -name 'backend-*.jar' -print -quit); java -jar ${APP_JAR}"]
+ENTRYPOINT ["java", "-jar", "${APP_JAR}"]
