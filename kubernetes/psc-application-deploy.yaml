@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: pitc-scrum-poker-prod
-          image: registry.puzzle.ch/puzzle/scrum-poker:1.0.19-PROD
+          image: registry.puzzle.ch/puzzle/scrum-poker:1.0.20-PROD
           ports:
             - name: http
               containerPort: 8080
