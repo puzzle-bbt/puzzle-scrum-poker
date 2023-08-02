@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: okr-application
+  name: psc-application
   labels:
-    app: scrum-poker-application
+    app: pitc-scrum-poker-prod
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: scrum-poker-application
+      app: pitc-scrum-poker-prod
   template:
     metadata:
       labels:
-        app: scrum-poker-application
+        app: pitc-scrum-poker-prod
     spec:
       containers:
-        - name: scrum-poker-application
+        - name: pitc-scrum-poker-prod
           image: registry.puzzle.ch/puzzle/okr:1.0.10-PROD
           ports:
             - name: http
