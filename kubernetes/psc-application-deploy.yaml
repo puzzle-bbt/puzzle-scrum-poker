@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: scrum-poker-application
-          image: registry.puzzle.ch/puzzle/okr:1.0.0-PROD
+          image: registry.puzzle.ch/puzzle/okr:1.0.10-PROD
           ports:
             - name: http
               containerPort: 8080
