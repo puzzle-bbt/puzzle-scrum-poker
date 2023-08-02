@@ -5,7 +5,7 @@ metadata:
   namespace: pitc-psc-prod
   labels:
     argocd.argoproj.io/instance: pitc-psc-prod
-    public: 'true'
+    public: 'false'
 spec:
   to:
     kind: Service
