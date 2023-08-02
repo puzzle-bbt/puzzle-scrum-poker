@@ -1,18 +1,18 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: application
-  namespace: pitc-scrum-poker-prod
+  name: psc-application
+  namespace: pitc-psc-prod
   labels:
-    argocd.argoproj.io/instance: pitc-scrum-poker-prod
+    argocd.argoproj.io/instance: pitc-psc-prod
     public: 'true'
 spec:
   to:
     kind: Service
-    name: pitc-scrum-poker-prod
+    name: pitc-psc-prod
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
-  host: okr.puzzle.ch
+  host: scrum-poker.puzzle.ch
   port:
     targetPort: http
