@@ -87,6 +87,8 @@ jobs:
           JQ_VERSION: v4.25.2
           BINARY: yq_linux_amd64
         run: |
+            pwd
+            ls -R
             wget -q https://github.com/mikefarah/yq/releases/download/${JQ_VERSION}/${BINARY}.tar.gz -O - |\
             tar xz && mv ${BINARY} /usr/local/bin/yq
             yq -i "${YAML_PATH} = \"${OKR_VERSION}\"" ${FILEPATH}
