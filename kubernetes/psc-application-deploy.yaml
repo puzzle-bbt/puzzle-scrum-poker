@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: psc-application
-          image: registry.puzzle.ch/puzzle/scrum-poker:1.0.24-PROD
+          image: registry.puzzle.ch/puzzle/scrum-poker:1.0.25-PROD
           ports:
             - name: http
               containerPort: 8080
