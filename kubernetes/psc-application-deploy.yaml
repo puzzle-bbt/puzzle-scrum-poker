@@ -2,7 +2,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: psc-application
+  name: psc-application-deployment
+  namespace: pitc-psc-prod
   labels:
     app: psc-application
 spec:
@@ -16,7 +17,7 @@ spec:
         app: psc-application
     spec:
       containers:
-        - name: psc-application
+        - name: psc-application-container
           image: registry.puzzle.ch/puzzle/scrum-poker:1.0.25-PROD
           ports:
             - name: http
