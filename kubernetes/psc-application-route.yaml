@@ -13,6 +13,6 @@ spec:
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
-  host: scrum-poker.puzzle.ch
+  host: scrum-poker.ocp-internal.cloudscale.puzzle.ch
   port:
     targetPort: http
