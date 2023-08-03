@@ -1,7 +1,7 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: psc-application
+  name: psc-application-route
   namespace: pitc-psc-prod
   labels:
     argocd.argoproj.io/instance: pitc-psc-prod
@@ -9,7 +9,7 @@ metadata:
 spec:
   to:
     kind: Service
-    name: psc-application
+    name: psc-application-svc
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
