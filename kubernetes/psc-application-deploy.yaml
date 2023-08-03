@@ -4,19 +4,19 @@ kind: Deployment
 metadata:
   name: psc-application
   labels:
-    app: pitc-scrum-poker-prod
+    app: psc-application
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pitc-scrum-poker-prod
+      app: psc-application
   template:
     metadata:
       labels:
-        app: pitc-scrum-poker-prod
+        app: psc-application
     spec:
       containers:
-        - name: pitc-scrum-poker-prod
+        - name: psc-application
           image: registry.puzzle.ch/puzzle/scrum-poker:1.0.22-PROD
           ports:
             - name: http

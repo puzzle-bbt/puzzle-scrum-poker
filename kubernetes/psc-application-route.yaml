@@ -9,7 +9,7 @@ metadata:
 spec:
   to:
     kind: Service
-    name: pitc-psc-prod
+    name: psc-application
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
