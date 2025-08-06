@@ -138,7 +138,7 @@ public class RestInterface {
     }
 
     @GetMapping("/tables/getplayers/{gamekey}")
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:4201")
     public List<Player> getPlayersFromTable(@PathVariable(value= "gamekey") String gamekey){
         LOG.info("getPlayersFromTable is called: /tables/getplayers/{}", gamekey);
         try {
