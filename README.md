@@ -1,4 +1,8 @@
 # Puzzle-scrum-poker
+
+> [!IMPORTANT]  
+> As of 2026-04-13, this project is no longer maintained.
+
 A Puzzle Scrum Poker online Tool.
 
 ## How to Run Puzzle Scrum Poker from within IntelliJ
